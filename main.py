@@ -1,14 +1,10 @@
 # This program takes the average electrical load of the high load values and plots it with the corresponding oil temperature
 # The program helps give a visual understanding of how the electrical load and oil temperature affect each other
 
-from pydataset import data
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
-from sklearn.preprocessing import normalize
-from sklearn import preprocessing
+
 
 
 dataframe = pd.read_csv("ETTh1.csv")
@@ -27,7 +23,6 @@ OT = np.array(dataframe["OT"])
 datapointsRange = 500
 startPoint = 2000
 
-meanLoad = []
 oilTemp = [0 for i in range(datapointsRange)]
 meanLoad = [0 for i in range(datapointsRange)]
 for x in range(datapointsRange):
@@ -36,11 +31,10 @@ for x in range(datapointsRange):
     oilTemp[x] = OT[x+startPoint]
 
 
-data2 = {'Load':meanLoad, 'Oil':oilTemp}
+data = {'Load':meanLoad, 'Oil':oilTemp}
 
 
-
-df = pd.DataFrame(data2)
+df = pd.DataFrame(data)
 
 
 plt.plot(df)
