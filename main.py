@@ -5,33 +5,30 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error     
-
+from sklearn.metrics import mean_absolute_error 
 from sklearn import linear_model
-
+from sklearn.preprocessing import StandardScaler
 
 data = pd.read_csv("ETTh1.csv")
-
-
-x = data[['HUFL', 'HULL', 'MUFL','MULL','LUFL','LULL']]
+x = data[['HUFL', 'HULL', 'MUFL','MULL','LUFL', 'LULL']]
 y = data['OT']
-
-
-
-
 
 trainPeriod = data[(data['date'] < '2018-01-31 23:00:00') & (data['date'] >= '2018-01-01 23:00:00')]
 
-x_train = trainPeriod[['HUFL', 'HULL', 'MUFL','MULL','LUFL','LULL']]
+x_train = trainPeriod[['HUFL', 'HULL', 'MUFL','MULL', 'LUFL', 'LULL']]
 y_train = trainPeriod['OT']
 
 print(x_train)
 print(y_train)
 
+scaler = StandardScaler()
+x_train_scaled = scaler.fit_transform(x_train)
+
 testPeriod = data.loc[(data['date'] >= '2018-02-01 23:00:00') & (data['date'] <= '2018-02-08 23:00:00')]
-x_test = testPeriod[['HUFL', 'HULL', 'MUFL','MULL','LUFL','LULL']]
+x_test = testPeriod[['HUFL', 'HULL', 'MUFL','MULL','LUFL', 'LULL']]
 y_test = testPeriod['OT']
 
+x_test_scaled = scaler.fit_transform(x_test)
 
 regr = linear_model.LinearRegression()
 regr.fit(x_train, y_train)
@@ -45,7 +42,6 @@ predictedOT = regr.predict(x_test)
 
 plt.scatter(range(len(y_test)), y_test, color='blue')
 plt.scatter(range(len(predictedOT)), predictedOT, color='red')
-
 
 
 print('MSE: ', mean_squared_error(y_test, predictedOT))
