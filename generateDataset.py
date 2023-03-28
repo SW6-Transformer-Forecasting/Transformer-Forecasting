@@ -9,8 +9,8 @@ testPeriod = data[(data['date'] >= '2018-01-08 00:00:00') & (data['date'] <= '20
 
 trainFile = open('Generated Datasets/trainPeriod.csv', 'w', newline='')
 testFile = open('Generated Datasets/testPeriod.csv', 'w', newline='')
-trainWrite = csv.writer(trainFile)
-testWrite = csv.writer(testFile)
+trainWrite = csv.writer(trainFile, quoting=csv.QUOTE_NONE, delimiter=',', escapechar=' ')
+testWrite = csv.writer(testFile, quoting=csv.QUOTE_NONE, delimiter=',', escapechar=' ')
 
 header = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
           '20', '21', '22', '23']
@@ -26,7 +26,10 @@ for row in trainPeriod.itertuples(index=False):
         trainWrite.writerow([rowText])
         rowText = OTValue
     else:
-        rowText += OTValue
+        if rowText != '':
+            rowText += ',' + OTValue
+        else:
+            rowText += OTValue
 
 testWrite.writerow(header)
 
@@ -39,7 +42,10 @@ for row in testPeriod.itertuples(index=False):
         testWrite.writerow([rowText])
         rowText = OTValue
     else:
-        rowText += OTValue
+        if rowText != '':
+            rowText += ',' + OTValue
+        else:
+            rowText += OTValue
 
 
 
