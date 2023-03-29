@@ -39,14 +39,14 @@ class NeuralNetwork(nn.Module):
 model = NeuralNetwork()
 load = True
 if (load == True):
-    model.load_state_dict(torch.load("model3.pth"))
+    model.load_state_dict(torch.load("MSE.pth"))
 model.eval()
 
 
 # L1Loss = MAE
 # MSELoss = MSE
 loss_fn = nn.MSELoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
 
 n_epochs = 100
 batch_size = 1
@@ -64,10 +64,11 @@ for epoch in range(n_epochs):
             loss.backward()
             optimizer.step()
             loss_amount += loss
+            
             count += 1
             #print("{0} - {1} - {2} - {3}".format(Xbatch, y_pred, ybatch, loss))
             
-    print(f'Finished epoch {epoch}, loss est. {loss_amount/count} - Count: {count}')
+    print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-torch.save(model.state_dict(), "model3.pth")
-print("Saved PyTorch Model State to model.pth")
+torch.save(model.state_dict(), "MSE.pth")
+print("Saved PyTorch Model State")
