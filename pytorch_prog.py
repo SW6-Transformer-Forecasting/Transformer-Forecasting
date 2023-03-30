@@ -2,16 +2,17 @@ import torch
 import pandas as pd
 import numpy as np
 from torch import nn
+import data_loader as dl
 
-data = pd.read_csv("ETTh1.csv")
+dloader = dl.DataLoader()
+data = dloader.fetch('ETTh1.csv', '2018-01-07', '2018-01-01')
+filteredData = dloader.filter(data)
 
-dateRange = data[(data['date'] <= '2018-01-30 23:00:00') & (data['date'] >= '2018-01-01 23:00:00')]
+X = data[['HUFL', 'HULL', 'MUFL','MULL','LUFL', 'LULL']]
+Y = data['OT']
 
-X = dateRange[['HUFL', 'HULL', 'MUFL','MULL','LUFL', 'LULL']]
-Y = dateRange['OT']
-
-x = tensortest = torch.tensor(X.to_numpy(), dtype=torch.float32)
-y = tensortest = torch.tensor(Y.to_numpy(), dtype=torch.float32).reshape(-1, 1)
+x = torch.tensor(X.to_numpy(), dtype=torch.float32)
+y = torch.tensor(Y.to_numpy(), dtype=torch.float32).reshape(-1, 1)
 
 class NeuralNetwork(nn.Module):
    def __init__(self):
@@ -23,6 +24,7 @@ class NeuralNetwork(nn.Module):
            nn.Linear(18, 18),
            nn.ReLU(),
            nn.Linear(18, 1),
+           nn.ReLU(),
        )
 
    def forward(self, x):
@@ -41,7 +43,7 @@ model.eval()
 loss_fn = nn.MSELoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
 
-n_epochs = 50
+n_epochs = 1
 batch_size = 1
 
 for epoch in range(n_epochs):
@@ -57,11 +59,8 @@ for epoch in range(n_epochs):
             loss.backward()
             optimizer.step()
             loss_amount += loss
-
             count += 1
-            #print("{0} - {1} - {2} - {3}".format(Xbatch, y_pred, ybatch, loss))
-        
     print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-torch.save(model.state_dict(), "MSE.pth")
+#torch.save(model.state_dict(), "MSE.pth")
 print("Saved PyTorch Model State")
