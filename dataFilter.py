@@ -12,32 +12,30 @@ class DataFilter():
     def filter(self, data):
         data = data.drop_duplicates(subset=['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT'])
         data = data.to_numpy()
-        prevAxis = data[0]
-        firstRun = True
+        
+        appendFlag = True
+        prevAxis = [0] * 7 # Init of array filled with 0's to avoid double line data
         arr = []
         
         for row in data: 
             counter = 0
             
-            if (firstRun == True):
-                arr = np.append(arr, row)
-                prevAxis = row
-            
             for item in row:
-                if (item == prevAxis[counter] and firstRun == False):
-                    prevAxis = row
+                if (item == prevAxis[counter]):
+                    appendFlag = False
                     break
                 else:
                     if (item == 0.0):
-                        prevAxis = row
+                        appendFlag = False
                         break
-                    else:
-                        arr = np.append(arr, item) #Add some memory, so it ignores the entire axis if it contains a 0 value
-                
+                    
                 counter += 1
                 
+            if (appendFlag == True):
+                arr = np.append(arr, row)
+            
             prevAxis = row
-            firstRun = False
+            appendFlag = True
             
         return arr
 
