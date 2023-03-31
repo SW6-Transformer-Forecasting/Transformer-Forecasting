@@ -2,7 +2,7 @@ import torch
 import pandas as pd
 import numpy as np
 from torch import nn
-import data_loader as dl
+import dataFilter as dl
 
 dloader = dl.DataFilter()
 data = dloader.fetch('ETTh1.csv', '2018-01-07', '2018-01-01')

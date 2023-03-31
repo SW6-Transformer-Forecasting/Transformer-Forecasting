@@ -10,33 +10,34 @@ class DataFilter():
         return sortedData
     
     def filter(self, data):
+        data = data.drop_duplicates(subset=['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT'])
         data = data.to_numpy()
         prevAxis = data[0]
-        fr = True
+        firstRun = True
         arr = []
         
-        for ax in data: 
+        for row in data: 
             counter = 0
             
-            if (fr == True):
-                arr = np.append(arr, ax)
-                prevAxis = ax
+            if (firstRun == True):
+                arr = np.append(arr, row)
+                prevAxis = row
             
-            for item in ax:
-                if (item == prevAxis[counter] and fr == False):
-                    prevAxis = ax
+            for item in row:
+                if (item == prevAxis[counter] and firstRun == False):
+                    prevAxis = row
                     break
                 else:
                     if (item == 0.0):
-                        prevAxis = ax
+                        prevAxis = row
                         break
                     else:
-                        arr = np.append(arr, item)
+                        arr = np.append(arr, item) #Add some memory, so it ignores the entire axis if it contains a 0 value
                 
                 counter += 1
                 
-            prevAxis = ax
-            fr = False
+            prevAxis = row
+            firstRun = False
             
         return arr
 
