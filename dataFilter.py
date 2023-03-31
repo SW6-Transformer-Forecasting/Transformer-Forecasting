@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 class DataFilter(): 
-    def fetch(self, filename, toDate, fromDate):
+    def fetch(self, filename, fromDate, toDate):
         data = pd.read_csv("{0}".format(filename))
         dataRange = data[(data['date'] <= '{0} 23:00:00'.format(toDate)) & (data['date'] >= '{0} 23:00:00'.format(fromDate))]
         sortedData = dataRange[['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT']]
@@ -38,9 +38,12 @@ class DataFilter():
             appendFlag = True
             
         return arr
+    
+    def saveFile(self, data):
+        print("Not Implemented yet")
 
 dloader = DataFilter()
-data = dloader.fetch('ETTh1.csv', '2016-12-05', '2016-12-04')
+data = dloader.fetch('ETTh1.csv', '2018-01-29', '2018-02-01')
 #print(data)
 filteredData = dloader.filter(data)
 print(filteredData)
