@@ -6,7 +6,8 @@ import numpy
 import warnings
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import Normalizer
-
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
 
@@ -25,30 +26,29 @@ class DataHandler:
             parsedJson = json.loads(file_contents) 
             for period in parsedJson['ModelPeriods']:
                 self.trainTestPeriods += [[period['periodDescription'], period['trainFrom'], period['trainTo'], period['testFrom'], period['testTo']]]
-
+            
     def SetupTrainTestData(self):
         for index in range(len(self.trainTestPeriods)):
-            
             periodDescription = self.trainTestPeriods[index][0]
-            
+                      
+            data['datetime'] = pandas.to_datetime(data['date'])
+                      
             trainPeriod = data[(data['date'] >= self.trainTestPeriods[index][1]) & (data['date'] < self.trainTestPeriods[index][2])]
-            testPeriod = data.loc[(data['date'] >= self.trainTestPeriods[index][3]) & (data['date'] <= self.trainTestPeriods[index][4])]
+            testPeriod = data[(data['date'] >= self.trainTestPeriods[index][3]) & (data['date'] <= self.trainTestPeriods[index][4])]
             
-            trainPeriod['date'] = pandas.to_datetime(trainPeriod['date'])
-            testPeriod['date'] = pandas.to_datetime(testPeriod['date'])
+            columns = ['year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter', 'OilTemp']    
+            trainPeriod[columns] = data.apply(lambda row: pandas.Series({'year': row.datetime.year,"month":row.datetime.month, "day":row.datetime.day, "hour":row.datetime.hour, "weekday":row.datetime.weekday(), "weekofyear":row.datetime.weekofyear, "quarter":row.datetime.quarter, 'OilTemp': row.OT}), axis=1)
+            testPeriod[columns] = data.apply(lambda row: pandas.Series({'year': row.datetime.year,"month":row.datetime.month, "day":row.datetime.day, "hour":row.datetime.hour, "weekday":row.datetime.weekday(), "weekofyear":row.datetime.weekofyear, "quarter":row.datetime.quarter, 'OilTemp': row.OT}), axis=1)
+        
+            features = ['year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter']
+            target = ['OT']
             
-            trainPeriod['hour'] = trainPeriod['date'].dt.hour
-            testPeriod['hour'] = testPeriod['date'].dt.hour
-
-            # Scales the value of the oil temperature
-            trainPeriod['OT'] = trainPeriod['OT'].multiply(0.5)
-            testPeriod['OT'] = testPeriod['OT'].multiply(0.5)
-
-            x_train = numpy.array(trainPeriod['hour']).reshape(-1,1)
-            y_train = numpy.array(trainPeriod['OT']).reshape(-1,1)
-
-            x_test = numpy.array(testPeriod['hour']).reshape(-1,1)
-            y_test = numpy.array(testPeriod['OT']).reshape(-1,1)            
+            x_train = trainPeriod[features]
+            y_train = trainPeriod[target]
             
+            x_test = testPeriod[features]
+            y_test = testPeriod[target]               
+                    
             self.trainTestPeriods[index] = ModelData(periodDescription, x_train, y_train, x_test, y_test)
+            
 
