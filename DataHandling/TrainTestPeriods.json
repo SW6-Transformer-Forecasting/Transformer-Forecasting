@@ -20,6 +20,27 @@
             "trainTo": "2016-07-02: 00:00:00",
             "testFrom": "2016-07-02 00:00:00",
             "testTo": "2016-07-02 06:00:00"
+        },
+        {
+            "periodDescription": "Train: 1 year, 2017 | Test: 1 day, Jan 1st 2018",
+            "trainFrom": "2017-01-01 00:00:00",
+            "trainTo": "2018-01-01: 00:00:00",
+            "testFrom": "2018-01-01 00:00:00",
+            "testTo": "2018-01-02 00:00:00"
+        },
+        {
+            "periodDescription": "Train: 7 days February 2017 | Test: 8 hours after training",
+            "trainFrom": "2017-02-09 16:00:00",
+            "trainTo": "2017-02-16 10:00:00",
+            "testFrom": "2017-02-17 16:00:00",
+            "testTo": "2017-02-18 16:00:00"
+        },
+        {
+            "periodDescription": "Train: 7 days February 2017 | Test: 8 hours after training",
+            "trainFrom": "2017-02-09 00:00:00",
+            "trainTo": "2017-03-09 00:00:00",
+            "testFrom": "2017-03-09 00:00:00",
+            "testTo": "2017-03-09 16:00:00"
         }
     ]
 }

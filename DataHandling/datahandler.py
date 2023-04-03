@@ -5,6 +5,7 @@ import json
 import numpy
 import warnings
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import Normalizer
 
 
 warnings.filterwarnings("ignore")
@@ -39,24 +40,15 @@ class DataHandler:
             trainPeriod['hour'] = trainPeriod['date'].dt.hour
             testPeriod['hour'] = testPeriod['date'].dt.hour
 
-            x_train = numpy.array(trainPeriod['hour'])
-            y_train = numpy.array(trainPeriod['OT'])
+            # Scales the value of the oil temperature
+            trainPeriod['OT'] = trainPeriod['OT'].multiply(0.5)
+            testPeriod['OT'] = testPeriod['OT'].multiply(0.5)
 
-            x_test = numpy.array(testPeriod['hour'])
-            y_test = numpy.array(testPeriod['OT'])
-            
-            # scaler = StandardScaler()
-            
-            # test = scaler.fit(y_train)
-            
-            # y_train_scaled = scaler.fit_transform(y_train.reshape(-1,1))
-            # y_test_scaled = scaler.fit_transform(y_test.reshape(-1,1))
-            
-            # print(y_test.reshape(1,-1))
-            
-            
-            # y_train = preprocessing.normalize(y_train.reshape(-1,1))
-            # y_test = preprocessing.normalize(y_test.reshape(-1,1))
-            
+            x_train = numpy.array(trainPeriod['hour']).reshape(-1,1)
+            y_train = numpy.array(trainPeriod['OT']).reshape(-1,1)
+
+            x_test = numpy.array(testPeriod['hour']).reshape(-1,1)
+            y_test = numpy.array(testPeriod['OT']).reshape(-1,1)            
             
             self.trainTestPeriods[index] = ModelData(periodDescription, x_train, y_train, x_test, y_test)
+

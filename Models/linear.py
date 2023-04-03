@@ -5,9 +5,7 @@ from sklearn import linear_model
 class LinearRegression:
     def __init__(self, periodDescription, x_train, y_train, x_test, y_test):
         linearModel = self.TrainLinearModel(x_train, y_train)
-        predictedOT = linearModel.predict(x_test.reshape(-1,1))
-
-
+        predictedOT = linearModel.predict(x_test)
 
         for x in range(len(y_test)):
             print(f"Test: {y_test[x]} Predicted: {predictedOT[x]} Difference: {abs(y_test[x]-predictedOT[x])}")
@@ -16,7 +14,7 @@ class LinearRegression:
 
     def TrainLinearModel(self, x_train, y_train):
         linearModel = linear_model.LinearRegression()
-        return linearModel.fit(x_train.reshape(-1,1), y_train)
+        return linearModel.fit(x_train, y_train)
     
     def PrintLoss(self, periodDescription, y_test, predictedOT):
         print(periodDescription)
