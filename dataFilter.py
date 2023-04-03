@@ -9,7 +9,7 @@ class DataFilter():
         sortedData = dataRange[['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT']]
         return sortedData
     
-    def filter(self, data):
+    def filterData(self, data):
         data = data.drop_duplicates(subset=['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT'])
         data = data.to_numpy()
         
@@ -37,13 +37,14 @@ class DataFilter():
             prevAxis = row
             appendFlag = True
             
+            
+        arr = np.split(arr, len(arr)/7)
         return arr
     
     def saveFile(self, data):
-        print("Not Implemented yet")
+        df = pd.DataFrame(data, columns=['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL', 'OT'])
+        df.to_csv('cleandata.csv', index=False)
 
-dloader = DataFilter()
-data = dloader.fetch('ETTh1.csv', '2018-01-29', '2018-02-01')
-#print(data)
-filteredData = dloader.filter(data)
-print(filteredData)
+    def execute(self, data):
+        dfilter = DataFilter()
+        dfilter.saveFile(dfilter.filterData(data))

@@ -4,9 +4,14 @@ import numpy as np
 from torch import nn
 import dataFilter as dl
 
-dloader = dl.DataFilter()
-data = dloader.fetch('ETTh1.csv', '2018-01-07', '2018-01-01')
-filteredData = dloader.filter(data)
+newData = False  # HAVE THIS SENT BY THE USER
+
+if (newData == True):
+    dfilter = dl.DataFilter()
+    dataToFilter = dfilter.fetch('ETTh1.csv', '2018-01-29', '2018-02-01')
+    dfilter.execute(dataToFilter)
+
+data = pd.read_csv("cleandata.csv")
 
 X = data[['HUFL', 'HULL', 'MUFL','MULL','LUFL', 'LULL']]
 Y = data['OT']
@@ -43,7 +48,7 @@ model.eval()
 loss_fn = nn.MSELoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
 
-n_epochs = 1
+n_epochs = 100
 batch_size = 1
 
 for epoch in range(n_epochs):
