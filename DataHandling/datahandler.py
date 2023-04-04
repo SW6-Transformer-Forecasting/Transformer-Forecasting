@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
 
-data = pandas.read_csv("DataHandling\ETTh1.csv")
+data = pandas.read_csv("DataHandling\ETTh1-linear-format.csv")
 
 class DataHandler:
     trainTestPeriods = []
@@ -35,12 +35,9 @@ class DataHandler:
                       
             trainPeriod = data[(data['date'] >= self.trainTestPeriods[index][1]) & (data['date'] < self.trainTestPeriods[index][2])]
             testPeriod = data[(data['date'] >= self.trainTestPeriods[index][3]) & (data['date'] <= self.trainTestPeriods[index][4])]
-            
-            columns = ['year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter', 'OilTemp']    
-            trainPeriod[columns] = data.apply(lambda row: pandas.Series({'year': row.datetime.year,"month":row.datetime.month, "day":row.datetime.day, "hour":row.datetime.hour, "weekday":row.datetime.weekday(), "weekofyear":row.datetime.weekofyear, "quarter":row.datetime.quarter, 'OilTemp': row.OT}), axis=1)
-            testPeriod[columns] = data.apply(lambda row: pandas.Series({'year': row.datetime.year,"month":row.datetime.month, "day":row.datetime.day, "hour":row.datetime.hour, "weekday":row.datetime.weekday(), "weekofyear":row.datetime.weekofyear, "quarter":row.datetime.quarter, 'OilTemp': row.OT}), axis=1)
         
-            features = ['year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter']
+            # Possible features: 'year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter'
+            features = ['month', 'day', 'hour']
             target = ['OT']
             
             x_train = trainPeriod[features]

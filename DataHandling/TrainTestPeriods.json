@@ -1,18 +1,11 @@
 {
     "ModelPeriods": [
         {
-            "periodDescription": "Train: 1 month, December 2017 | Test: 1 day, 1st of Jan 2018",
-            "trainFrom": "2017-12-01 00:00:00",
-            "trainTo": "2018-01-01 00:00:00",
-            "testFrom": "2018-01-01 00:00:00",
-            "testTo": "2018-01-02 00:00:00"
-        },
-        {
             "periodDescription": "Train: 1 year, 2017 | Test: 1 day, Jan 1st 2018",
-            "trainFrom": "2017-01-01 00:00:00",
-            "trainTo": "2018-01-01: 00:00:00",
-            "testFrom": "2018-01-01 00:00:00",
-            "testTo": "2018-01-02 00:00:00"
+            "trainFrom": "2017-06-26 00:00:00",
+            "trainTo": "2018-06-26 00:00:00",
+            "testFrom": "2018-06-26 00:00:00",
+            "testTo": "2018-06-26 19:00:00"
         }
     ]
 }
