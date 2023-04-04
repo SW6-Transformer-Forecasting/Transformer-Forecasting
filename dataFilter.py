@@ -4,7 +4,7 @@ import numpy as np
 class DataFilter(): 
     def fetch(self, filename, fromDate, toDate):
         data = pd.read_csv("{0}".format(filename))
-        dataRange = data[(data['date'] <= '{0} 23:00:00'.format(toDate)) & (data['date'] >= '{0} 23:00:00'.format(fromDate))]
+        dataRange = data[(data['date'] <= '{0} 00:00:00'.format(toDate)) & (data['date'] >= '{0} 00:00:00'.format(fromDate))]
         sortedData = dataRange[['date', 'HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT']]
         return sortedData
     
@@ -42,7 +42,7 @@ class DataFilter():
     
     def saveFile(self, data):
         df = pd.DataFrame(data, columns=['date', 'HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL', 'OT'])
-        df.to_csv('cleandata.csv', index=False)
+        df.to_csv('Data\cleandata.csv', index=False)
 
     def execute(self, data):
         dfilter = DataFilter()
