@@ -1,13 +1,7 @@
-from Models.linear import LinearRegression
 from DataHandling.linearmodeldata import ModelData
 import pandas
 import json
-import numpy
 import warnings
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import Normalizer
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
 
 warnings.filterwarnings("ignore")
 
