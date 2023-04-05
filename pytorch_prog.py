@@ -5,14 +5,17 @@ from torch import nn
 import dataFilter as dl
 import normalize_data as normalizer
 
-newData = False  # HAVE THIS SENT BY THE USER
+baghlani = False
 
-if (newData == True):
+new_data = False  # HAVE THIS SENT BY THE USER
+load_model = True
+
+if (new_data == True):
     dfilter = dl.DataFilter()
-    dataToFilter = dfilter.fetch('Data\ETTh1.csv', '2017-06-01', '2018-06-01')
-    dfilter.execute(dataToFilter)
+    data_to_filter = dfilter.fetch('Data\ETTh1.csv' if baghlani == False else 'Data/ETTh1.csv', '2017-06-01', '2018-06-01')
+    dfilter.execute(data_to_filter)
 
-data = pd.read_csv("Data\cleandata.csv")
+data = pd.read_csv("Data\cleandata.csv" if baghlani == False else "Data/cleandata.csv")
 norm = normalizer.NormalizedData()
 
 X = norm.normalize_data(data)
@@ -40,8 +43,7 @@ class NeuralNetwork(nn.Module):
        return logits
 
 model = NeuralNetwork()
-load = True
-if (load == True):
+if (load_model == True):
     model.load_state_dict(torch.load("MSE.pth"))
 model.eval()
 
@@ -73,9 +75,9 @@ def train_model():
     torch.save(model.state_dict(), "MSE.pth")
     print("Saved PyTorch Model State")
 
-def predictFuture():
+def predict_future():
     predictions = model(x[0:24])
     return predictions
 
-train_model()
-print(predictFuture())
+#train_model()
+print(predict_future())
