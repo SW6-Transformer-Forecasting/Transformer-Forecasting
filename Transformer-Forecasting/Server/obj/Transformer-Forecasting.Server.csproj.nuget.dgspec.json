@@ -1,0 +1,215 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Server\\Transformer-Forecasting.Server.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Client\\Transformer-Forecasting.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Client\\Transformer-Forecasting.Client.csproj",
+        "projectName": "Transformer-Forecasting.Client",
+        "projectPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Client\\Transformer-Forecasting.Client.csproj",
+        "packagesPath": "C:\\Users\\Julian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Julian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj": {
+                "projectPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[6.0.14, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.14, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
+              "version": "[6.0.15, 6.0.15]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Server\\Transformer-Forecasting.Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Server\\Transformer-Forecasting.Server.csproj",
+        "projectName": "Transformer-Forecasting.Server",
+        "projectPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Server\\Transformer-Forecasting.Server.csproj",
+        "packagesPath": "C:\\Users\\Julian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Server\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Julian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Client\\Transformer-Forecasting.Client.csproj": {
+                "projectPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Client\\Transformer-Forecasting.Client.csproj"
+              },
+              "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj": {
+                "projectPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Components.WebAssembly.Server": {
+              "target": "Package",
+              "version": "[6.0.14, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj",
+        "projectName": "Transformer-Forecasting.Shared",
+        "projectPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\Transformer-Forecasting.Shared.csproj",
+        "packagesPath": "C:\\Users\\Julian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Julian\\OneDrive - Aalborg Universitet\\6th semester\\Project\\Transformer-Forecasting\\Transformer-Forecasting\\Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Julian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
