@@ -3,20 +3,22 @@ import pandas as pd
 import numpy as np
 from torch import nn
 import dataFilter as dl
+import normalize_data as normalizer
 
 newData = False  # HAVE THIS SENT BY THE USER
 
 if (newData == True):
     dfilter = dl.DataFilter()
-    dataToFilter = dfilter.fetch('ETTh1.csv', '2018-01-29', '2018-02-01')
+    dataToFilter = dfilter.fetch('Data\ETTh1.csv', '2017-06-01', '2018-06-01')
     dfilter.execute(dataToFilter)
 
-data = pd.read_csv("cleandata.csv")
+data = pd.read_csv("Data\cleandata.csv")
+norm = normalizer.NormalizedData()
 
-X = data[['HUFL', 'HULL', 'MUFL','MULL','LUFL', 'LULL']]
+X = norm.normalize_data(data)
 Y = data['OT']
 
-x = torch.tensor(X.to_numpy(), dtype=torch.float32)
+x = torch.tensor(X, dtype=torch.float32)
 y = torch.tensor(Y.to_numpy(), dtype=torch.float32).reshape(-1, 1)
 
 class NeuralNetwork(nn.Module):
@@ -29,7 +31,7 @@ class NeuralNetwork(nn.Module):
            nn.Linear(18, 18),
            nn.ReLU(),
            nn.Linear(18, 1),
-           nn.ReLU(),
+           nn.ReLU()
        )
 
    def forward(self, x):
@@ -43,29 +45,37 @@ if (load == True):
     model.load_state_dict(torch.load("MSE.pth"))
 model.eval()
 
-# L1Loss = MAE
-# MSELoss = MSE (We focus here)
-loss_fn = nn.MSELoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
+def train_model():
+    # L1Loss = MAE
+    # MSELoss = MSE (We focus here)
+    loss_fn = nn.MSELoss()
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
 
-n_epochs = 100
-batch_size = 1
+    n_epochs = 10
+    batch_size = 1
 
-for epoch in range(n_epochs):
-    count = 0
-    loss_amount = 0
-    for i in range(0, len(x), batch_size):
-        Xbatch = x[i:i+batch_size]
-        y_pred = model(Xbatch)
-        ybatch = y[i:i+batch_size]
-        loss = loss_fn(y_pred, ybatch)
-        if (loss <= 3):
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            loss_amount += loss
-            count += 1
-    print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
+    for epoch in range(n_epochs):
+        count = 0
+        loss_amount = 0
+        for i in range(0, len(x), batch_size):
+            Xbatch = x[i:i+batch_size]
+            y_pred = model(Xbatch)
+            ybatch = y[i:i+batch_size]
+            loss = loss_fn(y_pred, ybatch)
+            if (loss <= 3):
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                loss_amount += loss
+                count += 1
+        print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-#torch.save(model.state_dict(), "MSE.pth")
-print("Saved PyTorch Model State")
+    torch.save(model.state_dict(), "MSE.pth")
+    print("Saved PyTorch Model State")
+
+def predictFuture():
+    predictions = model(x[0:24])
+    return predictions
+
+train_model()
+print(predictFuture())
