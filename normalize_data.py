@@ -1,6 +1,5 @@
 from sklearn import preprocessing
 
-
 class NormalizedData():
 
     def normalize_data(self, data):
