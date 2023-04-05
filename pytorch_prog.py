@@ -8,11 +8,10 @@ import normalize_data as normalizer
 baghlani = False
 
 new_data = False  # HAVE THIS SENT BY THE USER
-load_model = True
 
 if (new_data == True):
     dfilter = dl.DataFilter()
-    data_to_filter = dfilter.fetch('Data\ETTh1.csv' if baghlani == False else 'Data/ETTh1.csv', '2017-06-01', '2018-06-01')
+    data_to_filter = dfilter.fetch('Data\ETTh1.csv' if baghlani == False else 'Data/ETTh1.csv', '2017-01-01', '2018-01-01')
     dfilter.execute(data_to_filter)
 
 data = pd.read_csv("Data\cleandata.csv" if baghlani == False else "Data/cleandata.csv")
@@ -43,8 +42,9 @@ class NeuralNetwork(nn.Module):
        return logits
 
 model = NeuralNetwork()
+load_model = True
 if (load_model == True):
-    model.load_state_dict(torch.load("MSE.pth"))
+    model.load_state_dict(torch.load("MSE_Y.pth"))
 model.eval()
 
 def train_model():
@@ -53,7 +53,7 @@ def train_model():
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
 
-    n_epochs = 10
+    n_epochs = 200
     batch_size = 1
 
     for epoch in range(n_epochs):
@@ -72,12 +72,12 @@ def train_model():
                 count += 1
         print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-    torch.save(model.state_dict(), "MSE.pth")
+    torch.save(model.state_dict(), "MSE_Y.pth")
     print("Saved PyTorch Model State")
 
 def predict_future():
-    predictions = model(x[0:24])
+    predictions = model(x[0:8])
     return predictions
 
-#train_model()
-print(predict_future())
+train_model()
+#print(predict_future())
