@@ -8,7 +8,7 @@ class DataFilter():
         sortedData = dataRange[['date', 'HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT']]
         return sortedData
     
-    def filterData(self, data):
+    def filter_data(self, data):
         data = data.drop_duplicates(subset=['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT'])
         data = data.to_numpy()
         
@@ -46,5 +46,5 @@ class DataFilter():
 
     def execute(self, data):
         dfilter = DataFilter()
-        dfilter.saveFile(dfilter.filterData(data))
+        dfilter.saveFile(dfilter.filter_data(data))
         
