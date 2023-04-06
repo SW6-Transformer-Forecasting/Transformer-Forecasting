@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace kristofferhusdata.DataLibrary
+﻿namespace Transformer_Forecasting_Web.SQL
 {
     public interface IDataAccess
     {

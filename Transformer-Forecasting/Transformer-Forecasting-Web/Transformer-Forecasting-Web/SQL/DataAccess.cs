@@ -2,7 +2,7 @@
 using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace kristofferhusdata.DataLibrary
+namespace Transformer_Forecasting_Web.SQL
 {
     public class DataAccess : IDataAccess
     {

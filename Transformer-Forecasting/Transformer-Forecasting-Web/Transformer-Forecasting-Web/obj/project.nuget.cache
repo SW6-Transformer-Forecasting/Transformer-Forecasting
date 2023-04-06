@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Itdhaw+R3U/s6fjGmuGY4Kkwxjl3+jzGVInc0EqfHoqaPsKgB2aiZw/qEZIvz5d3UdZQJlUC0nTXQ5rl7Rf6eA==",
+  "dgSpecHash": "HTfvgdw2HsxaSSZbUjg9lHf9veCw3Bd91HA+HxtTEOOTnI/msF7AdfOgchA9Q9Qa64y6scctiNrJSUtk84v+4Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web.csproj",
+  "projectFilePath": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\TransformerForecastingWeb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\krist\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\krist\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",

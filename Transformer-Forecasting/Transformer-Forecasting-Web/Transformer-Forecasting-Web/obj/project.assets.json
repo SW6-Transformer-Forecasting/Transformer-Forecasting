@@ -1473,9 +1473,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web.csproj",
-      "projectName": "Transformer-Forecasting-Web",
-      "projectPath": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web.csproj",
+      "projectUniqueName": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\TransformerForecastingWeb.csproj",
+      "projectName": "TransformerForecastingWeb",
+      "projectPath": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\TransformerForecastingWeb.csproj",
       "packagesPath": "C:\\Users\\krist\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\krist\\source\\repos\\CAOS calc\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\obj\\",
       "projectStyle": "PackageReference",
