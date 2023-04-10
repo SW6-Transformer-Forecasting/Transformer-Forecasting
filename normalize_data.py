@@ -4,18 +4,18 @@ class NormalizedData():
 
     def normalize_data(self, data, norm):
     
-        if norm is 0:
+        if norm == 0:
             x = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
             n_arr_x = preprocessing.normalize(x, norm='l1')
             return n_arr_x
 
-        elif norm is 1:
-            scaler = preprocessing.StandardScaler
+        elif norm == 1:
             x = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
             y = data [['OT']]
-            scaled_train_data = scaler.fit(x,y)
-            n_arr_x = scaler.transform(scaled_train_data)
+            scaler = preprocessing.StandardScaler()
+            scaler.fit(x)
+            n_arr_x = scaler.transform(x)
             return n_arr_x
         
         else:
-            print('lol your mom error')      
+            print("Normalization error - No normalizer found")

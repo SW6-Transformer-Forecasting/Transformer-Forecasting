@@ -17,7 +17,7 @@ if NEW_DATA is True:
 data = pd.read_csv("Data\cleandata.csv" if BAGHLANI is False else "Data/cleandata.csv")
 norm = normalizer.NormalizedData()
 
-x = norm.normalize_data(data, 1)
+x = norm.normalize_data(data, 1) # HAVE THIS SENT BY THE USER - 1 = L1 - 2 = Z-Score
 Y = data['OT']
 
 x = torch.tensor(x, dtype=torch.float32)
@@ -53,7 +53,7 @@ def train_model():
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.0005)
 
-    n_epochs = 30
+    n_epochs = 10
     batch_size = 1
 
     for epoch in range(n_epochs):
@@ -72,7 +72,7 @@ def train_model():
                 count += 1
         print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-    torch.save(model.state_dict(), "MSE_Y.pth")
+    torch.save(model.state_dict(), "MSE.pth")
     print("Saved PyTorch Model State")
 
 def predict_future():
