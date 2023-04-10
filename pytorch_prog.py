@@ -44,7 +44,7 @@ class NeuralNetwork(nn.Module):
 model = NeuralNetwork()
 LOAD_MODEL = True
 if LOAD_MODEL is True:
-    model.load_state_dict(torch.load("MSE_Y.pth"))
+    model.load_state_dict(torch.load("MSE.pth"))
 model.eval()
 
 def train_model():
@@ -72,7 +72,7 @@ def train_model():
                 count += 1
         print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-    torch.save(model.state_dict(), "MSE.pth")
+    #torch.save(model.state_dict(), "MSE.pth")
     print("Saved PyTorch Model State")
 
 def predict_future():
