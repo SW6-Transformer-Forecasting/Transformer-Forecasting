@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 warnings.filterwarnings("ignore")
 
-data = pandas.read_csv("DataHandling\ETTh1-linear-format.csv")
+data = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\DataHandling\ETTh1-linear-format.csv")
 
 EARLIEST_TRAIN_DATE = "2016-07-01 00:00:00"
 
@@ -16,13 +16,13 @@ class DataHandler:
     linearModelInformation = []
     
     def __init__(self, periodDescription, startPredictDate, endPredictDate):
-        self.GetTrainPeriodData()
         self.GetTrainPeriodData(startPredictDate)
-        self.SetupTrainPredictData(periodDescription, startPredictDate, endPredictDate)
+        self.ConvertPredictValuesToDatetime(startPredictDate, endPredictDate)
+        self.SetupTrainPredictData(periodDescription)
 
     def ConvertPredictValuesToDatetime(self, startPredictDate, endPredictDate):
-        startPredictAsDatetime = self.ConvertPredictValuesToDatetime(startPredictDate)
-        endPredictDateAsDatetime = self.ConvertPredictValuesToDatetime(endPredictDate)
+        startPredictAsDatetime = self.ConvertStringToDatetime(startPredictDate)
+        endPredictDateAsDatetime = self.ConvertStringToDatetime(endPredictDate)
 
         self.predictDataAsDatetime = [startPredictAsDatetime, endPredictDateAsDatetime]
         
@@ -34,7 +34,7 @@ class DataHandler:
     def SubtractOneYearFromDate(self, startPredictDate):
         startPredictDateMinusOneYear = self.ConvertStringToDatetime(startPredictDate) - timedelta(days=365)
 
-        if(startPredictDateMinusOneYear < EARLIEST_TRAIN_DATE):
+        if(str(startPredictDateMinusOneYear) < EARLIEST_TRAIN_DATE):
             startPredictDate = EARLIEST_TRAIN_DATE
         
         return str(startPredictDateMinusOneYear)
@@ -44,10 +44,10 @@ class DataHandler:
             
     def SetupTrainPredictData(self, periodDescription):    
 
-        data['datetime'] = pandas.to_datetime(data['date'])
+        # data['datetime'] = pandas.to_datetime(data['date'])
                     
         trainPeriod = data[(data['date'] >= self.trainDataInformation[0]) & (data['date'] < self.trainDataInformation[1])]
-    
+
         # Possible features: 'year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter'
         features = ['month', 'day', 'hour']
         target = ['OT']
@@ -57,7 +57,13 @@ class DataHandler:
 
         datePredictValues = self.GetDatePredictValues()
         x_predict = pandas.DataFrame(datePredictValues)
-
+        x_predict.columns = ['date']
+        x_predict['datetime'] = pandas.to_datetime(x_predict['date'])
+        x_predict['month'] = x_predict['datetime'].map(lambda x: x.month)
+        x_predict['day'] = x_predict['datetime'].map(lambda x: x.day)
+        x_predict['hour'] = x_predict['datetime'].map(lambda x: x.hour)
+        x_predict = x_predict[features]
+        
         self.linearModelInformation = ModelDataProduction(periodDescription, x_train, y_train, x_predict)
             
     # Loops through the start date to the end date hourly and returns an array of their string representations
@@ -69,7 +75,7 @@ class DataHandler:
         hour_delta = timedelta(hours=1)
 
         while startPredictDate <= endPredictDate:
-            datePredictValues += str(startPredictDate)
+            datePredictValues += [str(startPredictDate)]
             startPredictDate += hour_delta
 
         return datePredictValues

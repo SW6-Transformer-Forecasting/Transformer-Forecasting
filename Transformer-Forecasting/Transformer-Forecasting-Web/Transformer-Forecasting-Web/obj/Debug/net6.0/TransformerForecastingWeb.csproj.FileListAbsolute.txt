@@ -49,3 +49,4 @@ C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Foreca
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\obj\Debug\net6.0\TransformerForecastingWeb.pdb
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\obj\Debug\net6.0\TransformerForecastingWeb.genruntimeconfig.cache
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\obj\Debug\net6.0\ref\TransformerForecastingWeb.dll
+C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\ModelExecution\TFmain\DataHandling\TrainTestPeriods.json

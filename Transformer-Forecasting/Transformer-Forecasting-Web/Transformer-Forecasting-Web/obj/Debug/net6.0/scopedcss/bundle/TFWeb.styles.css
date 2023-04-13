@@ -1,3 +1,4 @@
+/* _content/TFWeb/Shared/MainLayout.razor.rz.scp.css */
 .page[b-rt02mltisg] {
     position: relative;
     display: flex;
@@ -66,5 +67,68 @@ main[b-rt02mltisg] {
     .top-row[b-rt02mltisg], article[b-rt02mltisg] {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
+    }
+}
+/* _content/TFWeb/Shared/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-o3s4zy030a] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-o3s4zy030a] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-o3s4zy030a] {
+    font-size: 1.1rem;
+}
+
+.oi[b-o3s4zy030a] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-o3s4zy030a] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-o3s4zy030a] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-o3s4zy030a] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-o3s4zy030a]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-o3s4zy030a]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item[b-o3s4zy030a]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-o3s4zy030a] {
+        display: none;
+    }
+
+    .collapse[b-o3s4zy030a] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
     }
 }
