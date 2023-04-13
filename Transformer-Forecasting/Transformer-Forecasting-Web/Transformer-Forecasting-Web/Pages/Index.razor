@@ -1,9 +1,51 @@
 ﻿@page "/"
+@using Transformer_Forecasting_Web.Data
+@inject WeatherForecastService ForecastService
+
+
+
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+        @if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{       
+    <MudPaper>
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true>
+                <ToolBarContent >
+                        <MudText Typo="Typo.h6">Periods</MudText>
+                        <MudSpacer></MudSpacer>
+                        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Periode Description</MudTh>
+                    <MudTh>Start date</MudTh>
+                    <MudTh>End date</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.Summary</MudTd>
+                    <MudTd>@context.TemperatureC</MudTd>
+                    <MudTd>@context.TemperatureF</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager></MudTablePager>
+                </PagerContent>
+            </MudTable>
+        </MudContainer>
+    </MudPaper>
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code{
+    private IEnumerable<WeatherForecast> forecasts = new List<WeatherForecast>();
+    private string searchString1 = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}
