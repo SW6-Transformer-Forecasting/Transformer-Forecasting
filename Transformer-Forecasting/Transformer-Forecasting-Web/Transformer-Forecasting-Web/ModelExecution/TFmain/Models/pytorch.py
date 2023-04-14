@@ -12,18 +12,18 @@ sys.path.append(parent)
 import dataFilter as dl
 import normalize_data as normalizer
 
-macOS = False
 
-new_data = True  # HAVE THIS SENT BY THE USER
+macOS = False
+new_data = False  # HAVE THIS SENT BY THE USER
 
 cwd = os.getcwd()
 
 if (new_data == True):
     dfilter = dl.DataFilter()
-    data_to_filter = dfilter.fetch('\ModelExecution\TFmain\Data\ETTh1.csv' if macOS == False else '/ModelExecution/TFmain/Data/ETTh1.csv', '2017-01-01', '2018-01-01')
+    data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv' if macOS == False else cwd + '/ModelExecution/TFmain/Data/ETTh1.csv', '2017-01-01', '2018-01-01')
     dfilter.execute(data_to_filter)
 
-data = pd.read_csv("\ModelExecution\TFmain\Data\cleandata.csv" if macOS == False else "/ModelExecution/TFmain/Data/cleandata.csv")
+data = pd.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv" if macOS == False else cwd + "/ModelExecution/TFmain/Data/cleandata.csv")
 norm = normalizer.NormalizedData()
 
 X = norm.normalize_data(data)
@@ -53,7 +53,7 @@ class NeuralNetwork(nn.Module):
 model = NeuralNetwork()
 load_model = True
 if (load_model == True):
-    model.load_state_dict(torch.load("Models/MSE_Y.pth"))
+    model.load_state_dict(torch.load(cwd + "/ModelExecution/TFmain/Models/MSE_Y.pth"))
 model.eval()
 
 def train_model():
@@ -81,7 +81,7 @@ def train_model():
                 count += 1
         print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-    torch.save(model.state_dict(), "Models/MSE_Y.pth")
+    torch.save(model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE_Y.pth")
     print("Saved PyTorch Model State")
 
 def predict_future():
