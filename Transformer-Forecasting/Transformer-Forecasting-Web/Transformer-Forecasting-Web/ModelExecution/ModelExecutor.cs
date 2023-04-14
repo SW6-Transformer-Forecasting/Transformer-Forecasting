@@ -10,6 +10,8 @@ namespace Transformer_Forecasting_Web.ModelExecution
         {
             ProcessStartInfo start = new ProcessStartInfo();
             var Local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Python"); // Gets Appdata/Local folder path
+            var macPyLib = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            Console.WriteLine(macPyLib);
             start.FileName = Directory.GetFiles(Local, "python.exe", SearchOption.AllDirectories)[0]; // Searches for python.exe within the Local folder, no matter version, and returns first result
 
             // string executionProductionPath = @"./ModelExecution/TFmain/executionproduction.py"; // Python file to run
