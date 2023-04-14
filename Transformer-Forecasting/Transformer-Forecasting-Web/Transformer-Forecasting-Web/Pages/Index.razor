@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Transformer_Forecasting_Web.Data
 @inject WeatherForecastService ForecastService
-
+@inject IDialogService DialogService
 
 
 
@@ -15,19 +15,21 @@
 else
 {       
     <MudPaper>
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true>
-                <ToolBarContent >
-                        <MudText Typo="Typo.h6">Periods</MudText>
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" >
+            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" @onclick="()=>OpenDialog(true)">
+                <ToolBarContent>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="()=>OpenDialog(false)">New Prediction</MudButton>
                         <MudSpacer></MudSpacer>
-                        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        <MudContainer MaxWidth="MaxWidth.Small">
+                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        </MudContainer>
                 </ToolBarContent>
                 <HeaderContent>
                     <MudTh>Periode Description</MudTh>
                     <MudTh>Start date</MudTh>
                     <MudTh>End date</MudTh>
                 </HeaderContent>
-                <RowTemplate>
+                <RowTemplate> 
                     <MudTd>@context.Summary</MudTd>
                     <MudTd>@context.TemperatureC</MudTd>
                     <MudTd>@context.TemperatureF</MudTd>
@@ -43,9 +45,39 @@ else
 @code{
     private IEnumerable<WeatherForecast> forecasts = new List<WeatherForecast>();
     private string searchString1 = "";
+    private WeatherForecast selectedItem = new WeatherForecast();
 
     protected override async Task OnInitializedAsync()
     {
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     }
+
+    private void OpenDialog(bool lol)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        if (lol == true)
+        {
+            DialogService.Show<Dialog>("Simple Dialog", options);
+        }
+        else
+        {
+            DialogService.Show<Dialog>("not Simple Dialog", options);
+        }
+    }
+
+    //private bool FilterFunc1(WeatherForecast forecasts) => FilterFunc(forecasts, searchString1);
+
+    //private bool FilterFunc(WeatherForecast forecasts, string searchString)
+    //{
+    //    if (string.IsNullOrWhiteSpace(searchString))
+    //        return true;
+    //    if (forecasts.Summary.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //        return true;
+    //    if (forecasts.TemperatureC.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //        return true;
+    //    if (forecasts.TemperatureF.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //    return false;
+    //}
 }

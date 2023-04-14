@@ -14,6 +14,7 @@ namespace Transformer_Forecasting_Web.Data
                 Date = startDate.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                ID = index
             }).ToArray());
         }
     }
