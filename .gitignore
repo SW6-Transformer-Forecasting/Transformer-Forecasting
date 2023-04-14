@@ -132,3 +132,9 @@ dmypy.json
 .vs/
 __pycache__/
 __pycache__
+**/bin/
+**/obj/
+bin/
+obj/
+*/bin
+*/obj/
