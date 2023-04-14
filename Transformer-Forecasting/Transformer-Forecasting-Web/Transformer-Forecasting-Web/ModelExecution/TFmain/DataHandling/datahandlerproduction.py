@@ -3,10 +3,12 @@ import pandas
 import json
 import warnings
 from datetime import datetime, timedelta
+import os
 
 warnings.filterwarnings("ignore")
 
-data = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\DataHandling\ETTh1-linear-format.csv")
+cwd = os.getcwd()
+data = pandas.read_csv(cwd + "\ModelExecution\TFmain\DataHandling\ETTh1-linear-format.csv")
 
 EARLIEST_TRAIN_DATE = "2016-07-01 00:00:00"
 

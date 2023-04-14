@@ -9,11 +9,11 @@ namespace Transformer_Forecasting_Web.ModelExecution
         public void RunLinearModel(string periodDescription, string startPredictDate, string endPredictDate)
         {
             ProcessStartInfo start = new ProcessStartInfo();
-            // start.FileName = @"C:\Users\krist\AppData\Local\Programs\Python\Python310\python.exe"; // Python Directory
-            var Local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Python");
-            start.FileName = Directory.GetFiles(Local, "python.exe", SearchOption.AllDirectories)[0];
+            var Local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Python"); // Gets Appdata/Local folder path
+            start.FileName = Directory.GetFiles(Local, "python.exe", SearchOption.AllDirectories)[0]; // Searches for python.exe within the Local folder, no matter version, and returns first result
 
             string executionProductionPath = @"./ModelExecution/TFmain/executionproduction.py"; // Python file to run
+            // string executionProductionPath = @"./ModelExecution/TFmain/Models/pytorch.py"; // Python file to run
             start.Arguments = string.Format("{0} \"{1}\" \"{2}\" \"{3}\"", executionProductionPath, periodDescription, startPredictDate, endPredictDate);
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
