@@ -130,6 +130,7 @@ dmypy.json
 
 # Custom
 .vs/
+*/.vs/
 **/.vs/
 __pycache__/
 __pycache__
