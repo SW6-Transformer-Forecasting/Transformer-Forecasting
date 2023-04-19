@@ -14,14 +14,18 @@ import normalize_data as normalizer
 
 
 macOS = False
-new_data = False  # HAVE THIS SENT BY THE USER
+
+periodDescription = sys.argv[1]
+startPredictDate = sys.argv[2]
+endPredictDate = sys.argv[3]
+new_data = sys.argv[4]
 
 cwd = os.getcwd()
 
-if (new_data == True):
+if (new_data == "True"):
     dfilter = dl.DataFilter()
-    data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv' if macOS == False else cwd + '/ModelExecution/TFmain/Data/ETTh1.csv', '2017-01-01', '2018-01-01')
-    dfilter.execute(data_to_filter)
+    data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv' if macOS == False else cwd + '/ModelExecution/TFmain/Data/ETTh1.csv', startPredictDate, endPredictDate)
+    dfilter.execute(data_to_filter, cwd)
 
 data = pd.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv" if macOS == False else cwd + "/ModelExecution/TFmain/Data/cleandata.csv")
 norm = normalizer.NormalizedData()
@@ -89,4 +93,4 @@ def predict_future():
     return predictions
 
 train_model()
-#print(predict_future())
+print(predict_future())
