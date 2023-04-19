@@ -1,6 +1,13 @@
 import pandas
+from sklearn.preprocessing import MinMaxScaler
+import numpy
+import os
 
-data = pandas.read_csv("DataHandling\ETTh1.csv")
+print(os.listdir('.'))
+
+scaler = MinMaxScaler()
+
+data = pandas.read_csv("ETTh1.csv")
 
 data['datetime'] = pandas.to_datetime(data['date'])
 
@@ -9,5 +16,9 @@ data[columns] = data.apply(lambda row: pandas.Series({'year': row.datetime.year,
 
 df = pandas.DataFrame(data, columns=['year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter', 'OilTemp'])
 
-data.to_csv('DataHandling\ETTh1-linear-format.csv', index=False)
+normalized_Data = scaler.fit_transform(df)
+
+print(normalized_Data)
+
+pandas.DataFrame(normalized_Data, columns=['year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter', 'OilTemp']).to_csv('minmax_normalized_linear.csv')
 
