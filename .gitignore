@@ -127,3 +127,30 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom
+.idea/
+.vs/
+.vs/**
+**/.vs/**
+**/bin/
+**/obj/
+bin/
+obj/
+*/bin
+bin/**
+**/bin/**
+*/obj/
+obj/**
+**/obj/**
+*.csproj.user
+**.csproj.user
+*/**.csproj.user
+*/*.csproj.user
+**/*.csproj.user
+**/**.csproj.user
+.DS_Store
+.dist/
+.dtbcache.v2
+v17/
+**/v17/**
