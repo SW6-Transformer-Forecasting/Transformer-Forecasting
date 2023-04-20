@@ -132,14 +132,17 @@ dmypy.json
 .idea/
 .vs/
 .vs/**
+**/.vs/**
 **/bin/
 **/obj/
 bin/
 obj/
 */bin
 bin/**
+**/bin/**
 */obj/
 obj/**
+**/obj/**
 *.csproj.user
 **.csproj.user
 */**.csproj.user
@@ -148,5 +151,3 @@ obj/**
 **/**.csproj.user
 .DS_Store
 .dist/
-Debug/
-Debug/**

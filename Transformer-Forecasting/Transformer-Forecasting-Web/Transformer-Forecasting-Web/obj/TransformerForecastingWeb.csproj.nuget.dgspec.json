@@ -14,11 +14,7 @@
         "outputPath": "C:\\Users\\Patrick Laursen\\Documents\\GitHub\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-<<<<<<< HEAD
           "C:\\Visual Studio Nuget fallback",
-=======
-          "E:\\Microsoft Visual Studio\\NuGetPackages",
->>>>>>> origin/Blazor-base
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
@@ -77,11 +73,7 @@
               "privateAssets": "all"
             }
           },
-<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
->>>>>>> origin/Blazor-base
         }
       }
     }

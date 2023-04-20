@@ -55,8 +55,6 @@ C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Fo
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.json
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\ModelExecution\TFmain\DataHandling\TrainTestPeriods.json
 =======
-C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.Development.json
-C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.json
 >>>>>>> origin/Blazor-base
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\TransformerForecastingWeb.staticwebassets.runtime.json
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\TransformerForecastingWeb.exe

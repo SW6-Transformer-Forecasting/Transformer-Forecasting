@@ -1,10 +1,6 @@
 {
   "version": 2,
-<<<<<<< HEAD
   "dgSpecHash": "dVefYDk13kLnJNNrkxAeKErT25tMqMySDMLFuTcWy/2sy3pYF3qYRl9LfUL/Hx6DifSU0KphfUOHU1IMNhl5vg==",
-=======
-  "dgSpecHash": "BED/Q7aim17Vo6pAYTFeR1d+VK1+2ovGCMs4BBoQNTw5pihqgMZ854elCWbCvKjm2YUvsRkFqEGH16Ik5Pozkw==",
->>>>>>> origin/Blazor-base
   "success": true,
   "projectFilePath": "C:\\Users\\Patrick Laursen\\Documents\\GitHub\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\TransformerForecastingWeb.csproj",
   "expectedPackageFiles": [
@@ -37,5 +33,12 @@
     "C:\\Users\\Patrick Laursen\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\Patrick Laursen\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Patrick Laursen\\Documents\\GitHub\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

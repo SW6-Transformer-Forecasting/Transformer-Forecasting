@@ -1543,11 +1543,7 @@
   },
   "packageFolders": {
     "C:\\Users\\Patrick Laursen\\.nuget\\packages\\": {},
-<<<<<<< HEAD
     "C:\\Visual Studio Nuget fallback": {},
-=======
-    "E:\\Microsoft Visual Studio\\NuGetPackages": {},
->>>>>>> origin/Blazor-base
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -1560,11 +1556,7 @@
       "outputPath": "C:\\Users\\Patrick Laursen\\Documents\\GitHub\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-<<<<<<< HEAD
         "C:\\Visual Studio Nuget fallback",
-=======
-        "E:\\Microsoft Visual Studio\\NuGetPackages",
->>>>>>> origin/Blazor-base
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
@@ -1623,12 +1615,16 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
->>>>>>> origin/Blazor-base
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Patrick Laursen\\Documents\\GitHub\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
