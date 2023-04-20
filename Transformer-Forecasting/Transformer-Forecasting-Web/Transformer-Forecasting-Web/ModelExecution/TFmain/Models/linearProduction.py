@@ -1,13 +1,11 @@
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error 
 from sklearn import linear_model
 
 class LinearRegression:
+    predictedOT = []
+    
     def __init__(self, periodDescription, x_train, y_train, x_predict):
         linearModel = self.TrainLinearModel(x_train, y_train)
-        predictedOT = linearModel.predict(x_predict)
-
-        print(f"{periodDescription}: \n {predictedOT}")
+        self.predictedOT = linearModel.predict(x_predict)
 
 
     def TrainLinearModel(self, x_train, y_train):
