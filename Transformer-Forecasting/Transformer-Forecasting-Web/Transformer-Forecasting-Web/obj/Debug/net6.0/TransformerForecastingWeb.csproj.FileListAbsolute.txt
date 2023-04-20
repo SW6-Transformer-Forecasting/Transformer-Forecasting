@@ -49,10 +49,15 @@ C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Foreca
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\obj\Debug\net6.0\TransformerForecastingWeb.pdb
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\obj\Debug\net6.0\TransformerForecastingWeb.genruntimeconfig.cache
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\obj\Debug\net6.0\ref\TransformerForecastingWeb.dll
+<<<<<<< HEAD
 C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\ModelExecution\TFmain\DataHandling\TrainTestPeriods.json
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.json
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\ModelExecution\TFmain\DataHandling\TrainTestPeriods.json
+=======
+C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\appsettings.json
+>>>>>>> origin/Blazor-base
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\TransformerForecastingWeb.staticwebassets.runtime.json
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\TransformerForecastingWeb.exe
 C:\Users\Patrick Laursen\Documents\GitHub\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\bin\Debug\net6.0\TransformerForecastingWeb.deps.json

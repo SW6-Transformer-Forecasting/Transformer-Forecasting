@@ -1,6 +1,10 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "dVefYDk13kLnJNNrkxAeKErT25tMqMySDMLFuTcWy/2sy3pYF3qYRl9LfUL/Hx6DifSU0KphfUOHU1IMNhl5vg==",
+=======
+  "dgSpecHash": "BED/Q7aim17Vo6pAYTFeR1d+VK1+2ovGCMs4BBoQNTw5pihqgMZ854elCWbCvKjm2YUvsRkFqEGH16Ik5Pozkw==",
+>>>>>>> origin/Blazor-base
   "success": true,
   "projectFilePath": "C:\\Users\\Patrick Laursen\\Documents\\GitHub\\Transformer-Forecasting\\Transformer-Forecasting\\Transformer-Forecasting-Web\\Transformer-Forecasting-Web\\TransformerForecastingWeb.csproj",
   "expectedPackageFiles": [
