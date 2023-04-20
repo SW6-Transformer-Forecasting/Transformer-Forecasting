@@ -152,4 +152,5 @@ obj/**
 .DS_Store
 .dist/
 .dtbcache.v2
-*.suo
+v17/
+**/v17/**
