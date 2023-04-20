@@ -129,6 +129,28 @@ dmypy.json
 .pyre/
 
 # Custom
+.idea/
 .vs/
-__pycache__/
-__pycache__
+.vs/**
+**/.vs/**
+**/bin/
+**/obj/
+bin/
+obj/
+*/bin
+bin/**
+**/bin/**
+*/obj/
+obj/**
+**/obj/**
+*.csproj.user
+**.csproj.user
+*/**.csproj.user
+*/*.csproj.user
+**/*.csproj.user
+**/**.csproj.user
+.DS_Store
+.dist/
+.dtbcache.v2
+v17/
+**/v17/**
