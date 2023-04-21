@@ -1,7 +1,15 @@
-﻿
+﻿@using Transformer_Forecasting_Web.Data
+@inject WeatherForecastService ForecastService
+
+
 <MudDialog>
     <DialogContent>
-        Dialog Content
+        <MudStack Row="true" Justify="_justify">
+            <MudText>@prediction.Model</MudText>
+            <MudText>@prediction.PeriodDescription</MudText>
+            <MudText>@prediction.StartDate</MudText>
+            <MudText>@prediction.EndDate</MudText>
+        </MudStack>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -12,7 +20,12 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    [Parameter] public Prediction prediction { get; set; }
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
+
+    Justify _justify = Justify.SpaceEvenly;
+
+
 }

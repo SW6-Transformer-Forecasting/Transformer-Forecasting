@@ -16,23 +16,25 @@ else
 {       
     <MudPaper>
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" >
-            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" @onclick="()=>OpenDialog(true)">
+            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" @onclick="@(() => OpenDialog())">
                 <ToolBarContent>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="()=>OpenDialog(false)">New Prediction</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
                         <MudSpacer></MudSpacer>
                         <MudContainer MaxWidth="MaxWidth.Small">
                             <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                         </MudContainer>
                 </ToolBarContent>
                 <HeaderContent>
+                    <MudTd>Model</MudTd>
                     <MudTh>Periode Description</MudTh>
                     <MudTh>Start date</MudTh>
                     <MudTh>End date</MudTh>
                 </HeaderContent>
                 <RowTemplate> 
-                    <MudTd>@context.Summary</MudTd>
-                    <MudTd>@context.TemperatureC</MudTd>
-                    <MudTd>@context.TemperatureF</MudTd>
+                    <MudTd>@context.Model</MudTd>
+                    <MudTd>@context.PeriodDescription</MudTd>
+                    <MudTd>@context.StartDate</MudTd>
+                    <MudTd>@context.EndDate</MudTd>
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager></MudTablePager>
@@ -43,28 +45,57 @@ else
 }
 
 @code{
-    private IEnumerable<WeatherForecast> forecasts = new List<WeatherForecast>();
+    private IEnumerable<Prediction> forecasts = new List<Prediction>();
     private string searchString1 = "";
-    private WeatherForecast selectedItem = new WeatherForecast();
+    private Prediction selectedItem = new Prediction();
+    private Prediction foo0 = new Prediction(1, "linear", "string", DateTime.Now, DateTime.Now.AddHours(1));
+    private Prediction foo1 = new Prediction(2, "Nlinear", "string", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1).AddHours(1));
+    private Prediction foo2 = new Prediction(3, "linear", "string", DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(2));
+    private List<Prediction> lol = new List<Prediction>();
+
+
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        lol.Add(foo0);
+        lol.Add(foo1);
+        lol.Add(foo2);
+        forecasts = lol;
     }
 
-    private void OpenDialog(bool lol)
+    void OpenDialog()
     {
-        var parameters = new DialogParameters();
-        parameters.Add
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        if (lol == true)
+        var parameters = new DialogParameters{["prediction"]=selectedItem};
+        //var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        var options = new DialogOptions
         {
-            DialogService.Show<Dialog>("Simple Dialog", options);
-        }
-        else
+            FullWidth = true,
+            MaxWidth = MaxWidth.Large,
+            CloseButton = true,
+            DisableBackdropClick = true,
+            NoHeader = false,
+            Position = DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+
+        DialogService.Show<Dialog>("Dialog Content", parameters, options);
+
+    }
+    void CreatePredictionDialog()
+    {
+          var options = new DialogOptions
         {
-            DialogService.Show<Dialog>("not Simple Dialog", options);
-        }
+            FullWidth = true,
+            MaxWidth = MaxWidth.Large,
+            CloseButton = true,
+            DisableBackdropClick = true,
+            NoHeader = false,
+            Position = DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+        DialogService.Show<CreatePredictionDialog>("Create Prediction", options);
     }
 
     //private bool FilterFunc1(WeatherForecast forecasts) => FilterFunc(forecasts, searchString1);

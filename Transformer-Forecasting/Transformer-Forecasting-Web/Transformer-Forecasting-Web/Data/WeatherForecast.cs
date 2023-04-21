@@ -11,5 +11,7 @@ namespace Transformer_Forecasting_Web.Data
         public string? Summary { get; set; }
 
         public int ID { get; set; }
+
+        public string Model { get; set; }
     }
 }
