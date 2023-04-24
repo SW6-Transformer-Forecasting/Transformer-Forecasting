@@ -1,11 +1,15 @@
 from DataHandling.linearmodeldata import ModelData
+from DataHandling.datatransformer import TransformData
 import pandas
 import json
 import warnings
 
 warnings.filterwarnings("ignore")
 
-data = pandas.read_csv("DataHandling\ETTh1-linear-format.csv")
+data = pandas.read_csv(".\Data\ETTh1.csv")
+
+transformData = TransformData(data, True)
+data = pandas.read_csv("minmax_normalized_linear.csv")
 
 class DataHandler:
     trainTestPeriods = []
@@ -25,14 +29,16 @@ class DataHandler:
         for index in range(len(self.trainTestPeriods)):
             periodDescription = self.trainTestPeriods[index][0]
                       
-            data['datetime'] = pandas.to_datetime(data['date'])
+            # data['datetime'] = pandas.to_datetime(data['date'])
                       
             trainPeriod = data[(data['date'] >= self.trainTestPeriods[index][1]) & (data['date'] < self.trainTestPeriods[index][2])]
             testPeriod = data[(data['date'] >= self.trainTestPeriods[index][3]) & (data['date'] <= self.trainTestPeriods[index][4])]
         
             # Possible features: 'year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter'
+            # features = ['month', 'hour', 'weekday', 'weekofyear', 'quarter']
+            # features = ['month', 'hour', 'weekday', 'weekofyear', 'quarter']
             features = ['month', 'day', 'hour']
-            target = ['OT']
+            target = ['OilTemp']
             
             x_train = trainPeriod[features]
             y_train = trainPeriod[target]
