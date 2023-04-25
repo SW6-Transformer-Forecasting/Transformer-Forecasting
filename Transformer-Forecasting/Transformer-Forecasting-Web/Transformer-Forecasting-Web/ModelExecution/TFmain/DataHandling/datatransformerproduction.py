@@ -34,6 +34,7 @@ class TransformData:
         print(scaled_data)
         reversed_data = self.scaler.inverse_transform(scaled_data)
         print(reversed_data)
+        reversed_data = reversed_data[:, 3]
         return reversed_data
     
     # non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (5,8)
