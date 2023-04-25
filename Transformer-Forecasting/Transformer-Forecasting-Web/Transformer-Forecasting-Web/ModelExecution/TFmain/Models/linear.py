@@ -9,10 +9,10 @@ class LinearRegression:
         linearModel = self.TrainLinearModel(x_train, y_train)
         predictedOT = linearModel.predict(x_test)
 
-        y_test = pandas.DataFrame(y_test, columns=["OT"])
-        predictedOT = pandas.DataFrame(predictedOT, columns=["OT"])
-        y_test = transformData.InverseNormalization(y_test)
-        predictedOT = transformData.InverseNormalization(predictedOT)
+        # y_test = pandas.DataFrame(y_test, columns=["OT"])
+        # predictedOT = pandas.DataFrame(predictedOT, columns=["OT"])
+        # y_test = transformData.InverseNormalization(y_test)
+        # predictedOT = transformData.InverseNormalization(predictedOT)
 
         self.PrintLoss(periodDescription, y_test, predictedOT)
 
@@ -22,10 +22,6 @@ class LinearRegression:
     
     def PrintLoss(self, periodDescription, y_test, predictedOT):
         print(periodDescription)  
-        
-        print(y_test)
-        print("-------------------------------------")
-        print(predictedOT)
 
         print('MSE: ', mean_squared_error(y_test, predictedOT))
         print('MAE: ', mean_absolute_error(y_test, predictedOT))

@@ -13,15 +13,16 @@ class TransformData:
 
         
     # Fits the scaler to the data and transforms it 
-    def NormalizeTrainingData(self, dataframe):
+    def FitAndTransformData(self, dataframe):
         # 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter', 'OT'
         columnsToNormalize = ['month', 'day', 'hour', 'OT']
-        # print(dataframe)
         dataframe[columnsToNormalize] = self.scaler.fit_transform(dataframe[columnsToNormalize])
-        
-        print(dataframe)
         return dataframe
           
+    def TransformData(self, dataframe):
+        columnsToNormalize = ['month', 'day', 'hour', 'OT']
+        dataframe[columnsToNormalize] = self.scaler.transform(dataframe[columnsToNormalize])
+        return dataframe
         
     # Transforms the input based on the fit value of the scaler
     def NormalizeInput(self, dataframe):
@@ -29,17 +30,20 @@ class TransformData:
     
     def InverseNormalization(self, scaled_data):
         print("Inversing data normalization...")
+
     
         scaled_data = self.GiveDataframeEmptyValues(scaled_data)
+        
         print(scaled_data)
         reversed_data = self.scaler.inverse_transform(scaled_data)
-        print(reversed_data)
+        
         reversed_data = reversed_data[:, 3]
+        
         return reversed_data
     
     # non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (5,8)
     def GiveDataframeEmptyValues(self, dataframe):
-        return dataframe.apply(lambda row: pandas.Series({"month": 0.454545, "day": 0.833333, 
+        return dataframe.apply(lambda row: pandas.Series({"month": 0.0, "day": 0.833333, 
                                                                     "hour": 0.608696, 
                                                                     'OT': row.OT}), axis=1)
     
