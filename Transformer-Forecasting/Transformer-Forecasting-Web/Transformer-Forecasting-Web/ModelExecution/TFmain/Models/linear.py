@@ -1,13 +1,18 @@
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error 
 from sklearn import linear_model
-from DataHandling.datatransformer import TransformData
+import pandas
 
 class LinearRegression:
-    def __init__(self, periodDescription, x_train, y_train, x_test, y_test):
+    def __init__(self, periodDescription, x_train, y_train, x_test, y_test, transformData):
         
         linearModel = self.TrainLinearModel(x_train, y_train)
         predictedOT = linearModel.predict(x_test)
+
+        y_test = pandas.DataFrame(y_test, columns=["OT"])
+        predictedOT = pandas.DataFrame(predictedOT, columns=["OT"])
+        y_test = transformData.InverseNormalization(y_test)
+        predictedOT = transformData.InverseNormalization(predictedOT)
 
         self.PrintLoss(periodDescription, y_test, predictedOT)
 
@@ -18,6 +23,10 @@ class LinearRegression:
     def PrintLoss(self, periodDescription, y_test, predictedOT):
         print(periodDescription)  
         
+        print(y_test)
+        print("-------------------------------------")
+        print(predictedOT)
+
         print('MSE: ', mean_squared_error(y_test, predictedOT))
         print('MAE: ', mean_absolute_error(y_test, predictedOT))
         print('\n')
