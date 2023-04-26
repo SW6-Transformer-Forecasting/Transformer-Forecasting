@@ -41,9 +41,11 @@ class DataHandler:
         x_values = self.normalizedData[['month', 'day', 'hour']]
         y_values = self.normalizedData['OT']
     
-        x_train, x_test, y_train, y_test = train_test_split(x_values, y_values, test_size=0.3)               
+        x_train, x_test, y_train, y_test = train_test_split(x_values, y_values, test_size=0.3, shuffle=False)               
 
         self.dataSplit = ["cringe", x_train, y_train, x_test, y_test]
+        
+        y_test = y_test.to_numpy()
         
         # self.Linear(x_train, y_train, x_test, y_test)
             

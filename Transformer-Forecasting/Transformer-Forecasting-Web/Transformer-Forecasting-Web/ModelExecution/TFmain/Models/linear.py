@@ -9,8 +9,12 @@ class LinearRegression:
         linearModel = self.TrainLinearModel(x_train, y_train)
         predictedOT = linearModel.predict(x_test)
 
-        # y_test = pandas.DataFrame(y_test, columns=["OT"])
-        # predictedOT = pandas.DataFrame(predictedOT, columns=["OT"])
+        print(type(y_test))
+        print(type(predictedOT))
+
+        y_test = pandas.DataFrame(y_test, columns=["OT"])
+        predictedOT = pandas.DataFrame(predictedOT, columns=["OT"])
+
         # y_test = transformData.InverseNormalization(y_test)
         # predictedOT = transformData.InverseNormalization(predictedOT)
 
