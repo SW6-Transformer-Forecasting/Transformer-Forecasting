@@ -54,7 +54,7 @@ inversedYtest = numpy.round(OTScaler.inverse_transform(y_test), 2)
 
 
 index = 0
-for thing in y_test:
+for x in range(y_test):
     print(f"{y_test[index][0]} and {predictions[index][0]}")
     index +=1
 
