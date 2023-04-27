@@ -1,0 +1,80 @@
+﻿@using Transformer_Forecasting_Web.Data;
+
+<MudDialog>
+    <DialogContent>
+        Dialog Content
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>        
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+
+    <DialogContent>
+    <MudStack>
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Class="">Must fill all boxes</MudAlert>
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.body1">Model</MudText>
+            <MudSelect T="string" Label="Pick a model" @bind-Value="model">
+                <MudSelectItem T="string" Value="@("Linear")" />
+                <MudSelectItem T="string" Value="@("NLinear")" />
+                <MudSelectItem T="string" Value="@("Neural Network")" />
+            </MudSelect>
+        </MudPaper>
+
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.body1">Period Description</MudText>
+            <MudTextField @bind-Value="periodDescription" Label="Describe the period" Variant="Variant.Text" />
+        </MudPaper>
+
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.body1">Predict Ahead</MudText>
+            <MudStack Spacing="4">
+                <MudText Typo="Typo.body2">From:
+                    <MudDatePicker Label="From date" @bind-Date="FromDate" />
+                    <MudTimePicker Label="From time" @bind-Time="FromTime" />
+                </MudText>
+
+                <MudText Typo="Typo.body2">To:
+                    <MudDatePicker Label="To date" @bind-Date="ToDate" />
+                    <MudTimePicker Label="To time" @bind-Time="ToTime" />
+                </MudText>
+            </MudStack>
+        </MudPaper>
+    </MudStack>
+    </DialogContent>
+
+</MudDialog>
+
+
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    private bool visibility = false;
+    private string model = "";
+    private string periodDescription = "";
+    private DateTime? FromDate;
+    private TimeSpan? FromTime;
+    private DateTime? ToDate;
+    private TimeSpan? ToTime;
+    int id = 1; //Should be changed to fit with database
+
+    Prediction prediction = new Prediction();
+
+
+    void Submit()
+    {
+        prediction = new Prediction(id, model, periodDescription, FromDate + FromTime, ToDate + ToTime);
+        id++;
+        if(prediction.Model != "" && prediction.PeriodDescription != "" && prediction.StartDate != null && prediction.EndDate != null)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            
+        }
+    }
+    void Cancel() => MudDialog.Cancel();
+}

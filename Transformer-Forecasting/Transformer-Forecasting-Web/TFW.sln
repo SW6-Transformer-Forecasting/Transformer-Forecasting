@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransformerForecastingWeb", "Transformer-Forecasting-Web\TransformerForecastingWeb.csproj", "{A620DA04-670B-4AAC-9613-7FE63954112F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFW", "Transformer-Forecasting-Web\TFW.csproj", "{A620DA04-670B-4AAC-9613-7FE63954112F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
