@@ -2,6 +2,8 @@ import torch
 import pandas as pd
 import numpy as np
 from torch import nn
+import DataHandling.dataFilter as dl
+import normalize_data as normalizer
 
 import os
 import sys
@@ -9,8 +11,7 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 
-import dataFilter as dl
-import normalize_data as normalizer
+
 
 
 macOS = False
@@ -57,7 +58,7 @@ class NeuralNetwork(nn.Module):
 model = NeuralNetwork()
 load_model = True
 if (load_model == True):
-    model.load_state_dict(torch.load(cwd + "/ModelExecution/TFmain/Models/MSE_Y.pth"))
+    model.load_state_dict(torch.load(cwd + "/ModelExecution/TFmain/Models/MSE.pth"))
 model.eval()
 
 def train_model():
@@ -85,7 +86,7 @@ def train_model():
                 count += 1
         print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-    torch.save(model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE_Y.pth")
+    torch.save(model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth")
     print("Saved PyTorch Model State")
 
 def predict_future():
