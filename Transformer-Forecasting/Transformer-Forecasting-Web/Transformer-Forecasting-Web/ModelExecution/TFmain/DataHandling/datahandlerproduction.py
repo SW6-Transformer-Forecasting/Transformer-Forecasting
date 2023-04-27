@@ -5,9 +5,13 @@ import numpy
 import json
 import warnings
 from datetime import datetime, timedelta
+import os
 
 warnings.filterwarnings("ignore")
 
+cwd = os.getcwd()
+
+# data = pandas.read_csv(cwd + "\ModelExecution\TFmain\DataHandling\ETTh1-linear-format.csv")
 data = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\ETTh1.csv")
 data.drop("HUFL", inplace=True, axis=1)
 data.drop("HULL", inplace=True, axis=1)

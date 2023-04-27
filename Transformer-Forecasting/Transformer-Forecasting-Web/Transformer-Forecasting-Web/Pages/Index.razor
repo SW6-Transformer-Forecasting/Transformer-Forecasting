@@ -1,9 +1,114 @@
 ﻿@page "/"
+@using Transformer_Forecasting_Web.Data
+@inject WeatherForecastService ForecastService
+@inject IDialogService DialogService
+
+
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+        @if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{       
+    <MudPaper>
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" >
+            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" @onclick="@(() => OpenDialog())">
+                <ToolBarContent>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
+                        <MudSpacer></MudSpacer>
+                        <MudContainer MaxWidth="MaxWidth.Small">
+                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        </MudContainer>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTd>Model</MudTd>
+                    <MudTh>Periode Description</MudTh>
+                    <MudTh>Start date</MudTh>
+                    <MudTh>End date</MudTh>
+                </HeaderContent>
+                <RowTemplate> 
+                    <MudTd>@context.Model</MudTd>
+                    <MudTd>@context.PeriodDescription</MudTd>
+                    <MudTd>@context.StartDate</MudTd>
+                    <MudTd>@context.EndDate</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager></MudTablePager>
+                </PagerContent>
+            </MudTable>
+        </MudContainer>
+    </MudPaper>
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code{
+    private IEnumerable<Prediction> forecasts = new List<Prediction>();
+    private string searchString1 = "";
+    private Prediction selectedItem = new Prediction();
+    private Prediction foo0 = new Prediction(1, "linear", "string", DateTime.Now, DateTime.Now.AddHours(1));
+    private Prediction foo1 = new Prediction(2, "Nlinear", "string", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1).AddHours(1));
+    private Prediction foo2 = new Prediction(3, "linear", "string", DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(2));
+    private List<Prediction> lol = new List<Prediction>();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        lol.Add(foo0);
+        lol.Add(foo1);
+        lol.Add(foo2);
+        forecasts = lol;
+    }
+
+    void OpenDialog()
+    {
+        var parameters = new DialogParameters{["prediction"]=selectedItem};
+        //var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        var options = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Large,
+            CloseButton = true,
+            DisableBackdropClick = true,
+            NoHeader = false,
+            Position = DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+
+        DialogService.Show<Dialog>("Dialog Content", parameters, options);
+
+    }
+    void CreatePredictionDialog()
+    {
+          var options = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Large,
+            CloseButton = true,
+            DisableBackdropClick = true,
+            NoHeader = false,
+            Position = DialogPosition.Center,
+            CloseOnEscapeKey = true
+        };
+        DialogService.Show<CreatePredictionDialog>("Create Prediction", options);
+    }
+
+    //private bool FilterFunc1(WeatherForecast forecasts) => FilterFunc(forecasts, searchString1);
+
+    //private bool FilterFunc(WeatherForecast forecasts, string searchString)
+    //{
+    //    if (string.IsNullOrWhiteSpace(searchString))
+    //        return true;
+    //    if (forecasts.Summary.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //        return true;
+    //    if (forecasts.TemperatureC.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //        return true;
+    //    if (forecasts.TemperatureF.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    //    return false;
+    //}
+}
