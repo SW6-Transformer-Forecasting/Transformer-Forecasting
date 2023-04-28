@@ -27,7 +27,7 @@ linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, mod
 
 predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
 
-predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
+predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe, 4)
 
 print(predictedOTInversed)
 

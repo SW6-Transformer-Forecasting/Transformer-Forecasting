@@ -2,19 +2,14 @@ import torch
 import pandas as pd
 import numpy as np
 from torch import nn
-import DataHandling.dataFilter as dl
-import normalize_data as normalizer
+import DataHandling.dataFilter as dl # add cwd to this bs
+from DataHandling.datatransformerproduction import TransformData as dtfp # add cwd to this bs
 
 import os
 import sys
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
-
-
-
-
-macOS = False
 
 periodDescription = sys.argv[1]
 startPredictDate = sys.argv[2]
@@ -25,13 +20,13 @@ cwd = os.getcwd()
 
 if (new_data == "True"):
     dfilter = dl.DataFilter()
-    data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv' if macOS == False else cwd + '/ModelExecution/TFmain/Data/ETTh1.csv', startPredictDate, endPredictDate)
+    data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv', startPredictDate, endPredictDate)
     dfilter.execute(data_to_filter, cwd)
 
-data = pd.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv" if macOS == False else cwd + "/ModelExecution/TFmain/Data/cleandata.csv")
-norm = normalizer.NormalizedData()
+data = pd.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
+norm = dtfp.TransformData()
 
-X = norm.normalize_data(data)
+X = norm.FitAndTransformData(data)
 Y = data['OT']
 
 x = torch.tensor(X, dtype=torch.float32)
@@ -56,7 +51,7 @@ class NeuralNetwork(nn.Module):
        return logits
 
 model = NeuralNetwork()
-load_model = True
+load_model = False
 if (load_model == True):
     model.load_state_dict(torch.load(cwd + "/ModelExecution/TFmain/Models/MSE.pth"))
 model.eval()
@@ -92,6 +87,10 @@ def train_model():
 def predict_future():
     predictions = model(x[0:8])
     return predictions
+    predicted_OTs = []
+    for item in range(predictions):
+        predicted_OTs.insert(norm.InverseOT(item, 6, True))
+    
 
 train_model()
 print(predict_future())

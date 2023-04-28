@@ -21,18 +21,14 @@ class TransformData:
         dataframe = self.scaler.transform(dataframe)
         return dataframe
         
-    # Transforms the input based on the fit value of the scaler
-    def NormalizeInput(self, dataframe):
-        return self.scaler.transform(dataframe)
-    
-    def InverseOT(self, scaled_data):
+    def InverseOT(self, scaled_data, ot_index):
         print("Inversing data normalization...")
 
         scaled_data = self.GiveDataframeEmptyValues(scaled_data)
         
         reversed_data = self.scaler.inverse_transform(scaled_data)
         
-        reversed_OT = reversed_data[:, 4]
+        reversed_OT = reversed_data[:, ot_index]
         
         return reversed_OT
     
@@ -52,7 +48,4 @@ class TransformData:
                                                           "hour": 0.608696, 
                                                           "weekday": 0.5,
                                                           "OT": row.OT}), axis=1)
-    
-        
-        
     
