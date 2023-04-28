@@ -6,7 +6,7 @@ namespace Transformer_Forecasting_Web.ModelExecution
 {
     public class ModelExecutor
     {
-        public void RunLinearModel(string periodDescription, string startPredictDate, string endPredictDate, int model = 1, bool newData = false)
+        public void RunLinearModel(string periodDescription, string startPredictDate, string endPredictDate, int model = 2, bool newData = false)
         {
             ProcessStartInfo start = new ProcessStartInfo();
 

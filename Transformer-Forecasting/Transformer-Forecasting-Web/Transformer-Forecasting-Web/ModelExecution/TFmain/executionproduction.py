@@ -9,6 +9,7 @@ import math
 periodDescription = sys.argv[1]
 startPredictDate = sys.argv[2]
 endPredictDate = sys.argv[3]
+new_data = sys.argv[4]
 
 # periodDescription = "Example period description here :D"
 # startPredictDate = "2018-06-15 08:00:00"
@@ -27,7 +28,7 @@ linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, mod
 
 predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
 
-predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe, 4)
+predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe, 4, False)
 
 print(predictedOTInversed)
 
