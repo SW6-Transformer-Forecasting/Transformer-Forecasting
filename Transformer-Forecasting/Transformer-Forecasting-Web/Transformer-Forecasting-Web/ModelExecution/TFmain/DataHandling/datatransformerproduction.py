@@ -21,14 +21,14 @@ class TransformData:
         dataframe = self.scaler.transform(dataframe)
         return dataframe
         
-    def InverseOT(self, scaled_data, ot_index):
+    def InverseOT(self, scaled_data, OT_index, pytorch):
         print("Inversing data normalization...")
 
         scaled_data = self.GiveDataframeEmptyValues(scaled_data)
         
         reversed_data = self.scaler.inverse_transform(scaled_data)
         
-        reversed_OT = reversed_data[:, ot_index]
+        reversed_OT = reversed_data[:, OT_index]
         
         return reversed_OT
     

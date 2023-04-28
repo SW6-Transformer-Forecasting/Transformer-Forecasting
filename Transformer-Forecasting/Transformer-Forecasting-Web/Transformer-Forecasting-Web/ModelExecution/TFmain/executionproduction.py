@@ -1,22 +1,34 @@
 from DataHandling.datahandlerproduction import DataHandler
 from Models.linearProduction import LinearRegression
+from Models.pytorch import PyTorch
 from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
+from DataHandling.dataFilter import DataFilter
 import pandas
 import sys
 import math
+import os
 
 periodDescription = sys.argv[1]
 startPredictDate = sys.argv[2]
 endPredictDate = sys.argv[3]
 new_data = sys.argv[4]
+model_choice = sys.argv[5]
 
-# periodDescription = "Example period description here :D"
-# startPredictDate = "2018-06-15 08:00:00"
-# endPredictDate = "2018-06-15 23:00:00"
+cwd = os.getcwd()
+
+if (new_data == "True"):
+        dfilter = DataFilter()
+        data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv', startPredictDate, endPredictDate) # Change this to fit correctly (start predict date should be the end of the read range, and start should be 1 year back)
+        dfilter.execute(data_to_filter, cwd)
+
+data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 
 # This instance stores the MinMaxScaler for later use when the normalization has to be inversed
 dataTransformer = TransformData()
+
+# Pytorch
+# pytorch = PyTorch(cwd, data, dataTransformer, False)
 
 # Picks the training/test periods specified in TrainTestPeriods.json and prepares data for Linear model training
 dataHandler = DataHandler(periodDescription, startPredictDate, endPredictDate, dataTransformer)
@@ -32,6 +44,7 @@ predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe, 4, False)
 
 print(predictedOTInversed)
 
+# SQL Starts here
 max_identifiers = QueryExecutor.SelectQuery("SELECT MAX(group_id), MAX(row_id) FROM group_predictions")
 print(max_identifiers)
 max_group_id = max_identifiers[0][0]
