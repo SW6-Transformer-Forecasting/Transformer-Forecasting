@@ -33,11 +33,16 @@ class PyTorch:
 
     def setup_data(self, data, dataTransformer):
         load_data = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
-        X = dataTransformer.FitAndTransformData(load_data)
-        Y = load_data['OT']
+        OT_data = data[['OT']]
+        
+        transformed_load_data = dataTransformer.FitAndTransformData(load_data)
+        transformed_OT_data = dataTransformer.FitAndTransformData(OT_data)
+        
+        X = transformed_load_data
+        Y = transformed_OT_data
 
         self.x = torch.tensor(X, dtype=torch.float32)
-        self.y = torch.tensor(Y.to_numpy(), dtype=torch.float32).reshape(-1, 1)
+        self.y = torch.tensor(Y, dtype=torch.float32).reshape(-1, 1)
         
     def load_model(self, model, cwd, load_model = False):
         if (load_model == True):
@@ -49,7 +54,7 @@ class PyTorch:
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 10
+        n_epochs = 5
         batch_size = 1
 
         for epoch in range(n_epochs):
@@ -68,11 +73,11 @@ class PyTorch:
                     count += 1
             print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-        torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth")
+        #torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth")
         print("Saved PyTorch Model State")
 
     def predict_future(self, dataTransformer):
-        predictions = self.model(self.x[0:8])
+        predictions = self.model(self.x[0:24]).detach().cpu().numpy()
         return predictions
         predicted_OTs = []
         for item in range(predictions):

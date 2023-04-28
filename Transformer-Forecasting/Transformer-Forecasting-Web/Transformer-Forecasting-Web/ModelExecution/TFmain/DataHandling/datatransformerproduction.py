@@ -49,3 +49,5 @@ class TransformData:
                                                           "weekday": 0.5,
                                                           "OT": row.OT}), axis=1)
     
+    def getScaler(self):
+        return self.scaler
