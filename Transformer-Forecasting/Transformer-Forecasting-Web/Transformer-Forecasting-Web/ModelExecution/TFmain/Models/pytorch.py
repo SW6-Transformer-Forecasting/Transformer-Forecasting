@@ -54,7 +54,7 @@ class PyTorch:
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 5
+        n_epochs = 100
         batch_size = 1
 
         for epoch in range(n_epochs):
@@ -73,7 +73,8 @@ class PyTorch:
                     count += 1
             print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
 
-        #torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth")
+        torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth") # From server
+        #torch.save(self.model.state_dict(), "Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Models\MSE.pth") # When testing
         print("Saved PyTorch Model State")
 
     def predict_future(self, dataTransformer):

@@ -12,7 +12,7 @@ dataTransformer = TransformData()
 
 data = pandas.read_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata.csv")
 
-train, test = train_test_split(data, test_size=0.004, random_state=42)
+train, test = train_test_split(data, test_size=0.004, shuffle=False)
 OT_data = test[['OT']]
 OT_data = OT_data.to_numpy()
 
@@ -24,12 +24,14 @@ loss_fn = nn.MSELoss()
 
 scaler = dataTransformer.getScaler()
 
-inversedPrediction = scaler.inverse_transform(predictions)
-print(inversedPrediction)
+inversed_prediction = scaler.inverse_transform(predictions)
 
 index = 0
-for x in range(OT_data): #shit breaks here
-    print(f"{OT_data[index][0]} and {predictions[index][0]}")
+for x in range(OT_data.size): #shit breaks here
+    print(f"{OT_data[index][0]} and {inversed_prediction[index][0]}")
     index +=1
 
-print('MSE: ', loss_fn(test, predictions))
+from_data = torch.tensor(OT_data, dtype=torch.float32)
+predicted_data = torch.tensor(inversed_prediction, dtype=torch.float32)
+
+print('MSE: ', loss_fn(from_data, predicted_data))
