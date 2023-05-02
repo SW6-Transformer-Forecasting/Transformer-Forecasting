@@ -14,34 +14,38 @@
 }
 else
 {
-
     <MudPaper Class="pa-4 mx-lg-auto " Style="@($"background:{Theme.Palette.BackgroundGrey};")">
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge" >
-            <MudTable  Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="Prediction" OnRowClick="@OpenDialog">
-                <ToolBarContent>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
-                        <MudSpacer></MudSpacer>
-                        <MudContainer MaxWidth="MaxWidth.ExtraSmall">
-                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                        </MudContainer>
-                </ToolBarContent>
-                <HeaderContent>
-                    <MudTd>Model</MudTd>
-                    <MudTh>Periode Description</MudTh>
-                    <MudTh>Start date</MudTh>
-                    <MudTh>End date</MudTh>
-                </HeaderContent>
-                <RowTemplate> 
-                    <MudTd>@context.Model</MudTd>
-                    <MudTd>@context.PeriodDescription</MudTd>
-                    <MudTd>@context.StartDate</MudTd>
-                    <MudTd>@context.EndDate</MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager></MudTablePager>
-                </PagerContent>
-            </MudTable>
-        </MudContainer>
+        <MudPaper Class="pa-4">
+            <MudGrid>
+                <MudItem Class="d-flex ml-6 my-2 gap-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
+                </MudItem>
+                <MudSpacer></MudSpacer>
+                <MudItem Class="d-flex mx-6 gap-4">
+                    <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+                </MudItem>
+            </MudGrid>
+        
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge" >
+                <MudTable  Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="Prediction" OnRowClick="@OpenDialog">
+                    <HeaderContent>
+                        <MudTd>Model</MudTd>
+                        <MudTh>Periode Description</MudTh>
+                        <MudTh>Start date</MudTh>
+                        <MudTh>End date</MudTh>
+                    </HeaderContent>
+                    <RowTemplate> 
+                        <MudTd>@context.Model</MudTd>
+                        <MudTd>@context.PeriodDescription</MudTd>
+                        <MudTd>@context.StartDate</MudTd>
+                        <MudTd>@context.EndDate</MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager></MudTablePager>
+                    </PagerContent>
+                </MudTable>
+            </MudContainer>
+        </MudPaper>
     </MudPaper>
 }
 
