@@ -12,13 +12,14 @@ dataTransformer = TransformData()
 
 data = pandas.read_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata.csv")
 
+# We ignore train set here, as we create it when in TEST_MODE in the model
 train, test = train_test_split(data, test_size=0.004, shuffle=False)
 OT_data = test[['OT']]
 OT_data = OT_data.to_numpy()
 
-pytorch = PyTorch(cwd, train, dataTransformer, False)
-pytorch.train_model(cwd)
-predictions = pytorch.predict_future(dataTransformer)
+pytorch = PyTorch(cwd, data, dataTransformer, True, True)
+pytorch.train_model(cwd, False, False)
+predictions = pytorch.predict_future()
 
 loss_fn = nn.MSELoss()
 
@@ -27,7 +28,7 @@ scaler = dataTransformer.getScaler()
 inversed_prediction = scaler.inverse_transform(predictions)
 
 index = 0
-for x in range(OT_data.size): #shit breaks here
+for x in range(OT_data.size):
     print(f"{OT_data[index][0]} and {inversed_prediction[index][0]}")
     index +=1
 

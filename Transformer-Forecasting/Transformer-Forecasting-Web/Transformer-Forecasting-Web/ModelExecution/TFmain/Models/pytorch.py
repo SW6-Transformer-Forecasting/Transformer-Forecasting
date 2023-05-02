@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from sklearn.model_selection import train_test_split
 
 class PyTorch:
 
@@ -25,9 +26,14 @@ class PyTorch:
     x = 0
     y = 0
         
-    def __init__(self, cwd, data, dataTransformer, load_model):
+    def __init__(self, cwd, data, dataTransformer, load_model = False, TEST_MODE = False):
+        if (TEST_MODE == True):
+            # We ignore test set here, as we dont need that on the model in TEST_MODE, as its in the Test code
+            train, test = train_test_split(data, test_size=0.004, shuffle=False)
+            data = train
         self.setup_data(data, dataTransformer)
-        self.load_model(self.model, cwd, load_model)
+        if (load_model == True):
+            self.load_model(self.model, cwd, TEST_MODE)
         self.model.eval()
         
 
@@ -44,43 +50,41 @@ class PyTorch:
         self.x = torch.tensor(X, dtype=torch.float32)
         self.y = torch.tensor(Y, dtype=torch.float32).reshape(-1, 1)
         
-    def load_model(self, model, cwd, load_model = False):
-        if (load_model == True):
+    def load_model(self, model, cwd, TEST_MODE):
+        if(TEST_MODE == True):
+            model.load_state_dict(torch.load("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Models\MSE.pth"))
+        else:
             model.load_state_dict(torch.load(cwd + "/ModelExecution/TFmain/Models/MSE.pth"))
 
-    def train_model(self, cwd):
+    def train_model(self, cwd, save_model = False, TEST_MODE = False):
         # L1Loss = MAE
         # MSELoss = MSE (We focus here)
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 100
+        n_epochs = 50
         batch_size = 1
 
         for epoch in range(n_epochs):
-            count = 0
-            loss_amount = 0
             for i in range(0, len(self.x), batch_size):
                 Xbatch = self.x[i:i+batch_size]
                 y_pred = self.model(Xbatch)
                 ybatch = self.y[i:i+batch_size]
                 loss = loss_fn(y_pred, ybatch)
-                if (loss <= 3):
-                    optimizer.zero_grad()
-                    loss.backward()
-                    optimizer.step()
-                    loss_amount += loss
-                    count += 1
-            print(f'Finished epoch {epoch} - Est. Loss MSE: {loss_amount/count} - Count: {count}')
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+            print(f'Finished epoch {epoch} - Est. Loss MSE: {loss}')
 
-        torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth") # From server
-        #torch.save(self.model.state_dict(), "Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Models\MSE.pth") # When testing
+        if(TEST_MODE == True):
+            # When testing
+            torch.save(self.model.state_dict(), "Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Models\MSE.pth")
+        elif(save_model == True):
+            # From server
+            torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth")
         print("Saved PyTorch Model State")
 
-    def predict_future(self, dataTransformer):
+    def predict_future(self):
         predictions = self.model(self.x[0:24]).detach().cpu().numpy()
         return predictions
-        predicted_OTs = []
-        for item in range(predictions):
-            predicted_OTs.insert(dataTransformer.InverseOT(item, 6, True))
         
