@@ -15,7 +15,6 @@
 else
 {
     <MudPaper Class="pa-4 mx-lg-auto " Style="@($"background:{Theme.Palette.BackgroundGrey};")">
-        <MudPaper Class="pa-4">
             <MudGrid>
                 <MudItem Class="d-flex ml-6 my-2 gap-4">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
@@ -45,7 +44,6 @@ else
                     </PagerContent>
                 </MudTable>
             </MudContainer>
-        </MudPaper>
     </MudPaper>
 }
 
