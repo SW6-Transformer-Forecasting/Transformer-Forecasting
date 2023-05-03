@@ -50,7 +50,6 @@ if(model_choice == "2"):
 
         print(predictedOTInversed)
 
-# Picks the training/test periods specified in TrainTestPeriods.json and prepares data for Linear model training
 
 # SQL Starts here
 max_identifiers = QueryExecutor.SelectQuery("SELECT MAX(group_id), MAX(row_id) FROM group_predictions")

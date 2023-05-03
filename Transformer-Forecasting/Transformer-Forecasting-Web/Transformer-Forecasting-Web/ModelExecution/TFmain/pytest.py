@@ -35,4 +35,4 @@ for x in range(OT_data.size):
 from_data = torch.tensor(OT_data, dtype=torch.float32)
 predicted_data = torch.tensor(inversed_prediction, dtype=torch.float32)
 
-print('MSE: ', loss_fn(from_data, predicted_data))
+print('Loss in MSE: ', loss_fn(from_data, predicted_data))

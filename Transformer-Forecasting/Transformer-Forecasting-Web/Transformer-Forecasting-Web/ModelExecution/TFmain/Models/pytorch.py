@@ -62,7 +62,7 @@ class PyTorch:
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 50
+        n_epochs = 10
         batch_size = 1
 
         for epoch in range(n_epochs):
