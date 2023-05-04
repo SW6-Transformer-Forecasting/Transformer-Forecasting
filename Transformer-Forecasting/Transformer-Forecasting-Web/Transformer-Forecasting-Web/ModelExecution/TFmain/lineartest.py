@@ -7,6 +7,9 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as p
+from scipy import stats
+import warnings
+warnings.filterwarnings("ignore")
 
 dataframe = pandas.read_csv(".\Data\outliertest.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
@@ -27,17 +30,15 @@ std = numpy.std(OT_values)
 print('mean of the dataset is', mean)
 print('std. deviation is', std)
 
-threshold = 1.7
-outlier = []
-for i in OT_values:
-    z = (i-mean)/std
-    if z > threshold:
-        outlier.append(i)
-        OT_values
-    
-print('outlier in dataset is', outlier)
+# threshold = 1.7
+# no_outliers = []
+# for i in OT_values:
+#     z = (i-mean)/std
+#     if z < threshold:
+#         no_outliers.append(i)
 
-# find en måde at slette outliers
+dataframe = dataframe[(numpy.abs(stats.zscore(dataframe["OT"])) < 1.5)]
+print(f"Rows: {len(dataframe)}")
 
 dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
 dataframe = dataframe.apply(lambda row: pandas.Series({
@@ -45,6 +46,7 @@ dataframe = dataframe.apply(lambda row: pandas.Series({
                                                                     "month": row.datetime.month, 
                                                                     "hour":row.datetime.hour,
                                                                     "weekday":row.datetime.weekday(),
+                                                                    "quarter": row.datetime.quarter,
                                                                     'OT': row.OT}), axis=1)
 
 
@@ -53,13 +55,13 @@ normalizedDataframe = scaler.fit_transform(dataframe)
 
 # saving the scaler for the oil temperature for later use when it has to be inversed
 OTScaler = MinMaxScaler()
-OTScaler.min_,OTScaler.scale_=scaler.min_[4],scaler.scale_[4]
+OTScaler.min_,OTScaler.scale_=scaler.min_[5],scaler.scale_[5]
 
 # [:, 0] means 'selecting the first column' and so forth..
-X_values = normalizedDataframe[:, [0, 1, 2, 3]]
-y_values = normalizedDataframe[:, [4]]
+X_values = normalizedDataframe[:, [0, 1, 2, 3, 4]]
+y_values = normalizedDataframe[:, [5]]
 
-X_train, X_test, y_train, y_test = train_test_split(X_values, y_values, test_size=0.20, random_state=42)   
+X_train, X_test, y_train, y_test = train_test_split(X_values, y_values, test_size=0.2, random_state=42)   
 
 model = LinearRegression()
 
