@@ -19,14 +19,15 @@ else
                 <MudItem Class="d-flex ml-6 my-2 gap-4">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
                 </MudItem>
-                <MudSpacer></MudSpacer>
-                <MudItem Class="d-flex mx-6 gap-4">
-                    <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
-                </MudItem>
             </MudGrid>
         
             <MudContainer MaxWidth="MaxWidth.ExtraLarge" >
-                <MudTable  Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="Prediction" OnRowClick="@OpenDialog">
+                <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="Prediction" OnRowClick="@OpenDialog">
+                    <ToolBarContent>
+                         <MudText Typo="Typo.h6">Predictions</MudText>
+                         <MudSpacer />
+                         <MudTextField Class="d-flex flex-row-reverse mt-0 pr-3" Style="width: 400px;" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+                    </ToolBarContent>
                     <HeaderContent>
                         <MudTd>Model</MudTd>
                         <MudTh>Periode Description</MudTh>
