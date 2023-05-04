@@ -4,12 +4,17 @@
 
 <MudDialog>
     <DialogContent>
+        
+        <!--To be changed when graph is put in-->
+        
         <MudStack Row="true" Justify="_justify">
             <MudText>@prediction.Model</MudText>
             <MudText>@prediction.PeriodDescription</MudText>
             <MudText>@prediction.StartDate</MudText>
             <MudText>@prediction.EndDate</MudText>
         </MudStack>
+        
+    
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
