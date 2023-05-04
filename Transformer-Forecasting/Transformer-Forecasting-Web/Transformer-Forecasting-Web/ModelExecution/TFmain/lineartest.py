@@ -1,4 +1,3 @@
-from DataHandling.linearmodeldata import ModelData
 import pandas
 import numpy
 from sklearn.model_selection import train_test_split
@@ -7,14 +6,38 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as p
 
-dataframe = pandas.read_csv(".\Data\ett3.csv")
+dataframe = pandas.read_csv(".\Data\outliertest.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
 dataframe.drop("HULL", inplace=True, axis=1)
 dataframe.drop("MUFL", inplace=True, axis=1)
 dataframe.drop("MULL", inplace=True, axis=1)
 dataframe.drop("LUFL", inplace=True, axis=1)
 dataframe.drop("LULL", inplace=True, axis=1)
+
+dataframe.plot(x="date", y="OT", kind="line")
+
+# p.show()
+
+OT_values = numpy.asarray(dataframe["OT"])
+mean = numpy.mean(OT_values)
+std = numpy.std(OT_values)
+
+print('mean of the dataset is', mean)
+print('std. deviation is', std)
+
+threshold = 1.7
+outlier = []
+for i in OT_values:
+    z = (i-mean)/std
+    if z > threshold:
+        outlier.append(i)
+        OT_values
+    
+print('outlier in dataset is', outlier)
+
+# find en måde at slette outliers
 
 dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
 dataframe = dataframe.apply(lambda row: pandas.Series({
@@ -53,10 +76,10 @@ inversedYtest = numpy.round(OTScaler.inverse_transform(y_test), 2)
 #     index +=1
 
 
-index = 0
-for x in range(y_test):
-    print(f"{y_test[index][0]} and {predictions[index][0]}")
-    index +=1
+# index = 0
+# for x in range(y_test):
+#     print(f"{y_test[index][0]} and {predictions[index][0]}")
+#     index +=1
 
 print('MSEinversed: ', mean_squared_error(inversedYtest, inversedPrediction))
 print('MSE: ', mean_squared_error(y_test, predictions))
