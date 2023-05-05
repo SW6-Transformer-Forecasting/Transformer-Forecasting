@@ -14,12 +14,7 @@
     <MudDrawer @bind-Open="@_drawerOpen">
         <MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Make prediction</MudNavLink>
-    <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Servers</MudNavLink>
-    <MudNavGroup Title="Settings" Expanded="true">
-        <MudNavLink Href="/users"  Match="NavLinkMatch.Prefix">Users</MudNavLink>
-        <MudNavLink Href="/security"  Match="NavLinkMatch.Prefix">Security</MudNavLink>
-    </MudNavGroup>
-    <MudNavLink Href="/fetchdata"  Match="NavLinkMatch.Prefix">fetchdata</MudNavLink>
+    <MudNavLink Href="/settings"  Match="NavLinkMatch.Prefix">Settings</MudNavLink>
 </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
