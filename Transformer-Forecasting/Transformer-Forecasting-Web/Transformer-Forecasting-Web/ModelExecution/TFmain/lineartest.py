@@ -18,13 +18,21 @@ cwd = os.getcwd()
 # data = DataFilter.fetch(None, cwd + "\Data\ETTh1.csv", "2018-06-19 19:00:00", "2018-06-26 19:00:00")
 # DataFilter.execute(None, data, r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web")
 # dataframe = pandas.read_csv(".\Data\cleandata.csv")
-dataframe = pandas.read_csv(".\Data\ETTh1.csv")
+dataframe = pandas.read_csv(".\Data\ETThTrain.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
 dataframe.drop("HULL", inplace=True, axis=1)
 dataframe.drop("MUFL", inplace=True, axis=1)
 dataframe.drop("MULL", inplace=True, axis=1)
 dataframe.drop("LUFL", inplace=True, axis=1)
 dataframe.drop("LULL", inplace=True, axis=1)
+
+dataframe2 = pandas.read_csv(".\Data\ETThTest.csv")
+dataframe2.drop("HUFL", inplace=True, axis=1)
+dataframe2.drop("HULL", inplace=True, axis=1)
+dataframe2.drop("MUFL", inplace=True, axis=1)
+dataframe2.drop("MULL", inplace=True, axis=1)
+dataframe2.drop("LUFL", inplace=True, axis=1)
+dataframe2.drop("LULL", inplace=True, axis=1)
 
 dataframe.plot(x="date", y="OT", kind="line")
 
@@ -38,19 +46,45 @@ dataframe.plot(x="date", y="OT", kind="line")
 dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
 dataframe = dataframe.apply(lambda row: pandas.Series({
                                                                     # "year":row.datetime.year,
-                                                                    # "month":row.datetime.month,
+                                                                    "month":row.datetime.month,
                                                                     "hour":row.datetime.hour,
-                                                                    # "day":row.datetime.day,
+                                                                    "day":row.datetime.day,
                                                                     "weekday":row.datetime.weekday(),
-                                                                    # "quarter":row.datetime.quarter,
+                                                                    "quarter":row.datetime.quarter,
+                                                                    'OT': row.OT}), axis=1)
+
+dataframe2['datetime'] = pandas.to_datetime(dataframe2['date'])
+dataframe2 = dataframe2.apply(lambda row: pandas.Series({
+                                                                    # "year":row.datetime.year,
+                                                                    "month":row.datetime.month,
+                                                                    "hour":row.datetime.hour,
+                                                                    "day":row.datetime.day,
+                                                                    "weekday":row.datetime.weekday(),
+                                                                    "quarter":row.datetime.quarter,
                                                                     'OT': row.OT}), axis=1)
 
 # --------------------------
 
 print(len(dataframe))
 
+numberOfColumns = dataframe.shape[1] - 1
+x_columns = []
+for i in range(numberOfColumns):
+    x_columns.append(i)
+
+scaler = MinMaxScaler()
+normalizedDataframe = scaler.fit_transform(dataframe)
+normalizedTestDataframe = scaler.transform(dataframe2)
+
+# saving the scaler for the oil temperature for later use when it has to be inversed
+OTScaler = MinMaxScaler()
+OTScaler.min_,OTScaler.scale_=scaler.min_[numberOfColumns],scaler.scale_[numberOfColumns]
+
 x = dataframe.drop("OT", axis=1)
 y = dataframe["OT"]
+
+# x = numpy.delete(normalizedDataframe, numberOfColumns, 1)
+# y = normalizedDataframe[:, numberOfColumns]
 
 model = LinearRegression()
 
@@ -58,32 +92,36 @@ model.fit(x, y)
 
 predictions = model.predict(x)
 
-print(y)
-
+y = numpy.asarray(y)
 deletedRows = 0
 for i in range(len(predictions)):
-    if(abs(((y[i] - predictions[i]) * 100) / predictions[i]) > 15):
+    if(abs(((y[i] - predictions[i]) * 100) / predictions[i]) > 20):
         deletedRows += 1
         dataframe = dataframe.drop(dataframe.index[i - deletedRows])
 
-print(len(dataframe))
+
 
 x = dataframe.drop("OT", axis=1)
 y = dataframe["OT"]
 
+testX = dataframe2.drop("OT", axis=1)
+testY = dataframe2["OT"]
 
 model = LinearRegression()
 
 model.fit(x, y)
 
-predictions = model.predict(x)
+predictions = model.predict(testX)
+preddf = pandas.DataFrame({"OT": predictions})
 
-# y = numpy.asarray()
+# inversedPrediction = OTScaler.inverse_transform(pandas.DataFrame({"OT": predictions}))
+# inversedYtest = OTScaler.inverse_transform(pandas.DataFrame({"OT": testY}))
+
+y = numpy.asarray(y)
 for i in range(len(predictions)):
-    print(y.iloc[[i]])
-    # print(abs(((y[i] - predictions[i]) * 100) / predictions[i]))
+    print(abs(((y[i] - predictions[i]) * 100) / predictions[i]))
 
-print('MSE %: ', mean_absolute_percentage_error(y, predictions))
+print('MSE %: ', mean_absolute_percentage_error(testY, predictions))
 
 # --------------------------
 
