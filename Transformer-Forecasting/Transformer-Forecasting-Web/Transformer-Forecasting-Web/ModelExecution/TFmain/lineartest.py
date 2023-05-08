@@ -18,7 +18,7 @@ cwd = os.getcwd()
 # data = DataFilter.fetch(None, cwd + "\Data\ETTh1.csv", "2018-06-19 19:00:00", "2018-06-26 19:00:00")
 # DataFilter.execute(None, data, r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web")
 # dataframe = pandas.read_csv(".\Data\cleandata.csv")
-dataframe = pandas.read_csv(".\Data\outliertest.csv")
+dataframe = pandas.read_csv(".\Data\ETTh1.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
 dataframe.drop("HULL", inplace=True, axis=1)
 dataframe.drop("MUFL", inplace=True, axis=1)
@@ -30,9 +30,9 @@ dataframe.plot(x="date", y="OT", kind="line")
 
 # p.show()
 
-
-dataframe = dataframe[(numpy.abs(stats.zscore(dataframe["OT"])) < 2)]
-print(f"Rows: {len(dataframe)}")
+# # z-score
+# dataframe = dataframe[(numpy.abs(stats.zscore(dataframe["OT"])) < 2)]
+# print(f"Rows: {len(dataframe)}")
 
 # 'year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter'
 dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
@@ -45,44 +45,88 @@ dataframe = dataframe.apply(lambda row: pandas.Series({
                                                                     # "quarter":row.datetime.quarter,
                                                                     'OT': row.OT}), axis=1)
 
-numberOfColumns = dataframe.shape[1] - 1
-x_columns = []
-for i in range(numberOfColumns):
-    x_columns.append(i)
+# --------------------------
 
-scaler = MinMaxScaler()
-normalizedDataframe = scaler.fit_transform(dataframe)
+print(len(dataframe))
 
-# saving the scaler for the oil temperature for later use when it has to be inversed
-OTScaler = MinMaxScaler()
-OTScaler.min_,OTScaler.scale_=scaler.min_[numberOfColumns],scaler.scale_[numberOfColumns]
-
-# [:, 0] means 'selecting the first column' and so forth..
-X_values = normalizedDataframe[:, x_columns]
-y_values = normalizedDataframe[:, [numberOfColumns]]
-
-X_train, X_test, y_train, y_test = train_test_split(X_values, y_values, test_size=0.2, random_state=42)   
+x = dataframe.drop("OT", axis=1)
+y = dataframe["OT"]
 
 model = LinearRegression()
 
-model.fit(X_train, y_train)
+model.fit(x, y)
 
-predictions = model.predict(X_test)
+predictions = model.predict(x)
 
-inversedPrediction = numpy.round(OTScaler.inverse_transform(predictions), 2)
-inversedYtest = numpy.round(OTScaler.inverse_transform(y_test), 2)
+print(y)
 
-index = 0
-for thing in y_test:
-    print(f"{inversedYtest[index][0]} and {inversedPrediction[index][0]}")
-    index +=1
+deletedRows = 0
+for i in range(len(predictions)):
+    if(abs(((y[i] - predictions[i]) * 100) / predictions[i]) > 15):
+        deletedRows += 1
+        dataframe = dataframe.drop(dataframe.index[i - deletedRows])
 
+print(len(dataframe))
+
+x = dataframe.drop("OT", axis=1)
+y = dataframe["OT"]
+
+
+model = LinearRegression()
+
+model.fit(x, y)
+
+predictions = model.predict(x)
+
+# y = numpy.asarray()
+for i in range(len(predictions)):
+    print(y.iloc[[i]])
+    # print(abs(((y[i] - predictions[i]) * 100) / predictions[i]))
+
+print('MSE %: ', mean_absolute_percentage_error(y, predictions))
+
+# --------------------------
+
+
+
+# numberOfColumns = dataframe.shape[1] - 1
+# x_columns = []
+# for i in range(numberOfColumns):
+#     x_columns.append(i)
+
+# scaler = MinMaxScaler()
+# normalizedDataframe = scaler.fit_transform(dataframe)
+
+# # saving the scaler for the oil temperature for later use when it has to be inversed
+# OTScaler = MinMaxScaler()
+# OTScaler.min_,OTScaler.scale_=scaler.min_[numberOfColumns],scaler.scale_[numberOfColumns]
+
+# # [:, 0] means 'selecting the first column' and so forth..
+# X_values = normalizedDataframe[:, x_columns]
+# y_values = normalizedDataframe[:, [numberOfColumns]]
+
+# X_train, X_test, y_train, y_test = train_test_split(X_values, y_values, test_size=0.2, random_state=42)   
+
+# model = LinearRegression()
+
+# model.fit(X_train, y_train)
+
+# predictions = model.predict(X_test)
+
+# inversedPrediction = numpy.round(OTScaler.inverse_transform(predictions), 2)
+# inversedYtest = numpy.round(OTScaler.inverse_transform(y_test), 2)
 
 # index = 0
-# for x in range(y_test):
-#     print(f"{y_test[index][0]} and {predictions[index][0]}")
+# for thing in y_test:
+#     print(f"{inversedYtest[index][0]} and {inversedPrediction[index][0]}")
 #     index +=1
 
-print('MSE inversed: ', mean_squared_error(inversedYtest, inversedPrediction))
-print('MAE inversed: ', mean_absolute_error(inversedYtest, inversedPrediction))
-print('MSE %: ', mean_absolute_percentage_error(inversedYtest, inversedPrediction))
+
+# # index = 0
+# # for x in range(y_test):
+# #     print(f"{y_test[index][0]} and {predictions[index][0]}")
+# #     index +=1
+
+# print('MSE inversed: ', mean_squared_error(inversedYtest, inversedPrediction))
+# print('MAE inversed: ', mean_absolute_error(inversedYtest, inversedPrediction))
+# print('MSE %: ', mean_absolute_percentage_error(inversedYtest, inversedPrediction))
