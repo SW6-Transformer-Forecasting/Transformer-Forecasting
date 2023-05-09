@@ -1,14 +1,10 @@
 import pandas
 import numpy
-from sklearn.model_selection import train_test_split
-from DataHandling.dataFilter import DataFilter
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error 
+# from DataHandling.dataFilter import DataFilter
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
-import matplotlib.pyplot as p
-from scipy import stats
+import matplotlib.pyplot as plt
 import warnings
 import os
 warnings.filterwarnings("ignore")
@@ -34,14 +30,6 @@ dataframe2.drop("MULL", inplace=True, axis=1)
 dataframe2.drop("LUFL", inplace=True, axis=1)
 dataframe2.drop("LULL", inplace=True, axis=1)
 
-dataframe.plot(x="date", y="OT", kind="line")
-
-# p.show()
-
-# # z-score
-# dataframe = dataframe[(numpy.abs(stats.zscore(dataframe["OT"])) < 2)]
-# print(f"Rows: {len(dataframe)}")
-
 # 'year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter'
 dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
 dataframe = dataframe.apply(lambda row: pandas.Series({
@@ -49,7 +37,7 @@ dataframe = dataframe.apply(lambda row: pandas.Series({
                                                                     "month":row.datetime.month,
                                                                     "hour":row.datetime.hour,
                                                                     "day":row.datetime.day,
-                                                                    "weekday":row.datetime.weekday(),
+                                                                    # "weekday":row.datetime.weekday(),
                                                                     "quarter":row.datetime.quarter,
                                                                     'OT': row.OT}), axis=1)
 
@@ -59,13 +47,11 @@ dataframe2 = dataframe2.apply(lambda row: pandas.Series({
                                                                     "month":row.datetime.month,
                                                                     "hour":row.datetime.hour,
                                                                     "day":row.datetime.day,
-                                                                    "weekday":row.datetime.weekday(),
+                                                                    # "weekday":row.datetime.weekday(),
                                                                     "quarter":row.datetime.quarter,
                                                                     'OT': row.OT}), axis=1)
 
 # --------------------------
-
-print(len(dataframe))
 
 numberOfColumns = dataframe.shape[1] - 1
 x_columns = []
@@ -76,15 +62,13 @@ scaler = MinMaxScaler()
 normalizedDataframe = scaler.fit_transform(dataframe)
 normalizedTestDataframe = scaler.transform(dataframe2)
 
+
 # saving the scaler for the oil temperature for later use when it has to be inversed
 OTScaler = MinMaxScaler()
 OTScaler.min_,OTScaler.scale_=scaler.min_[numberOfColumns],scaler.scale_[numberOfColumns]
 
-x = dataframe.drop("OT", axis=1)
-y = dataframe["OT"]
-
-# x = numpy.delete(normalizedDataframe, numberOfColumns, 1)
-# y = normalizedDataframe[:, numberOfColumns]
+x = numpy.delete(normalizedDataframe, numberOfColumns, axis=1)
+y = normalizedDataframe[:, numberOfColumns]
 
 model = LinearRegression()
 
@@ -92,17 +76,28 @@ model.fit(x, y)
 
 predictions = model.predict(x)
 
+y = OTScaler.inverse_transform(y.reshape(-1, 1))
+predictions = OTScaler.inverse_transform(predictions.reshape(-1, 1))
+
 y = numpy.asarray(y)
 deletedRows = 0
 for i in range(len(predictions)):
-    if(abs(((y[i] - predictions[i]) * 100) / predictions[i]) > 20):
+    # If differenceInPercentage is 100, then the test data and prediction have the exact same value
+    differenceInPercentage = abs(y[i] / predictions[i] * 100)
+    if(differenceInPercentage < 40 or differenceInPercentage > 160):
         deletedRows += 1
-        dataframe = dataframe.drop(dataframe.index[i - deletedRows])
+        normalizedDataframe = numpy.delete(normalizedDataframe, i - deletedRows, 0)
+    else:
+        print(f"{abs(y[i] / predictions[i] * 100)} ({y[i]} and {predictions[i]})")
+        
+print(len(normalizedDataframe))
 
 
+x = numpy.delete(normalizedDataframe, numberOfColumns, axis=1)
+y = normalizedDataframe[:, numberOfColumns]
 
-x = dataframe.drop("OT", axis=1)
-y = dataframe["OT"]
+X_test = numpy.delete(normalizedTestDataframe, numberOfColumns, axis=1)
+y_test = normalizedTestDataframe[:, numberOfColumns]
 
 testX = dataframe2.drop("OT", axis=1)
 testY = dataframe2["OT"]
@@ -111,60 +106,16 @@ model = LinearRegression()
 
 model.fit(x, y)
 
-predictions = model.predict(testX)
+predictions = model.predict(X_test)
 preddf = pandas.DataFrame({"OT": predictions})
 
-# inversedPrediction = OTScaler.inverse_transform(pandas.DataFrame({"OT": predictions}))
-# inversedYtest = OTScaler.inverse_transform(pandas.DataFrame({"OT": testY}))
+X_test = OTScaler.inverse_transform(X_test.reshape(-1,1))
+y_test = OTScaler.inverse_transform(y_test.reshape(-1,1))
+predictions = OTScaler.inverse_transform(predictions.reshape(-1,1))
 
 y = numpy.asarray(y)
 for i in range(len(predictions)):
-    print(abs(((y[i] - predictions[i]) * 100) / predictions[i]))
+    print(f"{y_test[i]} and {predictions[i]}")
+    # print(abs(((y[i] - predictions[i]) * 100) / predictions[i]))
 
-print('MSE %: ', mean_absolute_percentage_error(testY, predictions))
-
-# --------------------------
-
-
-
-# numberOfColumns = dataframe.shape[1] - 1
-# x_columns = []
-# for i in range(numberOfColumns):
-#     x_columns.append(i)
-
-# scaler = MinMaxScaler()
-# normalizedDataframe = scaler.fit_transform(dataframe)
-
-# # saving the scaler for the oil temperature for later use when it has to be inversed
-# OTScaler = MinMaxScaler()
-# OTScaler.min_,OTScaler.scale_=scaler.min_[numberOfColumns],scaler.scale_[numberOfColumns]
-
-# # [:, 0] means 'selecting the first column' and so forth..
-# X_values = normalizedDataframe[:, x_columns]
-# y_values = normalizedDataframe[:, [numberOfColumns]]
-
-# X_train, X_test, y_train, y_test = train_test_split(X_values, y_values, test_size=0.2, random_state=42)   
-
-# model = LinearRegression()
-
-# model.fit(X_train, y_train)
-
-# predictions = model.predict(X_test)
-
-# inversedPrediction = numpy.round(OTScaler.inverse_transform(predictions), 2)
-# inversedYtest = numpy.round(OTScaler.inverse_transform(y_test), 2)
-
-# index = 0
-# for thing in y_test:
-#     print(f"{inversedYtest[index][0]} and {inversedPrediction[index][0]}")
-#     index +=1
-
-
-# # index = 0
-# # for x in range(y_test):
-# #     print(f"{y_test[index][0]} and {predictions[index][0]}")
-# #     index +=1
-
-# print('MSE inversed: ', mean_squared_error(inversedYtest, inversedPrediction))
-# print('MAE inversed: ', mean_absolute_error(inversedYtest, inversedPrediction))
-# print('MSE %: ', mean_absolute_percentage_error(inversedYtest, inversedPrediction))
+print('MSE %: ', mean_absolute_percentage_error(y_test, predictions))
