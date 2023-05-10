@@ -4,14 +4,31 @@ using Newtonsoft.Json.Linq;
 
 public class JsonBuilder
 {
-    List<Object> parameters = new List<Object>();
-
-    void AddParam(Object param)
+    class Parameter
     {
-        parameters.Add(param);
+        private string paramName;
+        private bool paramStatus;
+
+        public Parameter(string name, bool status)
+        {
+            paramName = name;
+            paramStatus = status;
+        }
+    }
+    Parameter CreateObject(string paramName, bool status)
+    {
+        Parameter param = new Parameter(paramName, status);
+        return param;
     }
 
-    void BuildJson()
+    List<Parameter> parameters = new List<Parameter>();
+
+    public void AddParam(string paramName, bool status)
+    {
+        parameters.Add(CreateObject(paramName, status));
+    }
+
+    public void BuildJson()
     {
         var jsonSetting = JsonConvert.SerializeObject(parameters, Formatting.Indented);
         File.WriteAllText("params.json", jsonSetting);
