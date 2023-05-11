@@ -13,7 +13,7 @@
             <MudText>@prediction.StartDate</MudText>
             <MudText>@prediction.EndDate</MudText>
         </MudStack>
-        
+        <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350" ChartOptions="options"></MudChart>
     
     </DialogContent>
     <DialogActions>
@@ -27,10 +27,46 @@
 
     [Parameter] public Prediction prediction { get; set; }
 
+    //double[] DTP_Value;
+    //double[] LFP_Value;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+    }
+
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
 
     Justify _justify = Justify.SpaceEvenly;
+
+    public List<ChartSeries> Series = new List<ChartSeries>()
+    {
+
+        //add another if more models
+    };
+
+    private ChartOptions options = new ChartOptions();
+
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    protected override void OnInitialized()
+    {
+        options.InterpolationOption = InterpolationOption.NaturalSpline;
+        options.YAxisFormat = "c2";
+
+        //if (prediction.DTP_Value != null)
+        //    DTP_Value = prediction.DTP_Value;
+
+        //if (prediction.LFP_Value != null)
+        //    DTP_Value = prediction.LFP_Value;
+        
+        if (prediction.DTP_Value != null)
+            Series.Add(new ChartSeries() { Name = "model", Data = prediction.DTP_Value });
+        
+        if (prediction.LFP_Value != null)
+            Series.Add(new ChartSeries() { Name = "model", Data = prediction.LFP_Value });
+    }
 
 
 }

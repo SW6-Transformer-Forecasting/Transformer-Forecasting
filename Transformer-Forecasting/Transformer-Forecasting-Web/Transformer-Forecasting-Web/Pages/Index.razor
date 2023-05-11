@@ -52,9 +52,9 @@ else
     private IEnumerable<Prediction> forecasts = new List<Prediction>();
     private string searchString1 = "";
     private Prediction selectedItem = new Prediction();
-    private Prediction foo0 = new Prediction(1, "linear", "string", DateTime.Now, DateTime.Now.AddHours(1));
-    private Prediction foo1 = new Prediction(2, "Nlinear", "string", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1).AddHours(1));
-    private Prediction foo2 = new Prediction(3, "linear", "string", DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(2));
+    private Prediction foo0 = new Prediction(1, "linear", "string", DateTime.Now, DateTime.Now.AddHours(1),null,null);
+    private Prediction foo1 = new Prediction(2, "Nlinear", "string", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1).AddHours(1),null,null);
+    private Prediction foo2 = new Prediction(3, "linear", "string", DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(2),null,null);
     private List<Prediction> lol = new List<Prediction>();
     private MudTheme Theme = new MudTheme();
 

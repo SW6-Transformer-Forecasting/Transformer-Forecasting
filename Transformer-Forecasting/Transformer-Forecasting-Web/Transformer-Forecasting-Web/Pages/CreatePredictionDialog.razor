@@ -70,7 +70,7 @@
 
     void Submit()
     {
-        prediction = new Prediction(id, model, periodDescription, FromDate + FromTime, ToDate + ToTime);
+        prediction = new Prediction(id, model, periodDescription, FromDate + FromTime, ToDate + ToTime, new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 }); //insert predicted values here
         id++;
         if(prediction.Model != "" && prediction.PeriodDescription != "" && prediction.StartDate != null && prediction.EndDate != null)
         {
