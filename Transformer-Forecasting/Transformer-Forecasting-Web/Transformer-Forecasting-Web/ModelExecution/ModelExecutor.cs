@@ -15,7 +15,10 @@ namespace Transformer_Forecasting_Web.ModelExecution
             start.FileName = Directory.GetFiles(Local, "python.exe", SearchOption.AllDirectories)[0]; // Searches for python.exe within the Local folder, no matter version, and returns first result
 
             string executionProductionPath = @"./ModelExecution/TFmain/executionproduction.py";
-            
+
+            // Json Builder
+            GlobalJsonBuilder.jsonBuilder.BuildJson();
+
             start.Arguments = string.Format("{0} \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\"", executionProductionPath, periodDescription, startPredictDate, endPredictDate, newData, model);
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
