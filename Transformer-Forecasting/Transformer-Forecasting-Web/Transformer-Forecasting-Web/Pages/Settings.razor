@@ -1,0 +1,111 @@
+﻿@page "/settings"
+
+<PageTitle>Settings</PageTitle>
+<MudStack>
+    <MudPaper Elevation="3">
+        <MudText Class="pa-2" Typo="Typo.subtitle1"> LFP Model </MudText>
+        <MudGrid Class="pa-8">
+            <MudItem md="3">
+                <MudText>Loads used for model</MudText>
+                <MudPaper Class="pa-2" Outlined="true">
+                     <MudGrid>
+                         <MudItem Class="p-3" xs="6">
+                             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
+                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch1"Color="Color.Primary"Label="HUFL"/>
+                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch2"Color="Color.Primary"Label="MUFL"/>
+                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch3"Color="Color.Primary"Label="LUFL"/>
+                            </MudContainer>
+                         </MudItem>
+                         <MudItem Class="p-3" xs="6">
+                             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
+                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch4" Color="Color.Primary" Label="HULL"/>
+                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch5" Color="Color.Primary" Label="MULL"/>
+                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch6" Color="Color.Primary" Label="LULL"/>
+                            </MudContainer>
+                         </MudItem>
+                         <MudItem Class="pt-2" xs="12">
+                            <MudPaper Class="d-flex align-center justify-center mud-width-full" Elevation="0">
+                                <MudButton Class="align-content-center" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => reset())"> Reset to Default</MudButton>
+                            </MudPaper>
+                         </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+            <MudItem md="3">
+                <MudText>LFP Model Trainingset Size</MudText>
+                <MudSelect T="string" Class="pa-2" @bind-Value="@PytorchPeriodSelect" Variant="Variant.Outlined"> 
+                    <MudSelectItem Value="@("1 Month")"/>
+                    <MudSelectItem Value="@("3 Months")"/>
+                    <MudSelectItem Value="@("6 Months")"/>
+                    <MudSelectItem Value="@("1 Year (Recommended)")"/>
+                </MudSelect>
+                <MudPaper Class="pt-2" Elevation="0">
+                        <MudText>Learning Rate</MudText>
+                        <MudSelect T="string" Class="pa-2" @bind-Value="@lrSelect" Variant="Variant.Outlined">
+                            <MudSelectItem Value="@("0.0005 (Recommended)")"/>                             
+                            <MudSelectItem Value="@("0.01")" />
+                            <MudSelectItem Value="@("0.001")" />
+                            <MudSelectItem Value="@("0.0001")" />
+                            <MudSelectItem Value="@("0.0001")" />
+                        </MudSelect>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        </MudPaper>
+        <MudPaper Elevation="3">
+        <MudText Class="pb-3" Typo="Typo.subtitle1">DTP Model</MudText>
+            <MudGrid Class="pa-8" Justify="Justify.FlexStart">
+            <MudItem md="3">
+                <MudText>Model Trainingset Size</MudText>
+                <MudSelect T="string" Class="pa-2" @bind-Value="@LinearPeriodSelect" Variant="Variant.Outlined"> 
+                    <MudSelectItem Value="@("1 Week")"/>
+                    <MudSelectItem Value="@("1 Month (Recommended)")"/>
+                    <MudSelectItem Value="@("2 Months")"/>
+                    <MudSelectItem Value="@("3 Months")"/>
+                    <MudSelectItem Value="@("4 Months ")"/>
+                </MudSelect>
+            </MudItem>
+            <MudItem md="3">
+                <MudText Class="pb-3"> Hourly prediction mode</MudText>
+                <MudPaper Class="pa-2" Outlined="true" Style="width: 236,50px; height: 56px;">
+                        <MudSwitch Class="d-flex align-center justify-center mud-width-full pl-8" Style="width: 105px; height: 38px;" @bind-Checked="@Dtp_Switch" Color="Color.Primary"> @(hourly_mode_switch(Dtp_Switch))</MudSwitch>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        </MudPaper>
+</MudStack>
+
+@code {
+    public bool Basic_Switch1 { get; set; } = true;
+    public bool Basic_Switch2 { get; set; } = true;
+    public bool Basic_Switch3 { get; set; } = true;
+    public bool Basic_Switch4 { get; set; } = false;
+    public bool Basic_Switch5 { get; set; } = false;
+    public bool Basic_Switch6 { get; set; } = false;
+
+    void reset()
+    {
+        Basic_Switch1 = true;
+        Basic_Switch2 = true;
+        Basic_Switch3 = true;
+        Basic_Switch4 = false;
+        Basic_Switch5 = false;
+        Basic_Switch6 = false;
+    }
+
+    string LinearPeriodSelect = "4 Months (Recommended)";
+
+    string PytorchPeriodSelect = "1 Year (Recommended)";
+
+    string lrSelect = "0.0005 (Recommended)"; 
+
+    public bool Dtp_Switch { get; set; } = false;
+
+    private string hourly_mode_switch (bool lol)
+    {
+        if (lol == true)
+            return "On";
+        else
+            return "Off";
+    }
+}
