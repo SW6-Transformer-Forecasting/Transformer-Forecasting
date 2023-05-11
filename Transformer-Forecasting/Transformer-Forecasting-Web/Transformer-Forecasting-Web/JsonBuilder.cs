@@ -34,6 +34,7 @@ public class GlobalJsonBuilder
 
         public void BuildJson()
         {
+            parameters.Sort();
             var jsonSetting = JsonConvert.SerializeObject(parameters, Formatting.Indented);
             File.WriteAllText("params.json", jsonSetting);
         }
