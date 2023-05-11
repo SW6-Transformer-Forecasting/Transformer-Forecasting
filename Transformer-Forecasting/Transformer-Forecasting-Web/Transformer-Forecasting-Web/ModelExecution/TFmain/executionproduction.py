@@ -1,36 +1,57 @@
 from DataHandling.datahandlerproduction import DataHandler
 from Models.linearProduction import LinearRegression
+from Models.pytorch import PyTorch
 from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
+from DataHandling.dataFilter import DataFilter
 import pandas
 import sys
 import math
+import os
 
 periodDescription = sys.argv[1]
 startPredictDate = sys.argv[2]
 endPredictDate = sys.argv[3]
+new_data = sys.argv[4]
+model_choice = sys.argv[5]
 
-# periodDescription = "Example period description here :D"
-# startPredictDate = "2018-06-15 08:00:00"
-# endPredictDate = "2018-06-15 23:00:00"
+cwd = os.getcwd()
+
+if (new_data == "True"):
+        dfilter = DataFilter()
+        data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv', startPredictDate, endPredictDate) # Change this to fit correctly (end predict date should be the end of the read range, and start should be 1 year back)
+        dfilter.execute(data_to_filter, cwd)
+
+data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 
 # This instance stores the MinMaxScaler for later use when the normalization has to be inversed
 dataTransformer = TransformData()
 
-# Picks the training/test periods specified in TrainTestPeriods.json and prepares data for Linear model training
-dataHandler = DataHandler(periodDescription, startPredictDate, endPredictDate, dataTransformer)
+# Pytorch
+if(model_choice == "1"):
+        pytorch = PyTorch(cwd, data, dataTransformer) # Missing Opt Argument; load_model
+        pytorch.train_model(cwd) # Missing Opt Argument; save_model
+        predictions = pytorch.predict_future()
+        scaler = dataTransformer.getScaler()
+        inversed_prediction = scaler.inverse_transform(predictions)
 
-# Uses the prepared data and creates Linear models for the prediction task
-modelData = dataHandler.linearModelInformation
+# Linear model
+if(model_choice == "2"):
+        dataHandler = DataHandler(periodDescription, startPredictDate, endPredictDate, dataTransformer)
 
-linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, modelData.x_predict)
+        # Uses the prepared data and creates Linear models for the prediction task
+        modelData = dataHandler.linearModelInformation
 
-predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
+        linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, modelData.x_predict)
 
-predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
+        predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
 
-print(predictedOTInversed)
+        predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe, 4, False)
 
+        print(predictedOTInversed)
+
+
+# SQL Starts here
 max_identifiers = QueryExecutor.SelectQuery("SELECT MAX(group_id), MAX(row_id) FROM group_predictions")
 print(max_identifiers)
 max_group_id = max_identifiers[0][0]
@@ -73,6 +94,5 @@ for x in range(linearRegression.predictedOT.size):
 # prediction_description is inserted outside of the loop because we only need to store one single prediction period for the ID
 QueryExecutor.InsertQuery("INSERT INTO prediction_descriptions (group_id, description) VALUES(%s, %s)",
                             (max_group_id, periodDescription))    
-    
 
 print("Success")
