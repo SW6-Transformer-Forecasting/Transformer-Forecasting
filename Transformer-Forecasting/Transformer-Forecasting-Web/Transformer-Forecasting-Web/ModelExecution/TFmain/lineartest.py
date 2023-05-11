@@ -90,6 +90,9 @@ for i in range(len(predictions)):
     else:
         print(f"{abs(y[i] / predictions[i] * 100)} ({y[i]} and {predictions[i]})")
         
+
+        
+
 print(len(normalizedDataframe))
 
 

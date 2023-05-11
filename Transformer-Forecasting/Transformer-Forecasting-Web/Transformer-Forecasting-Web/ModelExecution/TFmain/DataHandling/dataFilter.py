@@ -42,10 +42,6 @@ class DataFilter():
         arr = numpy.split(arr, len(arr)/8)
         return arr
     
-    # uses z-score to eliminate outliers above the 2nd deviation of its mean
-    def eliminate_outliers(self, data):
-        return data[(numpy.abs(stats.zscore(data["OT"])) < 2)]
-    
     def saveFile(self, data, cwd):
         df = pandas.DataFrame(data, columns=['date', 'HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL', 'OT'])
         df.to_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv", index=False)
@@ -54,3 +50,4 @@ class DataFilter():
         dfilter = DataFilter()
         dfilter.saveFile(dfilter.filter_data(data), cwd)
         
+    
