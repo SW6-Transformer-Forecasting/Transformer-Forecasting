@@ -55,8 +55,8 @@
         id++;
         if(prediction.Model != "" && prediction.PeriodDescription != "")
         {
-            GlobalJsonBuilder.jsonBuilder.AddParam(model);
-            GlobalJsonBuilder.jsonBuilder.AddParam(periodDescription);
+            GlobalJsonBuilder.jsonBuilder.AddParam(("model", model));
+            GlobalJsonBuilder.jsonBuilder.AddParam(("periodDescription", periodDescription));
             GlobalJsonBuilder.jsonBuilder.BuildJson();
             GlobalJsonBuilder.jsonBuilder.ResetParam();
             //modelExecution.RunLinearModel(); This runs model. Remove comment when done

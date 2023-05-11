@@ -165,24 +165,24 @@
         // Ugly but i have to do this xd
         GlobalJsonBuilder.jsonBuilder.ResetParam();
 
-        GlobalJsonBuilder.jsonBuilder.AddParam(HUFL);
-        GlobalJsonBuilder.jsonBuilder.AddParam(MUFL);
-        GlobalJsonBuilder.jsonBuilder.AddParam(LUFL);
-        GlobalJsonBuilder.jsonBuilder.AddParam(HULL);
-        GlobalJsonBuilder.jsonBuilder.AddParam(MULL);
-        GlobalJsonBuilder.jsonBuilder.AddParam(LULL);
-        GlobalJsonBuilder.jsonBuilder.AddParam(lrSelect);
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HUFL", HUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("MUFL", MUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LUFL", LUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HULL", HULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("MULL", MULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LULL", LULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LR", lrSelect));
 
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchYear);
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchMonth);
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchDay);
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchHour);
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchWeekday);
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchWOY);
-        GlobalJsonBuilder.jsonBuilder.AddParam(SwitchQuarter);
-        GlobalJsonBuilder.jsonBuilder.AddParam(DtpSwitch);
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchYear", SwitchYear));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchMonth", SwitchMonth));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchDay", SwitchDay));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchHour", SwitchHour));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWeekday", SwitchWeekday));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWOY", SwitchWOY));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchQuarter", SwitchQuarter));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("DtpSwitch", DtpSwitch));
 
-        GlobalJsonBuilder.jsonBuilder.AddParam(HoursToPredict);
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HoursToPredict", HoursToPredict));
     }
 
     private bool _loading = false;
