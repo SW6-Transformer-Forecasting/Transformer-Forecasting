@@ -17,8 +17,7 @@ namespace Transformer_Forecasting_Web.ModelExecution
             string executionProductionPath = @"./ModelExecution/TFmain/executionproduction.py";
 
             // Json Builder
-            var builder = new JsonBuilder(); // This shouldn't be made here, it should be a global one... hmmm
-            builder.BuildJson();
+            GlobalJsonBuilder.jsonBuilder.BuildJson();
 
             start.Arguments = string.Format("{0} \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\"", executionProductionPath, periodDescription, startPredictDate, endPredictDate, newData, model);
             start.UseShellExecute = false;

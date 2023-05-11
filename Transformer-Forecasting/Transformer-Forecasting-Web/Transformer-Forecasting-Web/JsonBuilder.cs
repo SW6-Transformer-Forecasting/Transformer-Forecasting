@@ -2,35 +2,40 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class JsonBuilder
+public class GlobalJsonBuilder
 {
-    class Parameter
-    {
-        private string paramName;
-        private bool paramStatus;
+    public static readonly JsonBuilder jsonBuilder = new JsonBuilder();
 
-        public Parameter(string name, bool status)
+    public class JsonBuilder
+    {
+        class Parameter
         {
-            paramName = name;
-            paramStatus = status;
+            private string paramName;
+            private bool paramStatus;
+
+            public Parameter(string name, bool status)
+            {
+                paramName = name;
+                paramStatus = status;
+            }
         }
-    }
-    Parameter CreateObject(string paramName, bool status)
-    {
-        Parameter param = new Parameter(paramName, status);
-        return param;
-    }
+        Parameter CreateObject(string paramName, bool status)
+        {
+            Parameter param = new Parameter(paramName, status);
+            return param;
+        }
 
-    List<Parameter> parameters = new List<Parameter>();
+        List<Parameter> parameters = new List<Parameter>();
 
-    public void AddParam(string paramName, bool status)
-    {
-        parameters.Add(CreateObject(paramName, status));
-    }
+        public void AddParam(string paramName, bool status)
+        {
+            parameters.Add(CreateObject(paramName, status));
+        }
 
-    public void BuildJson()
-    {
-        var jsonSetting = JsonConvert.SerializeObject(parameters, Formatting.Indented);
-        File.WriteAllText("params.json", jsonSetting);
+        public void BuildJson()
+        {
+            var jsonSetting = JsonConvert.SerializeObject(parameters, Formatting.Indented);
+            File.WriteAllText("params.json", jsonSetting);
+        }
     }
 }
