@@ -27,45 +27,57 @@
 
     [Parameter] public Prediction prediction { get; set; }
 
-    //double[] DTP_Value;
-    //double[] LFP_Value;
+    public List<ChartSeries> Series = new List<ChartSeries>() { };
+    private ChartOptions options = new ChartOptions();
+    double[] DTP_Value;
+    double[] LFP_Value;
 
-
-    protected override async Task OnParametersSetAsync()
-    {
-
-    }
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
 
     Justify _justify = Justify.SpaceEvenly;
 
-    public List<ChartSeries> Series = new List<ChartSeries>()
-    {
 
-        //add another if more models
-    };
-
-    private ChartOptions options = new ChartOptions();
-
+    //change labels to fit to the time period from the database
     public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    
+    
     protected override void OnInitialized()
     {
         options.InterpolationOption = InterpolationOption.NaturalSpline;
-        options.YAxisFormat = "c2";
+        //options.YAxisFormat = "c2";
 
-        //if (prediction.DTP_Value != null)
-        //    DTP_Value = prediction.DTP_Value;
 
-        //if (prediction.LFP_Value != null)
-        //    DTP_Value = prediction.LFP_Value;
-        
-        if (prediction.DTP_Value != null)
-            Series.Add(new ChartSeries() { Name = "model", Data = prediction.DTP_Value });
-        
         if (prediction.LFP_Value != null)
-            Series.Add(new ChartSeries() { Name = "model", Data = prediction.LFP_Value });
+            LFP_Value = prediction.LFP_Value;
+
+        if (prediction.DTP_Value != null)
+            DTP_Value = prediction.DTP_Value;
+
+
+        AddToGraph();
+
+        //    if (prediction.LFP_Value != null)
+        //        Series.Add(new ChartSeries() { Name = "model", Data = prediction.LFP_Value });
+    }
+
+    //add to current graph
+    public void AddToGraph()
+    {
+        Series.Add(new ChartSeries() { Name = "Model 1", Data = DTP_Value.ToArray() });
+        Series.Add(new ChartSeries() { Name = "Model 2", Data = LFP_Value.ToArray() });
+    }
+
+    //creation of new graph
+    public void ChangeGraph()
+    {
+        var new_series = new List<ChartSeries>()
+        {
+            new ChartSeries() { Name = "test 1", Data = DTP_Value.ToArray() },
+            new ChartSeries() { Name = "test 2", Data = LFP_Value.ToArray() },
+        };
+        Series = new_series;
     }
 
 
