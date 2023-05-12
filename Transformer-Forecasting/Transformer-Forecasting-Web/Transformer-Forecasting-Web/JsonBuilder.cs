@@ -26,5 +26,11 @@ public class GlobalJsonBuilder
             var jsonSetting = JsonConvert.SerializeObject(parameters, Formatting.Indented);
             File.WriteAllText("params.json", jsonSetting);
         }
+
+        public List<Object> ReadJson()
+        {
+            var itemsFromJson = File.ReadAllText("params.json");
+            return JsonConvert.DeserializeObject<List<Object>>(itemsFromJson);
+        }
     }
 }

@@ -127,6 +127,18 @@
     public bool SwitchWOY { get; set; } = false;
     public bool SwitchQuarter { get; set; } = true;
 
+    protected override async Task OnInitializedAsync()
+    {
+        setSwitchValuesToJsonValues();
+    }
+
+    void setSwitchValuesToJsonValues()
+    {
+        List<Object> jsonValues = GlobalJsonBuilder.jsonBuilder.ReadJson();
+        // hjælp
+        Console.WriteLine();
+
+    }
 
     void resetLFP()
     {
