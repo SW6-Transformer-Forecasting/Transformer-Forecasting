@@ -2,6 +2,7 @@ import pandas
 import numpy 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
+from readJSONParams import JsonParams
 import os
 
 # venter med feature selection til json er tilføjet :D
@@ -19,13 +20,16 @@ dataframe.drop("LULL", inplace=True, axis=1)
 
 dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
 dataframe = dataframe.apply(lambda row: pandas.Series({
-                                                            # "year":row.datetime.year,
+                                                            "year":row.datetime.year,
                                                             "month":row.datetime.month,
                                                             "day":row.datetime.day,
                                                             "hour":row.datetime.hour,
-                                                            # "weekday":row.datetime.weekday(),
+                                                            "weekday":row.datetime.weekday(),
+                                                            "weekofyear": row.datetime.weekofyear, 
                                                             "quarter":row.datetime.quarter,
                                                             'OT': row.OT}), axis=1)
+notIncludedDateValues = JsonParams.GetNotIncludedDateValues()
+dataframe = dataframe.drop(columns=notIncludedDateValues)
 
 numberOfColumns = dataframe.shape[1] - 1
 x_columns = []
@@ -62,7 +66,8 @@ for i in range(len(predictions)):
         
 inversedData = scaler.inverse_transform(normalizedDataframe)
 
-dataframe = pandas.DataFrame(inversedData, columns=['month', 'day', 'hour', 'quarter', 'OT'])
+dateValues = JsonParams.GetIncludedDateValues()
+dataframe = pandas.DataFrame(inversedData, columns=dateValues + ["OT"])
 
 # dataframe.to_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\ETTh1OutliersRemoved.csv")
 dataframe.to_csv(cwd + "\ModelExecution\TFmain\Data\ETTh1OutliersRemoved.csv") 

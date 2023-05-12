@@ -1,5 +1,8 @@
 ﻿@page "/settings"
 
+@using Transformer_Forecasting_Web.ModelExecution
+@inject ModelExecutor modelExecution
+
 <PageTitle>Settings</PageTitle>
 <MudStack>
     <MudPaper Elevation="3">
@@ -54,7 +57,6 @@
                          <MudGrid>
                              <MudItem Class="p-3" xs="6">
                                  <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
-                                    <MudText>Recommended</MudText>
                                     <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchMonth"Color="Color.Primary"Label="Month"/>
                                     <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchDay"Color="Color.Primary"Label="Day"/>
                                     <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchHour" Color="Color.Primary" Label="Hour"/>
@@ -194,7 +196,15 @@
     {
         _loading = true;
         SaveSettingsToJSON();
-        await Task.Delay(2000);
+        await Task.Delay(500);
         _loading = false;
+        UpdateOutlierRemoval();
+    }
+
+    void UpdateOutlierRemoval()
+    {
+        // updates the linear outlier detection according to the updated json
+        string arguments = string.Format("{0}", @"./ModelExecution/TFmain/DataHandling/removeOutliers.py");
+        modelExecution.RunPythonScript(arguments);
     }
 }
