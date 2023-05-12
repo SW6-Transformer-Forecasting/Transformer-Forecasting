@@ -32,21 +32,14 @@
                 </MudPaper>
             </MudItem>
             <MudItem md="3">
-                <MudText>LFP Model Trainingset Size</MudText>
-                <MudSelect T="string" Class="pa-2" @bind-Value="@PytorchPeriodSelect" Variant="Variant.Outlined"> 
-                    <MudSelectItem Value="@("1 Month")"/>
-                    <MudSelectItem Value="@("3 Months")"/>
-                    <MudSelectItem Value="@("6 Months")"/>
-                    <MudSelectItem Value="@("1 Year (Recommended)")"/>
-                </MudSelect>
                 <MudPaper Class="pt-2" Elevation="0">
                         <MudText>Learning Rate</MudText>
-                        <MudSelect T="string" Class="pa-2" @bind-Value="@lrSelect" Variant="Variant.Outlined">
-                            <MudSelectItem Value="@("0.0005 (Recommended)")"/>                             
-                            <MudSelectItem Value="@("0.01")" />
-                            <MudSelectItem Value="@("0.001")" />
-                            <MudSelectItem Value="@("0.0001")" />
-                            <MudSelectItem Value="@("0.0001")" />
+                        <MudSelect T="double" Class="pa-2" @bind-Value="@lrSelect" Variant="Variant.Outlined">
+                            <MudSelectItem Value="@(0.0005)">Recommended: 0.0005 </MudSelectItem>                             
+                            <MudSelectItem Value="@(0.01)"/>
+                            <MudSelectItem Value="@(0.001)"/>
+                            <MudSelectItem Value="@(0.0001)"/>
+                            <MudSelectItem Value="@(0.0001)"/>
                         </MudSelect>
                 </MudPaper>
             </MudItem>
@@ -83,23 +76,34 @@
                     </MudPaper>
                 </MudItem>
             <MudItem md="3">
-                <MudText>Model Trainingset Size</MudText>
-                <MudSelect T="string" Class="pa-2" @bind-Value="@LinearPeriodSelect" Variant="Variant.Outlined"> 
-                    <MudSelectItem Value="@("1 Week")"/>
-                    <MudSelectItem Value="@("1 Month (Recommended)")"/>
-                    <MudSelectItem Value="@("2 Months")"/>
-                    <MudSelectItem Value="@("3 Months")"/>
-                    <MudSelectItem Value="@("4 Months ")"/>
-                </MudSelect>
+                <MudPaper Class="pb-8 pt-2" Elevation="0">
+                    <MudText>Predict Forward Amount</MudText>
+                    <MudContainer Class="pl-2 pt-2">
+                        <MudTextField T="int" @bind-Value="HoursToPredict" Label="Hours" HelperText="Recommended: 24" Variant="Variant.Outlined" />
+                    </MudContainer>
+                </MudPaper>
                 <MudText Class="pb-3"> Hourly prediction mode</MudText>
                 <MudContainer Class="pl-2">
-                    <MudPaper Class="pa-2" Outlined="true" Style="width: 236,50px; height: 56px;">
+                    <MudPaper Class="pa-2" Outlined="true" Style="width: 236.50px; height: 56px;">
                             <MudSwitch Class="d-flex align-center justify-center mud-width-full pl-8" Style="width: 105px; height: 38px;" @bind-Checked="@DtpSwitch" Color="Color.Primary"> @(hourlyModeSwitch(DtpSwitch))</MudSwitch>
                     </MudPaper>
                 </MudContainer>
             </MudItem>
         </MudGrid>
         </MudPaper>
+        <MudContainer Elevation="3" Class="d-flex align-center justify-content-center">
+            <MudButton Disabled="@_loading" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => Loading())">
+        @if (_loading)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Saving</MudText>
+        }
+        else
+        {
+            <MudText>Save to Json</MudText>
+        }
+        </MudButton>
+        </MudContainer>
 </MudStack>
 
 @code {
@@ -142,11 +146,9 @@
         SwitchQuarter = false;
     }
 
-    string LinearPeriodSelect = "4 Months (Recommended)";
+    int HoursToPredict = 24;
 
-    string PytorchPeriodSelect = "1 Year (Recommended)";
-
-    string lrSelect = "0.0005 (Recommended)"; 
+    double lrSelect = 0.0005; 
 
     public bool DtpSwitch { get; set; } = false;
 
@@ -156,5 +158,40 @@
             return "On";
         else
             return "Off";
+    }
+
+    void SaveSettingsToJSON()
+    {
+        // Ugly but i have to do this xd
+        GlobalJsonBuilder.jsonBuilder.ResetParam();
+
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HUFL", HUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("MUFL", MUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LUFL", LUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HULL", HULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("MULL", MULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LULL", LULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LR", lrSelect));
+
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchYear", SwitchYear));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchMonth", SwitchMonth));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchDay", SwitchDay));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchHour", SwitchHour));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWeekday", SwitchWeekday));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWOY", SwitchWOY));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchQuarter", SwitchQuarter));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("DtpSwitch", DtpSwitch));
+
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HoursToPredict", HoursToPredict));
+    }
+
+    private bool _loading = false;
+
+    async Task Loading()
+    {
+        _loading = true;
+        SaveSettingsToJSON();
+        await Task.Delay(2000);
+        _loading = false;
     }
 }

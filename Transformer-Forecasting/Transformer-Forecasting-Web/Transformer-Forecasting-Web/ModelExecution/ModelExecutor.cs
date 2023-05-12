@@ -6,7 +6,7 @@ namespace Transformer_Forecasting_Web.ModelExecution
 {
     public class ModelExecutor
     {
-        public void RunLinearModel(string periodDescription, string startPredictDate, string endPredictDate, int model = 1, bool newData = false)
+        public void RunLinearModel(bool newData = false)
         {
             ProcessStartInfo start = new ProcessStartInfo();
 
@@ -18,8 +18,9 @@ namespace Transformer_Forecasting_Web.ModelExecution
 
             // Json Builder
             GlobalJsonBuilder.jsonBuilder.BuildJson();
+            GlobalJsonBuilder.jsonBuilder.ResetParam();
 
-            start.Arguments = string.Format("{0} \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\"", executionProductionPath, periodDescription, startPredictDate, endPredictDate, newData, model);
+            start.Arguments = string.Format("{0} \"{1}\"", executionProductionPath, newData);
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
             start.RedirectStandardError = true;

@@ -8,32 +8,21 @@ public class GlobalJsonBuilder
 
     public class JsonBuilder
     {
-        class Parameter
-        {
-            private string paramName;
-            private bool paramStatus;
+        List<Object> parameters = new List<Object>();
 
-            public Parameter(string name, bool status)
-            {
-                paramName = name;
-                paramStatus = status;
-            }
-        }
-        Parameter CreateObject(string paramName, bool status)
+        public void AddParam(object obj)
         {
-            Parameter param = new Parameter(paramName, status);
-            return param;
+            parameters.Add(obj);
         }
 
-        List<Parameter> parameters = new List<Parameter>();
-
-        public void AddParam(string paramName, bool status)
+        public void ResetParam()
         {
-            parameters.Add(CreateObject(paramName, status));
+            parameters.Clear();
         }
 
         public void BuildJson()
         {
+            //parameters.Sort();
             var jsonSetting = JsonConvert.SerializeObject(parameters, Formatting.Indented);
             File.WriteAllText("params.json", jsonSetting);
         }

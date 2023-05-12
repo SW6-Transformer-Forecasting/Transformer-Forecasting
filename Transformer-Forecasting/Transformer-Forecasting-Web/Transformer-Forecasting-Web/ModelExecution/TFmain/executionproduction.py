@@ -28,7 +28,7 @@ data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 dataTransformer = TransformData()
 
 # Pytorch
-if(model_choice == "1"):
+if(model_choice == "LFP"):
         pytorch = PyTorch(cwd, data, dataTransformer) # Missing Opt Argument; load_model
         pytorch.train_model(cwd) # Missing Opt Argument; save_model
         predictions = pytorch.predict_future()
@@ -36,7 +36,7 @@ if(model_choice == "1"):
         inversed_prediction = scaler.inverse_transform(predictions)
 
 # Linear model
-if(model_choice == "2"):
+if(model_choice == "DTP"):
         dataHandler = DataHandler(periodDescription, startPredictDate, endPredictDate, dataTransformer)
 
         # Uses the prepared data and creates Linear models for the prediction task

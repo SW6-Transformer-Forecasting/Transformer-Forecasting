@@ -1,0 +1,74 @@
+[
+  {
+    "Item1": "HUFL",
+    "Item2": true
+  },
+  {
+    "Item1": "MUFL",
+    "Item2": true
+  },
+  {
+    "Item1": "LUFL",
+    "Item2": true
+  },
+  {
+    "Item1": "HULL",
+    "Item2": false
+  },
+  {
+    "Item1": "MULL",
+    "Item2": false
+  },
+  {
+    "Item1": "LULL",
+    "Item2": false
+  },
+  {
+    "Item1": "LR",
+    "Item2": 0.0005
+  },
+  {
+    "Item1": "SwitchYear",
+    "Item2": true
+  },
+  {
+    "Item1": "SwitchMonth",
+    "Item2": true
+  },
+  {
+    "Item1": "SwitchDay",
+    "Item2": true
+  },
+  {
+    "Item1": "SwitchHour",
+    "Item2": false
+  },
+  {
+    "Item1": "SwitchWeekday",
+    "Item2": false
+  },
+  {
+    "Item1": "SwitchWOY",
+    "Item2": false
+  },
+  {
+    "Item1": "SwitchQuarter",
+    "Item2": false
+  },
+  {
+    "Item1": "DtpSwitch",
+    "Item2": false
+  },
+  {
+    "Item1": "HoursToPredict",
+    "Item2": 24
+  },
+  {
+    "Item1": "model",
+    "Item2": "LFP"
+  },
+  {
+    "Item1": "periodDescription",
+    "Item2": "Final final test"
+  }
+]
