@@ -59,7 +59,7 @@
             GlobalJsonBuilder.jsonBuilder.AddParam(("periodDescription", periodDescription));
             GlobalJsonBuilder.jsonBuilder.BuildJson();
             GlobalJsonBuilder.jsonBuilder.ResetParam();
-            //modelExecution.RunLinearModel(); This runs model. Remove comment when done
+            //modelExecution.RunPythonScript(); This runs model. Remove comment when done
             MudDialog.Close(DialogResult.Ok(true));
         }
         else

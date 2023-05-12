@@ -14,7 +14,7 @@ startPredictDate = 1
 endPredictDate = 1
 
 new_data = False
-model_choice = "2"
+model_choice = "DTP"
 periodDescription = sys.argv[1]
 # hoursToPredictAhead = sys.argv[2]
 
@@ -39,7 +39,7 @@ if(model_choice == "LFP"):
         inversed_prediction = scaler.inverse_transform(predictions)
 
 # Linear model
-if(model_choice == "2"):
+if(model_choice == "DTP"):
         dataHandler = DataHandler(periodDescription, 0, dataTransformer)
 
         # Uses the prepared data and creates Linear models for the prediction task
