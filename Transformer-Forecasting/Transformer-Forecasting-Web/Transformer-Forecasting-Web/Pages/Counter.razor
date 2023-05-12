@@ -27,6 +27,7 @@
     {
         string arguments = string.Format("{0} \"{1}\"", @"./ModelExecution/TFmain/executionproduction.py", "periodDescriptionTest");
         modelExecution.RunPythonScript(arguments);
+
         currentCount++;
     }
 
@@ -36,6 +37,4 @@
         modelExecution.RunPythonScript(arguments);
         currentCount++;
     }
-
-
 }

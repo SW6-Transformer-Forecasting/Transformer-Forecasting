@@ -31,7 +31,7 @@ data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 dataTransformer = TransformData()
 
 # Pytorch
-if(model_choice == "1"):
+if(model_choice == "LFP"):
         pytorch = PyTorch(cwd, data, dataTransformer) # Missing Opt Argument; load_model
         pytorch.train_model(cwd) # Missing Opt Argument; save_model
         predictions = pytorch.predict_future()

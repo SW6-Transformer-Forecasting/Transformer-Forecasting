@@ -7,39 +7,39 @@
 <PageTitle>Index</PageTitle>
 
 
-        @if (forecasts == null)
+@if (forecasts == null)
 {
     <p><em>Loading...</em></p>
 }
 else
-{       
-    <MudPaper>
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" >
-            <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" @onclick="@(() => OpenDialog())">
-                <ToolBarContent>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
-                        <MudSpacer></MudSpacer>
-                        <MudContainer MaxWidth="MaxWidth.Small">
-                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                        </MudContainer>
-                </ToolBarContent>
-                <HeaderContent>
-                    <MudTd>Model</MudTd>
-                    <MudTh>Periode Description</MudTh>
-                    <MudTh>Start date</MudTh>
-                    <MudTh>End date</MudTh>
-                </HeaderContent>
-                <RowTemplate> 
-                    <MudTd>@context.Model</MudTd>
-                    <MudTd>@context.PeriodDescription</MudTd>
-                    <MudTd>@context.StartDate</MudTd>
-                    <MudTd>@context.EndDate</MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager></MudTablePager>
-                </PagerContent>
-            </MudTable>
-        </MudContainer>
+{
+    <MudPaper Class="pa-4 mx-lg-auto " Style="@($"background:{Theme.Palette.BackgroundGrey};")">
+            <MudGrid>
+                <MudItem Class="d-flex ml-6 my-2 gap-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => CreatePredictionDialog())">New Prediction</MudButton>
+                </MudItem>
+            </MudGrid>
+        
+            <MudContainer MaxWidth="MaxWidth.ExtraLarge" >
+                <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="Prediction" OnRowClick="@OpenDialog">
+                    <ToolBarContent>
+                         <MudText Typo="Typo.h6">Predictions</MudText>
+                         <MudSpacer />
+                         <MudTextField Class="d-flex flex-row-reverse mt-0 pr-3" Style="width: 400px;" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTd>Model</MudTd>
+                        <MudTh>Periode Description</MudTh>
+                    </HeaderContent>
+                    <RowTemplate> 
+                        <MudTd>@context.Model</MudTd>
+                        <MudTd>@context.PeriodDescription</MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager></MudTablePager>
+                    </PagerContent>
+                </MudTable>
+            </MudContainer>
     </MudPaper>
 }
 
@@ -47,10 +47,11 @@ else
     private IEnumerable<Prediction> forecasts = new List<Prediction>();
     private string searchString1 = "";
     private Prediction selectedItem = new Prediction();
-    private Prediction foo0 = new Prediction(1, "linear", "string", DateTime.Now, DateTime.Now.AddHours(1));
-    private Prediction foo1 = new Prediction(2, "Nlinear", "string", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1).AddHours(1));
-    private Prediction foo2 = new Prediction(3, "linear", "string", DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(2));
+    private Prediction foo0 = new Prediction(1, "linear", "string");
+    private Prediction foo1 = new Prediction(2, "Nlinear", "string");
+    private Prediction foo2 = new Prediction(3, "linear", "string");
     private List<Prediction> lol = new List<Prediction>();
+    private MudTheme Theme = new MudTheme();
 
 
 
@@ -63,7 +64,7 @@ else
         forecasts = lol;
     }
 
-    void OpenDialog()
+    public void OpenDialog(TableRowClickEventArgs<Prediction> p)
     {
         var parameters = new DialogParameters{["prediction"]=selectedItem};
         //var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -73,7 +74,7 @@ else
             FullWidth = true,
             MaxWidth = MaxWidth.Large,
             CloseButton = true,
-            DisableBackdropClick = true,
+            DisableBackdropClick = false,
             NoHeader = false,
             Position = DialogPosition.Center,
             CloseOnEscapeKey = true
@@ -87,9 +88,9 @@ else
         var options = new DialogOptions
         {
             FullWidth = true,
-            MaxWidth = MaxWidth.Large,
+            MaxWidth = MaxWidth.Small,
             CloseButton = true,
-            DisableBackdropClick = true,
+            DisableBackdropClick = false,
             NoHeader = false,
             Position = DialogPosition.Center,
             CloseOnEscapeKey = true
