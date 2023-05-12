@@ -7,13 +7,44 @@
         
         <!--To be changed when graph is put in-->
         
-        <MudStack Row="true" Justify="_justify">
-            <MudText>@prediction.Model</MudText>
-            <MudText>@prediction.PeriodDescription</MudText>
-            <MudText>@prediction.StartDate</MudText>
-            <MudText>@prediction.EndDate</MudText>
-        </MudStack>
-        <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350" ChartOptions="options"></MudChart>
+        <MudPaper Style="@($"background:{Theme.Palette.BackgroundGrey};")">
+            <MudStack Row="true">
+                <MudStack>
+                    <MudContainer>
+                        <MudPaper Class="pa-2 ma-2" Style="@($"background:{Theme.Palette.BackgroundGrey};")"  Elevation="0" MinWidth="100px" MaxWidth="200px">
+                            <MudGrid>
+                                <MudItem xs="12">
+                                    <MudPaper Class="pa-1 mt-2 px-2">
+                                        <MudText Typo="Typo.h6" >Model</MudText>
+                                        <MudText>@prediction.Model</MudText>
+                                    </MudPaper>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudPaper Class="pa-1 px-2">
+                                        <MudText Typo="Typo.h6">Description</MudText>
+                                        <MudText>@prediction.PeriodDescription</MudText>
+                                    </MudPaper>
+                                </MudItem>
+                                <MudItem xs="12">
+                                        <MudPaper Class="pa-1 px-2">
+                                        <MudText Typo="Typo.h6">Start Date</MudText>
+                                        <MudText>@prediction.StartDate</MudText>
+                                    </MudPaper>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudPaper Class="pa-1 mb-2 px-2">
+                                        <MudText Typo="Typo.h6">End Date</MudText>
+                                        <MudText>@prediction.EndDate</MudText>
+                                    </MudPaper>
+                                </MudItem>                        
+                            </MudGrid>
+                        </MudPaper>
+                    </MudContainer>
+                </MudStack>
+                <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350" ChartOptions="options"></MudChart>
+            </MudStack>
+        </MudPaper>
+        
     
     </DialogContent>
     <DialogActions>
@@ -26,6 +57,8 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter] public Prediction prediction { get; set; }
+
+    private MudTheme Theme = new MudTheme();
 
     public List<ChartSeries> Series = new List<ChartSeries>() { };
     private ChartOptions options = new ChartOptions();
@@ -57,9 +90,6 @@
 
 
         AddToGraph();
-
-        //    if (prediction.LFP_Value != null)
-        //        Series.Add(new ChartSeries() { Name = "model", Data = prediction.LFP_Value });
     }
 
     //add to current graph
