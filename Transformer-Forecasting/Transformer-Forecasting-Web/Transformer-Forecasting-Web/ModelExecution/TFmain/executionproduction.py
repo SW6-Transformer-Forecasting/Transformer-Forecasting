@@ -5,15 +5,18 @@ from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
 from DataHandling.dataFilter import DataFilter
 import pandas
+import numpy
 import sys
 import math
 import os
 
+startPredictDate = 1
+endPredictDate = 1
+
+new_data = False
+model_choice = "2"
 periodDescription = sys.argv[1]
-startPredictDate = sys.argv[2]
-endPredictDate = sys.argv[3]
-new_data = sys.argv[4]
-model_choice = sys.argv[5]
+# hoursToPredictAhead = sys.argv[2]
 
 cwd = os.getcwd()
 
@@ -36,8 +39,8 @@ if(model_choice == "LFP"):
         inversed_prediction = scaler.inverse_transform(predictions)
 
 # Linear model
-if(model_choice == "DTP"):
-        dataHandler = DataHandler(periodDescription, startPredictDate, endPredictDate, dataTransformer)
+if(model_choice == "2"):
+        dataHandler = DataHandler(periodDescription, 0, dataTransformer)
 
         # Uses the prepared data and creates Linear models for the prediction task
         modelData = dataHandler.linearModelInformation
@@ -46,9 +49,8 @@ if(model_choice == "DTP"):
 
         predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
 
-        predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe, 4, False)
+        predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
 
-        print(predictedOTInversed)
 
 
 # SQL Starts here
@@ -69,10 +71,11 @@ else:
 
 print(max_group_id)
 
-x_predict = pandas.DataFrame(modelData.x_predict, columns= ["month", "day", "hour", "weekday"])
+x_predict = pandas.DataFrame(modelData.x_predict, columns= ["month", "day", "hour", "quarter"])
 x_predict["OT"] = 0
 
 x_predict = dataTransformer.InverseDates(x_predict)
+
 
 dateStamp = ""
 for x in range(linearRegression.predictedOT.size):
@@ -87,7 +90,7 @@ for x in range(linearRegression.predictedOT.size):
                               (max_group_id, max_row_id))
     
     QueryExecutor.InsertQuery("INSERT INTO linear_predictions (row_id, dateStamp, OTPrediction) VALUES (%s, %s, %s)",
-                        (max_row_id, dateStamp, predictedOTInversed[x]))
+                        (max_row_id, dateStamp, predictedOTInversed[x][0]))
     
     max_row_id += 1
     

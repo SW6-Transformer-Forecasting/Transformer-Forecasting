@@ -6,6 +6,7 @@ from torch import nn
 from Models.pytorch import PyTorch
 from DataHandling.datatransformerproduction import TransformData
 from sklearn.model_selection import train_test_split
+from DataHandling.dataFilter import DataFilter
 
 cwd = os.getcwd()
 dataTransformer = TransformData()

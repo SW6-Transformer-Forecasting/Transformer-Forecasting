@@ -1,10 +1,10 @@
 import mysql.connector
 
 databaseConnection = mysql.connector.connect(
-    host="transformer-data.mysql.database.azure.com",
-    user="Gud",
-    password="#patrickpatrickjuliankristoffer123",
-    database="transformerpredictiondata"
+    host="transformerforecastingdata.mysql.database.azure.com",
+    user="gud",
+    password="transformereerseje2023!",
+    database="data"
 )
 
 cursor = databaseConnection.cursor()

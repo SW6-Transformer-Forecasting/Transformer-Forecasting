@@ -6,7 +6,7 @@ namespace Transformer_Forecasting_Web.ModelExecution
 {
     public class ModelExecutor
     {
-        public void RunLinearModel(bool newData = false)
+        public void RunPythonScript(string arguments)
         {
             ProcessStartInfo start = new ProcessStartInfo();
 
@@ -14,13 +14,11 @@ namespace Transformer_Forecasting_Web.ModelExecution
             var Local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Python"); // Gets Appdata/Local folder path
             start.FileName = Directory.GetFiles(Local, "python.exe", SearchOption.AllDirectories)[0]; // Searches for python.exe within the Local folder, no matter version, and returns first result
 
-            string executionProductionPath = @"./ModelExecution/TFmain/executionproduction.py";
-
             // Json Builder
             GlobalJsonBuilder.jsonBuilder.BuildJson();
             GlobalJsonBuilder.jsonBuilder.ResetParam();
 
-            start.Arguments = string.Format("{0} \"{1}\"", executionProductionPath, newData);
+            start.Arguments = arguments;
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
             start.RedirectStandardError = true;

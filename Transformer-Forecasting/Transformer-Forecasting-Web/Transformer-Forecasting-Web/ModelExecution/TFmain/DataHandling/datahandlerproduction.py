@@ -27,9 +27,7 @@ class DataHandler:
     predictDataAsDatetime = []
     linearModelInformation = []
     
-    def __init__(self, periodDescription, startPredictDate, endPredictDate, dataTransformer):
-        self.GetTrainPeriodData(startPredictDate)
-        self.ConvertPredictValuesToDatetime(startPredictDate, endPredictDate)
+    def __init__(self, periodDescription, hoursToPredictAhead, dataTransformer):
         self.SetupTrainPredictData(periodDescription, dataTransformer)
 
     def ConvertPredictValuesToDatetime(self, startPredictDate, endPredictDate):
@@ -58,31 +56,38 @@ class DataHandler:
 
         # data['datetime'] = pandas.to_datetime(data['date'])
                     
-        # gets the training data from the ETTh1 dataset
-        trainingData = data[(data['date'] >= self.trainDataInformation[0]) & (data['date'] < self.trainDataInformation[1])]
-        
-        trainingData = self.ApplyDateValuesSplit(trainingData, True)
-
+        # gets the training data from the outlier-filtered dataset
+        trainingData = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\ETTh1OutliersRemoved.csv", usecols=["month", "day", "hour", "quarter", "OT"])
+        print(trainingData)
+        numberOfColumns = trainingData.shape[1] - 1
+        x_columns = []
+        for i in range(numberOfColumns):
+            x_columns.append(i)
+        print("BEFORE")
+        print(trainingData)
         # normalizes the data
-        trainingData = dataTransformer.FitAndTransformData(trainingData)
+        normalizedTrainingData = dataTransformer.FitAndTransformData(trainingData)
 
         # Possible features: 'year', 'month', 'day', 'hour', 'weekday', 'weekofyear', 'quarter'
         
-        x_train = trainingData[:, [0, 1, 2, 3]]
-        y_train = trainingData[:, [4]]
+        x = numpy.delete(normalizedTrainingData, numberOfColumns, axis=1)
+        y = normalizedTrainingData[:, numberOfColumns]
 
-        datePredictValues = self.GetDatePredictValues()
+        datePredictValues = self.GetDatePredictValues("2018-06-26 19:00:00")
         
         x_predict = pandas.DataFrame(datePredictValues)
         x_predict.columns = ['date']
         x_predict = self.ApplyDateValuesSplit(x_predict, False)
-
-        
+        print("AFTER")
+        print(x_predict)
         x_predict = dataTransformer.TransformData(x_predict)
+        dataTransformer.SaveOTScaler(numberOfColumns)
 
-        x_predict = numpy.delete(x_predict, 4, 1)
+        # deletes the OT column
+        x_predict = numpy.delete(x_predict, numberOfColumns, 1)
 
-        self.linearModelInformation = ModelDataProduction(periodDescription, x_train, y_train, x_predict)
+        self.linearModelInformation = ModelDataProduction(periodDescription, x, y, x_predict)
+        
         
     # Handles the date split depending on if the data is the training data or the input to predict on
     def ApplyDateValuesSplit(self, data, isTrainingData):
@@ -91,28 +96,23 @@ class DataHandler:
             return data.apply(lambda row: pandas.Series({"month":row.datetime.month, 
                                                          "day":row.datetime.day, 
                                                          "hour":row.datetime.hour, 
-                                                         "weekday":row.datetime.weekday(),
+                                                         "quarter":row.datetime.weekday(),
                                                          "OT": row.OT}), axis=1)
         else:
-            return data.apply(lambda row: pandas.Series({"month":row.datetime.month, 
+            return data.apply(lambda row: pandas.Series({"month":row.datetime.month,
                                                          "day":row.datetime.day, 
-                                                         "hour":row.datetime.hour, 
-                                                         "weekday":row.datetime.weekday(),
+                                                         "hour":row.datetime.hour,   
+                                                         "quarter":row.datetime.quarter,
                                                          "OT": 0}), axis=1)
 
 
     # Loops through the start date to the end date hourly and returns an array of their string representations
-    def GetDatePredictValues(self):
-        startPredictDate = self.predictDataAsDatetime[0]
-        endPredictDate = self.predictDataAsDatetime[1]
-
-        datePredictValues = []
-        hour_delta = timedelta(hours=1)
-
-        while startPredictDate <= endPredictDate:
-            datePredictValues += [str(startPredictDate)]
-            startPredictDate += hour_delta
-
+    def GetDatePredictValues(self, dateToPredictFrom):
+        dateToPredictFrom = datetime.strptime(dateToPredictFrom, "%Y-%m-%d %H:%M:%S")
+        dates = []
+        for i in range(24):
+            dateToPredictFrom += timedelta(hours=1)
+            dates += [str(dateToPredictFrom)]
+            
+        return dates
         
-
-        return datePredictValues
