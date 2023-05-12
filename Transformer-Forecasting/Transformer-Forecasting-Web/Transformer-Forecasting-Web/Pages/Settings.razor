@@ -54,17 +54,18 @@
                          <MudGrid>
                              <MudItem Class="p-3" xs="6">
                                  <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
-                                    <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchYear"Color="Color.Primary"Label="Year"/>
+                                    <MudText>Recommended</MudText>
                                     <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchMonth"Color="Color.Primary"Label="Month"/>
                                     <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchDay"Color="Color.Primary"Label="Day"/>
+                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchHour" Color="Color.Primary" Label="Hour"/>
+                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchQuarter" Color="Color.Primary" Label="Quarter"/>
                                 </MudContainer>
                              </MudItem>
                              <MudItem Class="p-3" xs="6">
                                  <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
-                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchHour" Color="Color.Primary" Label="Hour"/>
+                                    <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchYear"Color="Color.Primary"Label="Year"/>
                                     <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchWeekday" Color="Color.Primary" Label="Weekday"/>
                                     <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1 text-nowrap" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchWOY" Color="Color.Primary" Label="W/O Year"/>
-                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchQuarter" Color="Color.Primary" Label="Quarter"/>
                                 </MudContainer>
                              </MudItem>
                              <MudItem Class="pt-2" xs="12">
@@ -116,13 +117,13 @@
     public bool LULL { get; set; } = false;
 
     //DTP model hyperparameters
-    public bool SwitchYear { get; set; } = true;
+    public bool SwitchYear { get; set; } = false;
     public bool SwitchMonth { get; set; } = true;
     public bool SwitchDay { get; set; } = true;
-    public bool SwitchHour { get; set; } = false;
+    public bool SwitchHour { get; set; } = true;
     public bool SwitchWeekday { get; set; } = false;
     public bool SwitchWOY { get; set; } = false;
-    public bool SwitchQuarter { get; set; } = false;
+    public bool SwitchQuarter { get; set; } = true;
 
 
     void resetLFP()
@@ -137,13 +138,13 @@
 
     void resetDTP()
     {
-        SwitchYear = true;
+        SwitchYear = false;
         SwitchMonth = true;
         SwitchDay = true;
-        SwitchHour = false;
+        SwitchHour = true;
         SwitchWeekday = false;
         SwitchWOY = false;
-        SwitchQuarter = false;
+        SwitchQuarter = true;
     }
 
     int HoursToPredict = 24;
@@ -183,6 +184,8 @@
         GlobalJsonBuilder.jsonBuilder.AddParam(("DtpSwitch", DtpSwitch));
 
         GlobalJsonBuilder.jsonBuilder.AddParam(("HoursToPredict", HoursToPredict));
+
+        GlobalJsonBuilder.jsonBuilder.BuildJson();
     }
 
     private bool _loading = false;
