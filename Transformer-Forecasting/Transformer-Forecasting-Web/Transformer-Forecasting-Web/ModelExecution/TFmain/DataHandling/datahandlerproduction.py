@@ -1,5 +1,5 @@
 from DataHandling.linearmodeldataproduction import ModelDataProduction
-from readJSONParams import JsonParams
+from DataHandling.readJSONParams import JsonParams
 import pandas
 import numpy
 import warnings
@@ -25,9 +25,9 @@ class DataHandler:
     trainDataInformation = []
     predictDataAsDatetime = []
     linearModelInformation = []
-    dateValues = JsonParams.GetDateValues()
+    dateValues = JsonParams.GetIncludedDateValues()
     
-    def __init__(self, periodDescription, hoursToPredictAhead, dataTransformer):
+    def __init__(self, periodDescription, dataTransformer):
         self.SetupTrainPredictData(periodDescription, dataTransformer)
     
     def ConvertStringToDatetime(self, dateString):
@@ -35,7 +35,6 @@ class DataHandler:
             
     def SetupTrainPredictData(self, periodDescription, dataTransformer):    
         # gets the training data from the outlier-filtered dataset
-        
         trainingData = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\ETTh1OutliersRemoved.csv", usecols=self.dateValues + ["OT"])
         numberOfColumns = trainingData.shape[1] - 1
         x_columns = []
@@ -50,7 +49,7 @@ class DataHandler:
         y = normalizedTrainingData[:, numberOfColumns]
 
         datePredictValues = self.GetDatePredictValues("2018-06-26 19:00:00")
-        
+
         x_predict = pandas.DataFrame(datePredictValues)
         x_predict.columns = ['date']
         x_predict = self.ApplyDateValuesSplit(x_predict)
@@ -66,21 +65,24 @@ class DataHandler:
     # Sets the input dates up for normalization and prediction
     def ApplyDateValuesSplit(self, data):
         data['datetime'] = pandas.to_datetime(data['date'])
-        
-        
-        
-        return data.apply(lambda row: pandas.Series({"month":row.datetime.month,
-                                                         "day":row.datetime.day, 
-                                                         "hour":row.datetime.hour,   
-                                                         "quarter":row.datetime.quarter,
-                                                         "OT": 0}), axis=1)
+        dateSplit = data.apply(lambda row: pandas.Series({"year": row.datetime.year,
+                                                          "month":row.datetime.month,
+                                                          "day":row.datetime.day, 
+                                                          "hour":row.datetime.hour, 
+                                                          "weekday": row.datetime.weekday(),
+                                                          "weekofyear": row.datetime.weekofyear,  
+                                                          "quarter":row.datetime.quarter,
+                                                          "OT": 0}), axis=1)
+        notIncludedDateValues = JsonParams.GetNotIncludedDateValues()
+        dateSplit = dateSplit.drop(columns=notIncludedDateValues)
+        return dateSplit
 
 
     # Loops through the start date to the end date hourly and returns an array of their string representations
     def GetDatePredictValues(self, dateToPredictFrom):
         dateToPredictFrom = self.ConvertStringToDatetime(dateToPredictFrom)
         dates = []
-        for i in range(24):
+        for i in range(JsonParams.HoursToPredict):
             dateToPredictFrom += timedelta(hours=1)
             dates += [str(dateToPredictFrom)]
             

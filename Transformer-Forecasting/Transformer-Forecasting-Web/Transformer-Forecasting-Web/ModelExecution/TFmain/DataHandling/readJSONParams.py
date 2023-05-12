@@ -3,8 +3,8 @@ import os
 
 cwd = os.getcwd()
 
-jsonFile = open(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\params.json")
-# jsonFile = open(cwd + "\params.json")
+# jsonFile = open(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\params.json")
+jsonFile = open(cwd + "\params.json")
 
 data = json.load(jsonFile)
 
@@ -22,11 +22,12 @@ Hour = data[10]["Item2"]
 Weekday = data[11]["Item2"]
 Weekofyear = data[12]["Item2"]
 Quarter = data[13]["Item2"]
-DTPswitch = data[14]["Item2"]
-HoursToPredict = data[15]["Item2"]
 
 class JsonParams(): 
-    def GetDateValues(self):
+    DTPswitch = data[14]["Item2"]
+    HoursToPredict = data[15]["Item2"]
+    
+    def GetIncludedDateValues():
         dateValues = []
         if(Year): dateValues.append("year")
         if(Month): dateValues.append("month")
@@ -38,5 +39,15 @@ class JsonParams():
         
         return dateValues
     
-test = JsonParams()
-print(test.GetDateValues() + ["OT"])
+    def GetNotIncludedDateValues():
+        dateValues = []
+        if(not Year): dateValues.append("year")
+        if(not Month): dateValues.append("month")
+        if(not Day): dateValues.append("day")
+        if(not Hour): dateValues.append("hour")
+        if(not Weekday): dateValues.append("weekday")
+        if(not Weekofyear): dateValues.append("weekofyear")
+        if(not Quarter): dateValues.append("quarter")
+        
+        return dateValues   
+    

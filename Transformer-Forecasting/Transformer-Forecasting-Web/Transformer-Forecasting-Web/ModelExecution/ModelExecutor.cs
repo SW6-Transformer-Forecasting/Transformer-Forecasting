@@ -16,7 +16,6 @@ namespace Transformer_Forecasting_Web.ModelExecution
 
             // Json Builder
             GlobalJsonBuilder.jsonBuilder.BuildJson();
-            GlobalJsonBuilder.jsonBuilder.ResetParam();
 
             start.Arguments = arguments;
             start.UseShellExecute = false;

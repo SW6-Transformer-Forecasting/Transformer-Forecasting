@@ -4,8 +4,8 @@ from Models.pytorch import PyTorch
 from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
 from DataHandling.dataFilter import DataFilter
+from DataHandling.readJSONParams import JsonParams
 import pandas
-import numpy
 import sys
 import math
 import os
@@ -40,7 +40,7 @@ if(model_choice == "LFP"):
 
 # Linear model
 if(model_choice == "DTP"):
-        dataHandler = DataHandler(periodDescription, 0, dataTransformer)
+        dataHandler = DataHandler(periodDescription, dataTransformer)
 
         # Uses the prepared data and creates Linear models for the prediction task
         modelData = dataHandler.linearModelInformation
@@ -69,13 +69,10 @@ else:
     max_group_id = 1
     max_row_id = 1
 
-print(max_group_id)
-
-x_predict = pandas.DataFrame(modelData.x_predict, columns= ["month", "day", "hour", "quarter"])
+x_predict = pandas.DataFrame(modelData.x_predict, columns=JsonParams.GetIncludedDateValues())
 x_predict["OT"] = 0
 
 x_predict = dataTransformer.InverseDates(x_predict)
-
 
 dateStamp = ""
 for x in range(linearRegression.predictedOT.size):
@@ -90,7 +87,7 @@ for x in range(linearRegression.predictedOT.size):
                               (max_group_id, max_row_id))
     
     QueryExecutor.InsertQuery("INSERT INTO linear_predictions (row_id, dateStamp, OTPrediction) VALUES (%s, %s, %s)",
-                        (max_row_id, dateStamp, predictedOTInversed[x][0]))
+                        (max_row_id, dateStamp, float(predictedOTInversed[x][0])))
     
     max_row_id += 1
     
