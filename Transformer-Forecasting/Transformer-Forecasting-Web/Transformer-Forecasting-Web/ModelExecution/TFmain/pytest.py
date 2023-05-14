@@ -10,15 +10,21 @@ from DataHandling.dataFilter import DataFilter
 
 cwd = os.getcwd()
 dataTransformer = TransformData()
+new_data = False
 
-data = pandas.read_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata.csv")
+if (new_data == True):
+        dfilter = DataFilter()
+        data_to_filter = dfilter.fetch("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\ETTh1.csv")
+        dfilter.execute(data_to_filter, cwd)
+
+data = pandas.read_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata_test.csv")
 
 # We ignore train set here, as we create it when in TEST_MODE in the model
-train, test = train_test_split(data, test_size=0.004, shuffle=False)
+train, test = train_test_split(data, test_size=0.002, shuffle=False)
 OT_data = test[['OT']]
 OT_data = OT_data.to_numpy()
 
-pytorch = PyTorch(cwd, data, dataTransformer, True, True)
+pytorch = PyTorch(cwd, data, dataTransformer, False, True) # Bools: load_model & TEST_MODE
 pytorch.train_model(cwd, False, False)
 predictions = pytorch.predict_future()
 
@@ -29,6 +35,8 @@ scaler = dataTransformer.getScaler()
 inversed_prediction = scaler.inverse_transform(predictions)
 
 index = 0
+print(OT_data.size)
+print(inversed_prediction.size)
 for x in range(OT_data.size):
     print(f"{OT_data[index][0]} and {inversed_prediction[index][0]}")
     index +=1

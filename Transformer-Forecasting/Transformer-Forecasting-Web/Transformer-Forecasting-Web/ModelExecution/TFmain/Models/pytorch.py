@@ -29,7 +29,7 @@ class PyTorch:
     def __init__(self, cwd, data, dataTransformer, load_model = False, TEST_MODE = False):
         if (TEST_MODE == True):
             # We ignore test set here, as we dont need that on the model in TEST_MODE, as its in the Test code
-            train, test = train_test_split(data, test_size=0.004, shuffle=False)
+            train, test = train_test_split(data, test_size=0.002, shuffle=False)
             data = train
         self.setup_data(data, dataTransformer)
         if (load_model == True):
@@ -62,7 +62,7 @@ class PyTorch:
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 100
+        n_epochs = 10
         batch_size = 1
 
         for epoch in range(n_epochs):
