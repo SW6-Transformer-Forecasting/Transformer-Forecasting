@@ -7,11 +7,31 @@
         
         <!--To be changed when graph is put in-->
         
-        <MudStack Row="true" Justify="_justify">
-            <MudText>@prediction.Model</MudText>
-            <MudText>@prediction.PeriodDescription</MudText>
-        </MudStack>
-        
+        <MudPaper Style="@($"background:{Theme.Palette.BackgroundGrey};")">
+            <MudStack Row="true">
+                <MudStack>
+                    <MudContainer>
+                        <MudPaper Class="pa-2 ma-2" Style="@($"background:{Theme.Palette.BackgroundGrey};")"  Elevation="0" MinWidth="100px" MaxWidth="200px">
+                            <MudGrid>
+                                <MudItem xs="12">
+                                    <MudPaper Class="pa-1 mt-2 px-2">
+                                        <MudText Typo="Typo.h6" >Model</MudText>
+                                        <MudText>@prediction.Model</MudText>
+                                    </MudPaper>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudPaper Class="pa-1 px-2">
+                                        <MudText Typo="Typo.h6">Description</MudText>
+                                        <MudText>@prediction.PeriodDescription</MudText>
+                                    </MudPaper>
+                                </MudItem>                       
+                            </MudGrid>
+                        </MudPaper>
+                    </MudContainer>
+                </MudStack>
+                <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350" ChartOptions="options"></MudChart>
+            </MudStack>
+        </MudPaper>        
     
     </DialogContent>
     <DialogActions>
@@ -25,10 +45,57 @@
 
     [Parameter] public Prediction prediction { get; set; }
 
+    private MudTheme Theme = new MudTheme();
+
+    public List<ChartSeries> Series = new List<ChartSeries>() { };
+    private ChartOptions options = new ChartOptions();
+    double[] DTP_Value;
+    double[] LFP_Value;
+
+
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
 
     Justify _justify = Justify.SpaceEvenly;
+
+
+    //change labels to fit to the time period from the database
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    
+    
+    protected override void OnInitialized()
+    {
+        options.InterpolationOption = InterpolationOption.NaturalSpline;
+        //options.YAxisFormat = "c2";
+
+
+        if (prediction.LFP_Value != null)
+            LFP_Value = prediction.LFP_Value;
+
+        if (prediction.DTP_Value != null)
+            DTP_Value = prediction.DTP_Value;
+
+
+        AddToGraph();
+    }
+
+    //add to current graph
+    public void AddToGraph()
+    {
+        Series.Add(new ChartSeries() { Name = "Model 1", Data = DTP_Value.ToArray() });
+        Series.Add(new ChartSeries() { Name = "Model 2", Data = LFP_Value.ToArray() });
+    }
+
+    //creation of new graph
+    public void ChangeGraph()
+    {
+        var new_series = new List<ChartSeries>()
+        {
+            new ChartSeries() { Name = "test 1", Data = DTP_Value.ToArray() },
+            new ChartSeries() { Name = "test 2", Data = LFP_Value.ToArray() },
+        };
+        Series = new_series;
+    }
 
 
 }

@@ -51,7 +51,7 @@
 
     void Submit()
     {
-        prediction = new Prediction(id, model, periodDescription);
+        prediction = new Prediction(id, model, periodDescription, new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 }); //insert predicted values here
         id++;
         if(prediction.Model != "" && prediction.PeriodDescription != "")
         {
