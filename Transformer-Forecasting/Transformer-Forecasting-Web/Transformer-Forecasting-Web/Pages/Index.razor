@@ -4,7 +4,6 @@
 @inject IDialogService DialogService
 
 
-
 <PageTitle>Index</PageTitle>
 
 
@@ -31,14 +30,10 @@ else
                     <HeaderContent>
                         <MudTd>Model</MudTd>
                         <MudTh>Periode Description</MudTh>
-                        <MudTh>Start date</MudTh>
-                        <MudTh>End date</MudTh>
                     </HeaderContent>
                     <RowTemplate> 
                         <MudTd>@context.Model</MudTd>
                         <MudTd>@context.PeriodDescription</MudTd>
-                        <MudTd>@context.StartDate</MudTd>
-                        <MudTd>@context.EndDate</MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager></MudTablePager>
@@ -52,9 +47,9 @@ else
     private IEnumerable<Prediction> forecasts = new List<Prediction>();
     private string searchString1 = "";
     private Prediction selectedItem = new Prediction();
-    private Prediction foo0 = new Prediction(1, "linear", "string", DateTime.Now, DateTime.Now.AddHours(1), new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
-    private Prediction foo1 = new Prediction(2, "Nlinear", "string", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1).AddHours(1), new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
-    private Prediction foo2 = new Prediction(3, "linear", "string", DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(2), new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
+    private Prediction foo0 = new Prediction(1, "linear", "string", new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
+    private Prediction foo1 = new Prediction(2, "Nlinear", "string", new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
+    private Prediction foo2 = new Prediction(3, "linear", "string", new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
     private List<Prediction> lol = new List<Prediction>();
     private MudTheme Theme = new MudTheme();
 
@@ -90,7 +85,7 @@ else
     }
     void CreatePredictionDialog()
     {
-          var options = new DialogOptions
+        var options = new DialogOptions
         {
             FullWidth = true,
             MaxWidth = MaxWidth.Small,

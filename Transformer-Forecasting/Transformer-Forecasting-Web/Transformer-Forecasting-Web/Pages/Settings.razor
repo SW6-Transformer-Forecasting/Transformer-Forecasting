@@ -1,111 +1,222 @@
 ﻿@page "/settings"
 
+@using Transformer_Forecasting_Web.ModelExecution
+@inject ModelExecutor modelExecution
+
 <PageTitle>Settings</PageTitle>
 <MudStack>
     <MudPaper Elevation="3">
         <MudText Class="pa-2" Typo="Typo.subtitle1"> LFP Model </MudText>
         <MudGrid Class="pa-8">
             <MudItem md="3">
-                <MudText>Loads used for model</MudText>
+                <MudText>Hyperparameters for LFP model</MudText>
                 <MudPaper Class="pa-2" Outlined="true">
                      <MudGrid>
                          <MudItem Class="p-3" xs="6">
                              <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
-                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch1"Color="Color.Primary"Label="HUFL"/>
-                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch2"Color="Color.Primary"Label="MUFL"/>
-                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch3"Color="Color.Primary"Label="LUFL"/>
+                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@HUFL"Color="Color.Primary"Label="HUFL"/>
+                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@MUFL"Color="Color.Primary"Label="MUFL"/>
+                                <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@LUFL"Color="Color.Primary"Label="LUFL"/>
                             </MudContainer>
                          </MudItem>
                          <MudItem Class="p-3" xs="6">
                              <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
-                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch4" Color="Color.Primary" Label="HULL"/>
-                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch5" Color="Color.Primary" Label="MULL"/>
-                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@Basic_Switch6" Color="Color.Primary" Label="LULL"/>
+                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@HULL" Color="Color.Primary" Label="HULL"/>
+                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@MULL" Color="Color.Primary" Label="MULL"/>
+                                <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@LULL" Color="Color.Primary" Label="LULL"/>
                             </MudContainer>
                          </MudItem>
                          <MudItem Class="pt-2" xs="12">
                             <MudPaper Class="d-flex align-center justify-center mud-width-full" Elevation="0">
-                                <MudButton Class="align-content-center" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => reset())"> Reset to Default</MudButton>
+                                <MudButton Class="align-content-center" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => resetLFP())"> Reset to Default</MudButton>
                             </MudPaper>
                          </MudItem>
                     </MudGrid>
                 </MudPaper>
             </MudItem>
             <MudItem md="3">
-                <MudText>LFP Model Trainingset Size</MudText>
-                <MudSelect T="string" Class="pa-2" @bind-Value="@PytorchPeriodSelect" Variant="Variant.Outlined"> 
-                    <MudSelectItem Value="@("1 Month")"/>
-                    <MudSelectItem Value="@("3 Months")"/>
-                    <MudSelectItem Value="@("6 Months")"/>
-                    <MudSelectItem Value="@("1 Year (Recommended)")"/>
-                </MudSelect>
                 <MudPaper Class="pt-2" Elevation="0">
                         <MudText>Learning Rate</MudText>
-                        <MudSelect T="string" Class="pa-2" @bind-Value="@lrSelect" Variant="Variant.Outlined">
-                            <MudSelectItem Value="@("0.0005 (Recommended)")"/>                             
-                            <MudSelectItem Value="@("0.01")" />
-                            <MudSelectItem Value="@("0.001")" />
-                            <MudSelectItem Value="@("0.0001")" />
-                            <MudSelectItem Value="@("0.0001")" />
+                        <MudSelect T="double" Class="pa-2" @bind-Value="@lrSelect" Variant="Variant.Outlined">
+                            <MudSelectItem Value="@(0.0005)">Recommended: 0.0005 </MudSelectItem>                             
+                            <MudSelectItem Value="@(0.01)"/>
+                            <MudSelectItem Value="@(0.001)"/>
+                            <MudSelectItem Value="@(0.0001)"/>
+                            <MudSelectItem Value="@(0.0001)"/>
                         </MudSelect>
                 </MudPaper>
             </MudItem>
         </MudGrid>
         </MudPaper>
         <MudPaper Elevation="3">
-        <MudText Class="pb-3" Typo="Typo.subtitle1">DTP Model</MudText>
+        <MudText Class="pa-3" Typo="Typo.subtitle1">DTP Model</MudText>
             <MudGrid Class="pa-8" Justify="Justify.FlexStart">
+                <MudItem md="3">
+                    <MudText>Hyperparameters for DTP</MudText>
+                    <MudPaper Class="pa-2" Outlined="true">
+                         <MudGrid>
+                             <MudItem Class="p-3" xs="6">
+                                 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
+                                    <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchMonth"Color="Color.Primary"Label="Month"/>
+                                    <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchDay"Color="Color.Primary"Label="Day"/>
+                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchHour" Color="Color.Primary" Label="Hour"/>
+                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchQuarter" Color="Color.Primary" Label="Quarter"/>
+                                </MudContainer>
+                             </MudItem>
+                             <MudItem Class="p-3" xs="6">
+                                 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pl-12">
+                                    <MudSwitch Class="align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchYear"Color="Color.Primary"Label="Year"/>
+                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchWeekday" Color="Color.Primary" Label="Weekday"/>
+                                    <MudSwitch Class="d-flex align-center justify-center mud-width-full p-1 text-nowrap" Style="width: 105px; height: 38px;" @bind-Checked="@SwitchWOY" Color="Color.Primary" Label="W/O Year"/>
+                                </MudContainer>
+                             </MudItem>
+                             <MudItem Class="pt-2" xs="12">
+                                <MudPaper Class="d-flex align-center justify-center mud-width-full" Elevation="0">
+                                    <MudButton Class="align-content-center" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => resetDTP())"> Reset to Default</MudButton>
+                                </MudPaper>
+                             </MudItem>
+                        </MudGrid>
+                    </MudPaper>
+                </MudItem>
             <MudItem md="3">
-                <MudText>Model Trainingset Size</MudText>
-                <MudSelect T="string" Class="pa-2" @bind-Value="@LinearPeriodSelect" Variant="Variant.Outlined"> 
-                    <MudSelectItem Value="@("1 Week")"/>
-                    <MudSelectItem Value="@("1 Month (Recommended)")"/>
-                    <MudSelectItem Value="@("2 Months")"/>
-                    <MudSelectItem Value="@("3 Months")"/>
-                    <MudSelectItem Value="@("4 Months ")"/>
-                </MudSelect>
-            </MudItem>
-            <MudItem md="3">
-                <MudText Class="pb-3"> Hourly prediction mode</MudText>
-                <MudPaper Class="pa-2" Outlined="true" Style="width: 236,50px; height: 56px;">
-                        <MudSwitch Class="d-flex align-center justify-center mud-width-full pl-8" Style="width: 105px; height: 38px;" @bind-Checked="@Dtp_Switch" Color="Color.Primary"> @(hourly_mode_switch(Dtp_Switch))</MudSwitch>
+                <MudPaper Class="pb-8 pt-2" Elevation="0">
+                    <MudText>Predict Forward Amount</MudText>
+                    <MudContainer Class="pl-2 pt-2">
+                        <MudTextField T="int" @bind-Value="HoursToPredict" Label="Hours" HelperText="Recommended: 24" Variant="Variant.Outlined" />
+                    </MudContainer>
                 </MudPaper>
+                <MudText Class="pb-3"> Hourly prediction mode</MudText>
+                <MudContainer Class="pl-2">
+                    <MudPaper Class="pa-2" Outlined="true" Style="width: 236.50px; height: 56px;">
+                            <MudSwitch Class="d-flex align-center justify-center mud-width-full pl-8" Style="width: 105px; height: 38px;" @bind-Checked="@DtpSwitch" Color="Color.Primary"> @(hourlyModeSwitch(DtpSwitch))</MudSwitch>
+                    </MudPaper>
+                </MudContainer>
             </MudItem>
         </MudGrid>
         </MudPaper>
+        <MudContainer Elevation="3" Class="d-flex align-center justify-content-center">
+            <MudButton Disabled="@_loading" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@(() => Loading())">
+        @if (_loading)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Saving</MudText>
+        }
+        else
+        {
+            <MudText>Save to Json</MudText>
+        }
+        </MudButton>
+        </MudContainer>
 </MudStack>
 
 @code {
-    public bool Basic_Switch1 { get; set; } = true;
-    public bool Basic_Switch2 { get; set; } = true;
-    public bool Basic_Switch3 { get; set; } = true;
-    public bool Basic_Switch4 { get; set; } = false;
-    public bool Basic_Switch5 { get; set; } = false;
-    public bool Basic_Switch6 { get; set; } = false;
+    //LFP model hyperparameters 
+    public bool HUFL { get; set; } = true;
+    public bool MUFL { get; set; } = true;
+    public bool LUFL { get; set; } = true;
+    public bool HULL { get; set; } = false;
+    public bool MULL { get; set; } = false;
+    public bool LULL { get; set; } = false;
 
-    void reset()
+    //DTP model hyperparameters
+    public bool SwitchYear { get; set; } = false;
+    public bool SwitchMonth { get; set; } = true;
+    public bool SwitchDay { get; set; } = true;
+    public bool SwitchHour { get; set; } = true;
+    public bool SwitchWeekday { get; set; } = false;
+    public bool SwitchWOY { get; set; } = false;
+    public bool SwitchQuarter { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
     {
-        Basic_Switch1 = true;
-        Basic_Switch2 = true;
-        Basic_Switch3 = true;
-        Basic_Switch4 = false;
-        Basic_Switch5 = false;
-        Basic_Switch6 = false;
+        setSwitchValuesToJsonValues();
     }
 
-    string LinearPeriodSelect = "4 Months (Recommended)";
-
-    string PytorchPeriodSelect = "1 Year (Recommended)";
-
-    string lrSelect = "0.0005 (Recommended)"; 
-
-    public bool Dtp_Switch { get; set; } = false;
-
-    private string hourly_mode_switch (bool lol)
+    void setSwitchValuesToJsonValues()
     {
-        if (lol == true)
+        List<Object> jsonValues = GlobalJsonBuilder.jsonBuilder.ReadJson();
+        // hjælp
+        Console.WriteLine();
+
+    }
+
+    void resetLFP()
+    {
+        HUFL = true;
+        MUFL = true;
+        LUFL = true;
+        HULL = false;
+        MULL = false;
+        LULL = false;
+    }
+
+    void resetDTP()
+    {
+        SwitchYear = false;
+        SwitchMonth = true;
+        SwitchDay = true;
+        SwitchHour = true;
+        SwitchWeekday = false;
+        SwitchWOY = false;
+        SwitchQuarter = true;
+    }
+
+    int HoursToPredict = 24;
+
+    double lrSelect = 0.0005; 
+
+    public bool DtpSwitch { get; set; } = false;
+
+    private string hourlyModeSwitch (bool hourlyModeBool)
+    {
+        if (hourlyModeBool == true)
             return "On";
         else
             return "Off";
+    }
+
+    void SaveSettingsToJSON()
+    {
+        // Ugly but i have to do this xd
+        GlobalJsonBuilder.jsonBuilder.ResetParam();
+
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HUFL", HUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("MUFL", MUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LUFL", LUFL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HULL", HULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("MULL", MULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LULL", LULL));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("LR", lrSelect));
+
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchYear", SwitchYear));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchMonth", SwitchMonth));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchDay", SwitchDay));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchHour", SwitchHour));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWeekday", SwitchWeekday));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWOY", SwitchWOY));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchQuarter", SwitchQuarter));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("DtpSwitch", DtpSwitch));
+
+        GlobalJsonBuilder.jsonBuilder.AddParam(("HoursToPredict", HoursToPredict));
+
+        GlobalJsonBuilder.jsonBuilder.BuildJson();
+    }
+
+    private bool _loading = false;
+
+    async Task Loading()
+    {
+        _loading = true;
+        SaveSettingsToJSON();
+        await Task.Delay(500);
+        _loading = false;
+        UpdateOutlierRemoval();
+    }
+
+    void UpdateOutlierRemoval()
+    {
+        // updates the linear outlier detection according to the updated json
+        string arguments = string.Format("{0}", @"./ModelExecution/TFmain/DataHandling/removeOutliers.py");
+        modelExecution.RunPythonScript(arguments);
     }
 }

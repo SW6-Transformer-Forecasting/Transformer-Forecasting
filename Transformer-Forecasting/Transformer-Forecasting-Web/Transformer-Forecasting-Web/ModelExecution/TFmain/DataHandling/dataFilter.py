@@ -1,15 +1,17 @@
-import pandas as pd
-import numpy as np
+import pandas 
+import numpy 
+from scipy import stats
 
 class DataFilter(): 
     def fetch(self, filename, fromDate, toDate):
-        data = pd.read_csv("{0}".format(filename))
+        data = pandas.read_csv("{0}".format(filename))
         dataRange = data[(data['date'] <= '{0}'.format(toDate)) & (data['date'] >= '{0}'.format(fromDate))]
         sortedData = dataRange[['date', 'HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT']]
         return sortedData
     
     def filter_data(self, data):
         data = data.drop_duplicates(subset=['HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT'])
+        data = self.eliminate_outliers(data)
         data = data.to_numpy()
         
         appendFlag = True
@@ -31,20 +33,21 @@ class DataFilter():
                 counter += 1
                 
             if (appendFlag == True):
-                arr = np.append(arr, row)
+                arr = numpy.append(arr, row)
             
             prevAxis = row
             appendFlag = True
             
             
-        arr = np.split(arr, len(arr)/8)
+        arr = numpy.split(arr, len(arr)/8)
         return arr
     
     def saveFile(self, data, cwd):
-        df = pd.DataFrame(data, columns=['date', 'HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL', 'OT'])
+        df = pandas.DataFrame(data, columns=['date', 'HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL', 'OT'])
         df.to_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv", index=False)
 
     def execute(self, data, cwd):
         dfilter = DataFilter()
         dfilter.saveFile(dfilter.filter_data(data), cwd)
         
+    
