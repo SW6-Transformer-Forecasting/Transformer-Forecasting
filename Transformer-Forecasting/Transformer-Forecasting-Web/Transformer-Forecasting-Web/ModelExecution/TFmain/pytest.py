@@ -24,8 +24,8 @@ train, test = train_test_split(data, test_size=0.002, shuffle=False)
 OT_data = test[['OT']]
 OT_data = OT_data.to_numpy()
 
-pytorch = PyTorch(cwd, data, dataTransformer, False, True) # Bools: load_model & TEST_MODE
-pytorch.train_model(cwd, False, False)
+pytorch = PyTorch(cwd, data, dataTransformer, True, True) # Bools: load_model & TEST_MODE
+pytorch.train_model(cwd, False, True) # Bools: save_model & TEST_MODE
 predictions = pytorch.predict_future()
 
 loss_fn = nn.MSELoss()
@@ -35,8 +35,10 @@ scaler = dataTransformer.getScaler()
 inversed_prediction = scaler.inverse_transform(predictions)
 
 index = 0
+
 print(OT_data.size)
 print(inversed_prediction.size)
+
 for x in range(OT_data.size):
     print(f"{OT_data[index][0]} and {inversed_prediction[index][0]}")
     index +=1

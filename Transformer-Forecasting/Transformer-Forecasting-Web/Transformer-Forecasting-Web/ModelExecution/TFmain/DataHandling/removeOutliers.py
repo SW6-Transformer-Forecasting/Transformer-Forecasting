@@ -10,7 +10,7 @@ import os
 cwd = os.getcwd()
 
 # dataframe = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\ETTh1.csv")
-dataframe = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\ETTh1.csv")
+dataframe = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata_test.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
 dataframe.drop("HULL", inplace=True, axis=1)
 dataframe.drop("MUFL", inplace=True, axis=1)

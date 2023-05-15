@@ -25,18 +25,25 @@ class PyTorch:
     model = NeuralNetwork()
     x = 0
     y = 0
+    size = 0
         
     def __init__(self, cwd, data, dataTransformer, load_model = False, TEST_MODE = False):
         if (TEST_MODE == True):
             # We ignore test set here, as we dont need that on the model in TEST_MODE, as its in the Test code
             train, test = train_test_split(data, test_size=0.002, shuffle=False)
             data = train
+            self.store_test(test)
         self.setup_data(data, dataTransformer)
         if (load_model == True):
             self.load_model(self.model, cwd, TEST_MODE)
         self.model.eval()
         
-
+    def store_test(self, data):
+        test = data[['OT']]
+        test_np = test.to_numpy()
+        self.size = test_np.size
+        self.test_tensor = torch.tensor(test_np, dtype=torch.float32)
+    
     def setup_data(self, data, dataTransformer):
         load_data = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
         OT_data = data[['OT']]
@@ -62,7 +69,7 @@ class PyTorch:
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 10
+        n_epochs = 3
         batch_size = 1
 
         for epoch in range(n_epochs):
@@ -85,6 +92,6 @@ class PyTorch:
         print("Saved PyTorch Model State")
 
     def predict_future(self):
-        predictions = self.model(self.x[0:24]).detach().cpu().numpy()
+        predictions = self.model(self.x[0:self.size]).detach().cpu().numpy()
         return predictions
         
