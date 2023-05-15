@@ -2,6 +2,8 @@
 @using Transformer_Forecasting_Web.Data
 @inject WeatherForecastService ForecastService
 @inject IDialogService DialogService
+@using SQL
+@inject IDataAccess _data
 
 
 <PageTitle>Index</PageTitle>
@@ -62,6 +64,14 @@ else
         lol.Add(foo1);
         lol.Add(foo2);
         forecasts = lol;
+        ReadSQL();
+
+    }
+
+    public void ReadSQL()
+    {
+        string sql = "SELECT group_id, row_id FROM group_predictions";
+
     }
 
     public void OpenDialog(TableRowClickEventArgs<Prediction> p)
