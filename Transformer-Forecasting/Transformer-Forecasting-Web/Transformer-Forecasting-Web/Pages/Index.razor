@@ -2,9 +2,9 @@
 @using Transformer_Forecasting_Web.Data
 @inject WeatherForecastService ForecastService
 @inject IDialogService DialogService
-@using SQL
+@using Transformer_Forecasting_Web.SQL
 @inject IDataAccess _data
-
+@inject IConfiguration _config
 
 <PageTitle>Index</PageTitle>
 
@@ -34,8 +34,8 @@ else
                         <MudTh>Periode Description</MudTh>
                     </HeaderContent>
                     <RowTemplate> 
-                        <MudTd>@context.Model</MudTd>
-                        <MudTd>@context.PeriodDescription</MudTd>
+                       @* <MudTd>@context.Model</MudTd>
+                        <MudTd>@context.PeriodDescription</MudTd>*@
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager></MudTablePager>
@@ -49,29 +49,30 @@ else
     private IEnumerable<Prediction> forecasts = new List<Prediction>();
     private string searchString1 = "";
     private Prediction selectedItem = new Prediction();
-    private Prediction foo0 = new Prediction(1, "linear", "string", new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
-    private Prediction foo1 = new Prediction(2, "Nlinear", "string", new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
-    private Prediction foo2 = new Prediction(3, "linear", "string", new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 });
     private List<Prediction> lol = new List<Prediction>();
     private MudTheme Theme = new MudTheme();
 
+    List<Description> descriptions;
+    List<Prediction> predictions;
 
 
     protected override async Task OnInitializedAsync()
     {
-
-        lol.Add(foo0);
-        lol.Add(foo1);
-        lol.Add(foo2);
         forecasts = lol;
         ReadSQL();
-
     }
 
-    public void ReadSQL()
+    public async void ReadSQL()
     {
-        string sql = "SELECT group_id, row_id FROM group_predictions";
+        string query;
 
+        query = "SELECT group_id, description FROM descriptions";
+        descriptions = await _data.LoadData<Description, dynamic>(query, new { }, _config.GetConnectionString("default"));
+
+        query = "SELECT group_id, row_id, OT_prediction, dateValue FROM predictions";
+        predictions = await _data.LoadData<Prediction, dynamic>(query, new { }, _config.GetConnectionString("default"));
+
+        Console.WriteLine();
     }
 
     public void OpenDialog(TableRowClickEventArgs<Prediction> p)

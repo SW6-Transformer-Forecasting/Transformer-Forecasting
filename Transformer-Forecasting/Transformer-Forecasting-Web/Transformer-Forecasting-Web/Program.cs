@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 using Transformer_Forecasting_Web.Data;
+using Transformer_Forecasting_Web.SQL;
 using MudBlazor.Services;
 using Transformer_Forecasting_Web.ModelExecution;
 
@@ -12,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IDataAccess, DataAccess>();
+builder.Services.AddSingleton<DataAccess>();
 builder.Services.AddSingleton<ModelExecutor>();
 builder.Services.AddMudServices();
 

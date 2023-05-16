@@ -1,6 +1,6 @@
-﻿namespace Transformer-Forecasting-Web.Data
+﻿namespace Transformer_Forecasting_Web.Data
 {
     public class PredictionsGrouped
-{
-}
+    {
+    }
 }

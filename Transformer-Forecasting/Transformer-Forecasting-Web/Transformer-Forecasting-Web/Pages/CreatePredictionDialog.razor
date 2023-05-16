@@ -51,21 +51,21 @@
 
     void Submit()
     {
-        prediction = new Prediction(id, model, periodDescription, new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 }); //insert predicted values here
-        id++;
-        if(prediction.Model != "" && prediction.PeriodDescription != "")
-        {
-            GlobalJsonBuilder.jsonBuilder.AddParam(("model", model));
-            GlobalJsonBuilder.jsonBuilder.AddParam(("periodDescription", periodDescription));
-            GlobalJsonBuilder.jsonBuilder.BuildJson();
-            GlobalJsonBuilder.jsonBuilder.ResetParam();
-            //modelExecution.RunPythonScript(); This runs model. Remove comment when done
-            MudDialog.Close(DialogResult.Ok(true));
-        }
-        else
-        {
-            showWarning = true;
-        }
+        //prediction = new Predictions(id, model, periodDescription, new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 }); //insert predicted values here
+        //id++;
+        //if(prediction.Model != "" && prediction.PeriodDescription != "")
+        //{
+        //    GlobalJsonBuilder.jsonBuilder.AddParam(("model", model));
+        //    GlobalJsonBuilder.jsonBuilder.AddParam(("periodDescription", periodDescription));
+        //    GlobalJsonBuilder.jsonBuilder.BuildJson();
+        //    GlobalJsonBuilder.jsonBuilder.ResetParam();
+        //    //modelExecution.RunPythonScript(); This runs model. Remove comment when done
+        //    MudDialog.Close(DialogResult.Ok(true));
+        //}
+        //else
+        //{
+        //    showWarning = true;
+        //}
     }
     void Cancel() => MudDialog.Cancel();
 }
