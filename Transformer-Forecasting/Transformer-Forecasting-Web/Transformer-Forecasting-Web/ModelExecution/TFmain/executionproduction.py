@@ -76,7 +76,7 @@ x_predict = dataTransformer.InverseDates(x_predict)
 
 # descriptions is inserted outside of the loop because we only need to store one single description for the group_id and predictions has a foreign key on group_id
 QueryExecutor.InsertQuery("INSERT INTO descriptions (group_id, description) VALUES (%s, %s)",
-                            (max_group_id, max_row_id))
+                            (max_group_id, periodDescription))
 
 dateStamp = ""
 for x in range(linearRegression.predictedOT.size):

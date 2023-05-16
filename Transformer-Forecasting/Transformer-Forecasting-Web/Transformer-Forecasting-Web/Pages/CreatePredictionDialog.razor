@@ -1,4 +1,6 @@
 ﻿@using Transformer_Forecasting_Web.Data;
+@using Transformer_Forecasting_Web.ModelExecution
+@inject ModelExecutor modelExecution
 
 <MudDialog Style="@($"background:{Theme.Palette.BackgroundGrey};")">
     <DialogContent>
@@ -15,20 +17,19 @@
     </DialogActions>
 
     <DialogContent>
-    <MudStack>
-            <MudPaper Class="pa-4">
+        <MudStack>
+@*            <MudPaper Class="pa-4">
             <MudText Typo="Typo.body1">Model</MudText>
             <MudSelect T="string" Label="Pick a model" @bind-Value="model">
                 <MudSelectItem T="string" Value="@("DTP")" />
                 <MudSelectItem T="string" Value="@("LFP")" />
             </MudSelect>
-        </MudPaper>
-
-        <MudPaper Class="pa-4">
-            <MudText Typo="Typo.body1">Period Description</MudText>
-            <MudTextField  Lines="3" @bind-Value="periodDescription" Label="Describe the period" Variant="Variant.Text" />
-        </MudPaper>
-    </MudStack>
+            </MudPaper>*@
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.body1">Period Description</MudText>
+                <MudTextField  Lines="3" @bind-Value="periodDescription" Label="Describe the period" Variant="Variant.Text" />
+            </MudPaper>
+        </MudStack>
     </DialogContent>
 
 </MudDialog>
@@ -40,32 +41,25 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     private bool visibility = false;
-    private string model = "";
     private string periodDescription = "";
     bool showWarning = false;
-    int id = 1; //Should be changed to fit with database
 
-    Prediction prediction = new Prediction();
     private MudTheme Theme = new MudTheme();
 
 
     void Submit()
     {
-        //prediction = new Predictions(id, model, periodDescription, new double[] { 1, 5, 3, 4, 2, 5 }, new double[] { 7, 6, 4, 2, 3, 4 }); //insert predicted values here
-        //id++;
-        //if(prediction.Model != "" && prediction.PeriodDescription != "")
-        //{
-        //    GlobalJsonBuilder.jsonBuilder.AddParam(("model", model));
-        //    GlobalJsonBuilder.jsonBuilder.AddParam(("periodDescription", periodDescription));
-        //    GlobalJsonBuilder.jsonBuilder.BuildJson();
-        //    GlobalJsonBuilder.jsonBuilder.ResetParam();
-        //    //modelExecution.RunPythonScript(); This runs model. Remove comment when done
-        //    MudDialog.Close(DialogResult.Ok(true));
-        //}
-        //else
-        //{
-        //    showWarning = true;
-        //}
+        if(periodDescription != "")
+        {
+            string arguments = string.Format("{0} \"{1}\"", @"./ModelExecution/TFmain/executionproduction.py", periodDescription);
+            modelExecution.RunPythonScript(arguments);
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            showWarning = true;
+        }
     }
     void Cancel() => MudDialog.Cancel();
 }
