@@ -9,8 +9,8 @@ import os
 
 cwd = os.getcwd()
 
-# dataframe = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\ETTh1.csv")
-dataframe = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\ETTh1.csv")
+# dataframe = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata.csv")
+dataframe = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
 dataframe.drop("HULL", inplace=True, axis=1)
 dataframe.drop("MUFL", inplace=True, axis=1)
@@ -57,10 +57,14 @@ predictions = OTScaler.inverse_transform(predictions.reshape(-1, 1))
 
 y = numpy.asarray(y)
 deletedRows = 0
+PERCENTAGEDIFFERENCE = 60
+
+lowerPercentageBound = 100 - PERCENTAGEDIFFERENCE
+higherPercentageBound = 100 + PERCENTAGEDIFFERENCE
 for i in range(len(predictions)):
     # If differenceInPercentage is 100, then the test data and prediction have the exact same value
     differenceInPercentage = abs(y[i] / predictions[i] * 100)
-    if(differenceInPercentage < 40 or differenceInPercentage > 160):
+    if(differenceInPercentage < lowerPercentageBound or differenceInPercentage > higherPercentageBound):
         deletedRows += 1
         normalizedDataframe = numpy.delete(normalizedDataframe, i - deletedRows, 0)
         
