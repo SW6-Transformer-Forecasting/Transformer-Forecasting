@@ -4,7 +4,6 @@
 @inject IConfiguration _config
 @using ChartJs.Blazor.LineChart
 
-
 <MudDialog>
     <DialogContent>
         
@@ -32,7 +31,8 @@
                         </MudPaper>
                     </MudContainer>
                 </MudStack>
-                <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350" ChartOptions="options"></MudChart>
+                <Chart Config="predictionLineConfig"></Chart>
+                @*<MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350" ChartOptions="options"></MudChart>*@
             </MudStack>
         </MudPaper>        
     
@@ -52,51 +52,84 @@
     private MudTheme Theme = new MudTheme();
 
     public List<ChartSeries> Series = new List<ChartSeries>() { };
-    private ChartOptions options = new ChartOptions();
     private List<Prediction> predictionList = new List<Prediction>();
 
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
 
-    Justify _justify = Justify.SpaceEvenly;
-
-
-    //change labels to fit to the time period from the database
-    private string[] XAxisLabels;
-    public string[] Months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-    List<double> graphValues = new List<double>();
-
+    private LineConfig predictionLineConfig;
 
     protected override void OnInitialized()
     {
-        options.InterpolationOption = InterpolationOption.NaturalSpline;
-        //options.YAxisFormat = "c2";
-
+        setPredictionLineConfig();
         ReadSQL();
-        if (predictionList.Count != 0)
+
+        List<float> OT_predictions = new List<float>();
+        foreach(var individualPrediction in predictionList)
         {
-            List<string> xLabels = new List<string>();
-            int labelCount;
-            foreach (var item in predictionList)
-            {
-                string[] dateTime = item.dateValue.Split(' ');
-                string[] dateString = dateTime[0].Split('-');
-                if (!xLabels.Contains(Months[Convert.ToInt32(dateString[1]) - 1])) //something here if x axis labels on graph is weird when switching months
-                {
-                    xLabels.Add(Months[Convert.ToInt32(dateString[1]) - 1]);
-                }
-                else
-                {
-                    //xLabels.Add(" ");
-                }
-                //xLabels.Add(dateTime[1] + "<br />" + dateString[0] + "<br />" + Months[Convert.ToInt32(dateString[1]) - 1]);
-                graphValues.Add(item.OT_prediction);
-            }
-            XAxisLabels = xLabels.ToArray();
-            AddToGraph();
+            predictionLineConfig.Data.Labels.Add(individualPrediction.dateValue.ToString());
+            OT_predictions.Add(individualPrediction.OT_prediction);
         }
+
+        IDataset<float> OT_data = new LineDataset<float>(OT_predictions)
+        {
+            Label = "Oil Temperature",
+            BackgroundColor = ColorUtil.FromDrawingColor(ChartProperties.ColorPalette.Blue),
+            BorderColor = ColorUtil.FromDrawingColor(ChartProperties.ColorPalette.Blue),
+            Fill = FillingMode.Disabled
+        };
+
+        predictionLineConfig.Data.Datasets.Add(OT_data);
+    }
+
+    void setPredictionLineConfig()
+    {
+        predictionLineConfig = new LineConfig
+            {
+                Options = new LineOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Oil Temperature"
+                    },
+                    Tooltips = new Tooltips
+                    {
+                        Mode = InteractionMode.Nearest,
+                        Intersect = true
+                    },
+                    Hover = new Hover
+                    {
+                        Mode = InteractionMode.Nearest,
+                        Intersect = true
+                    },
+                    Scales = new Scales
+                    {
+                        XAxes = new List<CartesianAxis>
+                    {
+                        new CategoryAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Date stamp of prediction"
+                            }
+                        }
+                    },
+                        YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "°C"
+                            }
+                        }
+                    }
+                    }
+                }
+            };
     }
 
     public async void ReadSQL()
@@ -109,23 +142,4 @@
 
         Console.WriteLine();
     }
-
-    //add to current graph
-    public void AddToGraph()
-    {
-        Series.Add(new ChartSeries() { Name = "Model 1", Data = graphValues.ToArray() });
-    }
-
-    //creation of new graph
-    public void ChangeGraph()
-    {
-        /*var new_series = new List<ChartSeries>()
-        {
-            new ChartSeries() { Name = "test 1", Data = DTP_Value.ToArray() },
-            new ChartSeries() { Name = "test 2", Data = LFP_Value.ToArray() },
-        };
-        Series = new_series;*/
-    }
-
-
 }
