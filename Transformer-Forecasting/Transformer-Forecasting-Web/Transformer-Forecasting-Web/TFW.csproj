@@ -12,6 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ChartJS" Version="22.2.6" />
+    <PackageReference Include="ChartJs.Blazor" Version="1.1.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="MudBlazor" Version="6.2.1" />
     <PackageReference Include="MySql.Data" Version="8.0.32.1" />

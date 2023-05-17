@@ -30,12 +30,12 @@ else
                          <MudTextField Class="d-flex flex-row-reverse mt-0 pr-3" Style="width: 400px;" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
-                        <MudTd>Model</MudTd>
-                        <MudTh>Periode Description</MudTh>
+                        <MudTd>Date</MudTd>
+                        <MudTh>Oil Temperature</MudTh>
                     </HeaderContent>
                     <RowTemplate> 
-                       @* <MudTd>@context.Model</MudTd>
-                        <MudTd>@context.PeriodDescription</MudTd>*@
+                        <MudTd>@context.dateValue</MudTd>
+                        <MudTd>@context.OT_prediction</MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager></MudTablePager>
@@ -49,17 +49,16 @@ else
     private IEnumerable<Prediction> forecasts = new List<Prediction>();
     private string searchString1 = "";
     private Prediction selectedItem = new Prediction();
-    private List<Prediction> lol = new List<Prediction>();
     private MudTheme Theme = new MudTheme();
 
-    List<Description> descriptions;
-    List<Prediction> predictions;
+    List<Description> descriptions = new List<Description>();
+    List<Prediction> predictions = new List<Prediction>();
 
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = lol;
         ReadSQL();
+        forecasts = predictions;
     }
 
     public async void ReadSQL()
