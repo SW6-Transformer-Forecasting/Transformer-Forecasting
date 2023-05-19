@@ -127,7 +127,7 @@ else
 
     public void OpenDialog(TableRowClickEventArgs<TableModel> p)
     {
-        var parameters = new DialogParameters{["group_id"]=selectedItem.group_id};
+        var parameters = new DialogParameters{["description"]=descriptions[selectedItem.group_id-1]};
         //var options = new DialogOptions { CloseOnEscapeKey = true };
 
         var options = new DialogOptions
