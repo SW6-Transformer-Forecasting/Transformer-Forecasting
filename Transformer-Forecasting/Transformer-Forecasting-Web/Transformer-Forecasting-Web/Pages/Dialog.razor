@@ -2,7 +2,6 @@
 @using Transformer_Forecasting_Web.SQL
 @inject IDataAccess _data
 @inject IConfiguration _config
-@using ChartJs.Blazor.LineChart
 
 
 <MudDialog>
@@ -46,14 +45,17 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public Prediction prediction { get; set; }
-    [Parameter] public Description description { get; set; }
+    [Parameter] public int group_id { get; set; }
+
+    private Prediction prediction { get; set; }
+    private Description description { get; set; }
 
     private MudTheme Theme = new MudTheme();
 
     public List<ChartSeries> Series = new List<ChartSeries>() { };
     private ChartOptions options = new ChartOptions();
-    private List<Prediction> predictionList = new List<Prediction>();
+    private List<Prediction> predictions = new List<Prediction>();
+    private List<Description> descriptions = new List<Description>();
 
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
@@ -75,11 +77,11 @@
         //options.YAxisFormat = "c2";
 
         ReadSQL();
-        if (predictionList.Count != 0)
+        if (predictions.Count != 0)
         {
             List<string> xLabels = new List<string>();
             int labelCount;
-            foreach (var item in predictionList)
+            foreach (var item in predictions)
             {
                 string[] dateTime = item.dateValue.Split(' ');
                 string[] dateString = dateTime[0].Split('-');
@@ -103,9 +105,11 @@
     {
         string query;
 
-        query = "SELECT group_id, row_id, OT_prediction, dateValue FROM predictions Where group_id = " + prediction.group_id.ToString();
-        predictionList = await _data.LoadData<Prediction, dynamic>(query, new { }, _config.GetConnectionString("default"));
+        query = "SELECT group_id, row_id, OT_prediction, dateValue FROM predictions WHERE group_id = " + group_id.ToString();
+        predictions = await _data.LoadData<Prediction, dynamic>(query, new { }, _config.GetConnectionString("default"));
 
+        query = "SELECT group_id, description FROM descriptions WHERE group_id = " + group_id.ToString();
+        descriptions = await _data.LoadData<Description, dynamic>(query, new { }, _config.GetConnectionString("default"));
 
         Console.WriteLine();
     }
