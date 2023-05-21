@@ -32,17 +32,10 @@ class PyTorch:
             # We ignore test set here, as we dont need that on the model in TEST_MODE, as its in the Test code
             train, test = train_test_split(data, test_size=0.1, shuffle=False)
             data = train
-            self.store_test(test)
         self.setup_data(data, dataTransformer)
         if (load_model == True):
             self.load_model(self.model, cwd, TEST_MODE)
         self.model.eval()
-        
-    def store_test(self, data):
-        test = data[['OT']]
-        test_np = test.to_numpy()
-        self.size = test_np.size
-        self.test_tensor = torch.tensor(test_np, dtype=torch.float32)
     
     def setup_data(self, data, dataTransformer):
         load_data = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
