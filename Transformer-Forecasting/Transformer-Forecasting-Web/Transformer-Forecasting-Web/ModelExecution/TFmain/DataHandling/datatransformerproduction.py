@@ -39,6 +39,27 @@ class TransformData:
         reversed_dates = pandas.DataFrame(reversed_dates, columns=["month", "day", "hour", "quarter"])
         return reversed_dates
     
-    def getScaler(self):
-        new_scaler = self.scaler
-        return new_scaler
+class PytorchTransformer:
+    load_scaler = MinMaxScaler()
+    OT_scaler = MinMaxScaler()
+    
+    def __init__(self):
+        print("Transformer ready")
+    
+    def fit_transform_loads(self, loads):
+        return self.load_scaler.fit_transform(loads)
+    
+    def fit_transform_OT(self, OT):
+        return self.OT_scaler.fit_transform(OT)
+    
+    def transform_loads(self, loads):
+        return self.load_scaler.transform(loads)
+    
+    def transform_OT(self, OT):
+        return self.OT_scaler.transform(OT)
+    
+    def inverse_loads(self, loads):
+        return self.load_scaler.inverse_transform(loads)
+    
+    def inverse_OT(self, OT):
+        return self.OT_scaler.inverse_transform(OT)

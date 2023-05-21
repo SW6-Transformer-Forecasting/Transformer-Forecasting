@@ -27,22 +27,22 @@ class PyTorch:
     y = 0
     size = 0
         
-    def __init__(self, cwd, data, dataTransformer, load_model = False, TEST_MODE = False):
+    def __init__(self, cwd, data, pytorch_transformer, load_model = False, TEST_MODE = False):
         if (TEST_MODE == True):
             # We ignore test set here, as we dont need that on the model in TEST_MODE, as its in the Test code
             train, test = train_test_split(data, test_size=0.1, shuffle=False)
             data = train
-        self.setup_data(data, dataTransformer)
+        self.setup_data(data, pytorch_transformer)
         if (load_model == True):
             self.load_model(self.model, cwd, TEST_MODE)
         self.model.eval()
     
-    def setup_data(self, data, dataTransformer):
+    def setup_data(self, data, pytorch_transformer):
         load_data = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
         OT_data = data[['OT']]
         
-        transformed_load_data = dataTransformer.FitAndTransformData(load_data)
-        transformed_OT_data = dataTransformer.FitAndTransformData(OT_data)
+        transformed_load_data = pytorch_transformer.fit_transform_loads(load_data)
+        transformed_OT_data = pytorch_transformer.fit_transform_OT(OT_data)
         
         X = transformed_load_data
         Y = transformed_OT_data

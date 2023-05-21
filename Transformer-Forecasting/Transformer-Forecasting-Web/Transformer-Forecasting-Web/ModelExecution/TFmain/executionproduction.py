@@ -3,6 +3,7 @@ from Models.linearProduction import LinearRegression
 from Models.pytorch import PyTorch
 from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
+from DataHandling.datatransformerproduction import PytorchTransformer
 from DataHandling.dataFilter import DataFilter
 from DataHandling.readJSONParams import JsonParams
 import numpy
@@ -18,43 +19,45 @@ endPredictDate = 1
 new_data = False
 model_choice = "DTP"
 periodDescription = sys.argv[1]
-input_of_loads = numpy.zeros(shape=(1, 1)) # Some loads from front-end goes here
+input_of_loads = numpy.zeros(shape=(1, 1)) # Some loads from front-end goes here instead
 # hoursToPredictAhead = sys.argv[2]
 
 cwd = os.getcwd()
 
 if (new_data == "True"):
         dfilter = DataFilter()
-        data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv', startPredictDate, endPredictDate) # Change this to fit correctly (end predict date should be the end of the read range, and start should be 1 year back)
-        dfilter.execute(data_to_filter, cwd)
+        data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv')
+        dfilter.execute(data_to_filter, cwd, False)
 
 data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 
-# This instance stores the MinMaxScaler for later use when the normalization has to be inversed
-dataTransformer = TransformData()
-
 # Pytorch
 if(model_choice == "LFP"):
-        pytorch = PyTorch(cwd, data, dataTransformer, True)
+        pytorch_transformer = PytorchTransformer()
+    
+        pytorch = PyTorch(cwd, data, pytorch_transformer, True)
         
         train_model = False
         if(train_model == True):
             pytorch.train_model(cwd, False) # Bool: save_model
         
-        tensor_data = input_of_loads[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']] #Remove this, add directly into a tensor
-        OT_data = input_of_loads[['OT']] # Placeholder
-        tensor_values = dataTransformer.FitAndTransformData(tensor_data)
-
-        scaler_reset = dataTransformer.FitAndTransformData(OT_data) # Placeholder, reset scaler somehow
-
-        transformed_tensor = torch.tensor(tensor_values, dtype=torch.float32)
+        # Remove this, add directly into a tensor further up
+        tensor_data = input_of_loads[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
         
-        predictions = pytorch.predict_future(transformed_tensor)
-        scaler = dataTransformer.getScaler()
-        inversed_prediction = scaler.inverse_transform(predictions)
+        tensor_values = pytorch_transformer.transform_loads(tensor_data)
+        transformed_tensor = torch.tensor(tensor_values, dtype=torch.float32)
+        # transformed_tensor = transformed_tensor.unsqueeze(0) # In case of broadcast error, add this line
+        
+        prediction = pytorch.predict_future(transformed_tensor)
+
+        inversed_prediction = pytorch_transformer.inverse_OT(prediction)
+        # Now do SQL stuff for Pytorch
 
 # Linear model
 if(model_choice == "DTP"):
+        # This instance stores the MinMaxScaler for later use when the normalization has to be inversed
+        dataTransformer = TransformData()
+        
         dataHandler = DataHandler(periodDescription, dataTransformer)
 
         # Uses the prepared data and creates Linear models for the prediction task
