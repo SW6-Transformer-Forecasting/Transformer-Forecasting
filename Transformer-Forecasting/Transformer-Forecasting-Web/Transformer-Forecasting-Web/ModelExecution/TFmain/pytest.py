@@ -28,7 +28,6 @@ OT_data = OT_data.to_numpy()
 pytorch = PyTorch(cwd, data, dataTransformer, False, True) # Bools: load_model & TEST_MODE
 pytorch.train_model(cwd, False, False)
 
-
 loss_fn = nn.MSELoss()
 
 scaler = dataTransformer.getScaler()
