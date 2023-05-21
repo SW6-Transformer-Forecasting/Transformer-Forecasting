@@ -5,7 +5,9 @@ from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
 from DataHandling.dataFilter import DataFilter
 from DataHandling.readJSONParams import JsonParams
+import numpy
 import pandas
+import torch
 import sys
 import math
 import os
@@ -16,6 +18,7 @@ endPredictDate = 1
 new_data = False
 model_choice = "DTP"
 periodDescription = sys.argv[1]
+input_of_loads = numpy.zeros(shape=(1, 1)) # Some loads from front-end goes here
 # hoursToPredictAhead = sys.argv[2]
 
 cwd = os.getcwd()
@@ -32,9 +35,21 @@ dataTransformer = TransformData()
 
 # Pytorch
 if(model_choice == "LFP"):
-        pytorch = PyTorch(cwd, data, dataTransformer) # Missing Opt Argument; load_model
-        pytorch.train_model(cwd) # Missing Opt Argument; save_model
-        predictions = pytorch.predict_future()
+        pytorch = PyTorch(cwd, data, dataTransformer, True)
+        
+        train_model = False
+        if(train_model == True):
+            pytorch.train_model(cwd, False) # Bool: save_model
+        
+        tensor_data = input_of_loads[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']] #Remove this, add directly into a tensor
+        OT_data = input_of_loads[['OT']] # Placeholder
+        tensor_values = dataTransformer.FitAndTransformData(tensor_data)
+
+        scaler_reset = dataTransformer.FitAndTransformData(OT_data) # Placeholder, reset scaler somehow
+
+        transformed_tensor = torch.tensor(tensor_values, dtype=torch.float32)
+        
+        predictions = pytorch.predict_future(transformed_tensor)
         scaler = dataTransformer.getScaler()
         inversed_prediction = scaler.inverse_transform(predictions)
 

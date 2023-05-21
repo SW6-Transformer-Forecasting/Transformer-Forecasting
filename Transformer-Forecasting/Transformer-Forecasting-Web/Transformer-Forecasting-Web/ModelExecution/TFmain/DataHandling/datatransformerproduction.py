@@ -40,4 +40,5 @@ class TransformData:
         return reversed_dates
     
     def getScaler(self):
-        return self.scaler
+        new_scaler = self.scaler
+        return new_scaler

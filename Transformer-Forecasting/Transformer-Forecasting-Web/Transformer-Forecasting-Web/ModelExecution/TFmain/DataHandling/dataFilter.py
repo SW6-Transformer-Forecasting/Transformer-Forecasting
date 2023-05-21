@@ -6,7 +6,6 @@ class DataFilter():
     #, fromDate, toDate
     def fetch(self, filename):
         data = pandas.read_csv("{0}".format(filename))
-        #dataRange = data[(data['date'] <= '{0}'.format(toDate)) & (data['date'] >= '{0}'.format(fromDate))]
         sortedData = data[['date', 'HUFL', 'HULL', 'MUFL', 'MULL','LUFL', 'LULL', 'OT']]
         return sortedData
     
@@ -44,8 +43,8 @@ class DataFilter():
     
     def saveFile(self, data, cwd):
         df = pandas.DataFrame(data, columns=['date', 'HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL', 'OT'])
-        # df.to_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv", index=False)
-        df.to_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata_test.csv", index=False) # For Local Test
+        df.to_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv", index=False) # For Production
+        # df.to_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata.csv", index=False) # For Local Test
 
     def execute(self, data, cwd):
         dfilter = DataFilter()
