@@ -1,24 +1,20 @@
 from DataHandling.datahandlerproduction import DataHandler
 from Models.linearProduction import LinearRegression
-from Models.pytorch import PyTorch
 from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
-from DataHandling.datatransformerproduction import PytorchTransformer
 from DataHandling.dataFilter import DataFilter
 from DataHandling.readJSONParams import JsonParams
-import numpy
 import pandas
-import torch
 import sys
 import math
 import os
 
-new_data = False
 periodDescription = sys.argv[1]
 # hoursToPredictAhead = sys.argv[2]
 
 cwd = os.getcwd()
 
+new_data = False
 if (new_data == "True"):
         dfilter = DataFilter()
         data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv')
