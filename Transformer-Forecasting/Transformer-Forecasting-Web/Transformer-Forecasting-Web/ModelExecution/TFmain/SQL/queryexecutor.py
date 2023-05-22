@@ -17,3 +17,7 @@ class QueryExecutor:
     def SelectQuery(query):
         cursor.execute(query)
         return cursor.fetchall()
+    
+    def ResetCalculationsTable():
+        cursor.execute("DELETE FROM calculations")
+        databaseConnection.commit()
