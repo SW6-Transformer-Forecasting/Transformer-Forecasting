@@ -3,6 +3,6 @@
     public class Description
     {
         public int group_id;
-        public string prediction_description;
+        public string description;
     }
 }

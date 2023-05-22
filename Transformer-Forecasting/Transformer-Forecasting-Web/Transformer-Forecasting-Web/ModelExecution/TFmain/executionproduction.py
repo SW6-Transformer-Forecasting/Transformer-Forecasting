@@ -1,6 +1,5 @@
 from DataHandling.datahandlerproduction import DataHandler
 from Models.linearProduction import LinearRegression
-from Models.pytorch import PyTorch
 from SQL.queryexecutor import QueryExecutor
 from DataHandling.datatransformerproduction import TransformData
 from DataHandling.dataFilter import DataFilter
@@ -10,47 +9,33 @@ import sys
 import math
 import os
 
-startPredictDate = 1
-endPredictDate = 1
-
-new_data = False
-model_choice = "DTP"
 periodDescription = sys.argv[1]
 # hoursToPredictAhead = sys.argv[2]
 
 cwd = os.getcwd()
 
+new_data = False
 if (new_data == "True"):
         dfilter = DataFilter()
-        data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv', startPredictDate, endPredictDate) # Change this to fit correctly (end predict date should be the end of the read range, and start should be 1 year back)
-        dfilter.execute(data_to_filter, cwd)
+        data_to_filter = dfilter.fetch(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv')
+        dfilter.execute(data_to_filter, cwd, False)
 
 data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 
+# Linear model
 # This instance stores the MinMaxScaler for later use when the normalization has to be inversed
 dataTransformer = TransformData()
 
-# Pytorch
-if(model_choice == "LFP"):
-        pytorch = PyTorch(cwd, data, dataTransformer) # Missing Opt Argument; load_model
-        pytorch.train_model(cwd) # Missing Opt Argument; save_model
-        predictions = pytorch.predict_future()
-        scaler = dataTransformer.getScaler()
-        inversed_prediction = scaler.inverse_transform(predictions)
+dataHandler = DataHandler(periodDescription, dataTransformer)
 
-# Linear model
-if(model_choice == "DTP"):
-        dataHandler = DataHandler(periodDescription, dataTransformer)
+# Uses the prepared data and creates Linear models for the prediction task
+modelData = dataHandler.linearModelInformation
 
-        # Uses the prepared data and creates Linear models for the prediction task
-        modelData = dataHandler.linearModelInformation
+linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, modelData.x_predict)
 
-        linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, modelData.x_predict)
+predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
 
-        predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
-
-        predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
-
+predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
 
 
 # SQL Starts here

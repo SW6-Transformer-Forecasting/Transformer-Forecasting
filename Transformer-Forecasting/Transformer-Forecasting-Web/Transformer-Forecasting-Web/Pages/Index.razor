@@ -23,19 +23,21 @@ else
             </MudGrid>
         
             <MudContainer MaxWidth="MaxWidth.ExtraLarge" >
-                <MudTable Items="forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="Prediction" OnRowClick="@OpenDialog">
+            <MudTable Items="@forecasts" Hover=true Bordered=true Striped=true MultiSelection="false" @bind-SelectedItem="selectedItem" T="TableModel" OnRowClick="@OpenDialog">
                     <ToolBarContent>
-                         <MudText Typo="Typo.h6">Predictions</MudText>
-                         <MudSpacer />
-                         <MudTextField Class="d-flex flex-row-reverse mt-0 pr-3" Style="width: 400px;" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+                        <MudText Typo="Typo.h6">Predictions</MudText>
+                        <MudSpacer />
+                        <MudTextField Class="d-flex flex-row-reverse mt-0 pr-3" Style="width: 400px;" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
-                        <MudTd>Model</MudTd>
-                        <MudTh>Periode Description</MudTh>
+                        <MudTh>Period Description</MudTh>
+                        <MudTd>Start Date</MudTd>
+                        <MudTd>End Date</MudTd>
                     </HeaderContent>
-                    <RowTemplate> 
-                       @* <MudTd>@context.Model</MudTd>
-                        <MudTd>@context.PeriodDescription</MudTd>*@
+                    <RowTemplate>
+                        <MudTd>@context.description</MudTd>
+                        <MudTd>@context.startDate</MudTd>
+                        <MudTd>@context.endDate</MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager></MudTablePager>
@@ -46,20 +48,68 @@ else
 }
 
 @code{
-    private IEnumerable<Prediction> forecasts = new List<Prediction>();
+    private IEnumerable<TableModel> forecasts = new List<TableModel>();
     private string searchString1 = "";
-    private Prediction selectedItem = new Prediction();
-    private List<Prediction> lol = new List<Prediction>();
+    private TableModel selectedItem;
     private MudTheme Theme = new MudTheme();
 
-    List<Description> descriptions;
-    List<Prediction> predictions;
+    List<Description> descriptions = new List<Description>();
+    List<Prediction> predictions = new List<Prediction>();
+
+    public class TableModel
+    {
+        public int group_id { get; set; }
+        public string description { get; set; }
+        public string startDate { get; set; }
+        public string endDate { get; set; }
+    }
+
+    List<TableModel> table = new List<TableModel>();
+
 
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = lol;
         ReadSQL();
+        foreach (var item in descriptions)
+        {
+            TableModel tb = new TableModel();
+            tb.group_id = item.group_id;
+            tb.description = item.description;
+            tb.startDate = GetFirstDate(item.group_id);
+            tb.endDate = GetLastDate(item.group_id);
+            table.Add(tb);
+        }
+
+        forecasts = table;
+    }
+
+    string GetFirstDate(int group_id)
+    {
+        List<Prediction> group;
+        int row;
+        List<Prediction> startPrediction;
+
+        group = predictions.Where<Prediction>(p => p.group_id == group_id).ToList(); //get list of predictions with given group_id
+        row = group.Min(p => p.row_id); // the the index of the lowest row_id to get the first
+        startPrediction = group.Where(p => p.row_id == row).ToList();
+
+        return startPrediction[0].dateValue;
+    }
+
+    string GetLastDate(int group_id)
+    {
+        List<Prediction> group;
+        int row;
+        List<Prediction> endPrediction;
+
+        group = predictions.Where<Prediction>(p => p.group_id == group_id).ToList();
+        row = group.Max(p => p.row_id);
+        endPrediction = group.Where(p => p.row_id == row).ToList();
+
+        //endPrediction = (Prediction)predictions.Find(p => (p.group_id == group_id) && (p.row_id == predictions.Max<Prediction>(p1 => p1.row_id)));
+
+        return endPrediction[0].dateValue;
     }
 
     public async void ReadSQL()
@@ -75,9 +125,9 @@ else
         Console.WriteLine();
     }
 
-    public void OpenDialog(TableRowClickEventArgs<Prediction> p)
+    public void OpenDialog(TableRowClickEventArgs<TableModel> p)
     {
-        var parameters = new DialogParameters{["prediction"]=selectedItem};
+        var parameters = new DialogParameters{["description"]=descriptions[selectedItem.group_id-1]};
         //var options = new DialogOptions { CloseOnEscapeKey = true };
 
         var options = new DialogOptions
