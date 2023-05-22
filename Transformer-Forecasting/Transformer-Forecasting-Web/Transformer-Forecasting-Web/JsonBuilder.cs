@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 public class GlobalJsonBuilder
 {
     public static readonly JsonBuilder jsonBuilder = new JsonBuilder();
+    public static readonly JsonLoadCalculator jsonLoadCalc = new JsonLoadCalculator();
 
     public class JsonBuilder
     {
@@ -30,6 +31,15 @@ public class GlobalJsonBuilder
         public List<Object> ReadJson()
         {
             var itemsFromJson = File.ReadAllText("params.json");
+            return JsonConvert.DeserializeObject<List<Object>>(itemsFromJson);
+        }
+    }
+
+    public class JsonLoadCalculator
+    {
+        public List<Object> ReadJson()
+        {
+            var itemsFromJson = File.ReadAllText("calc_load_res.json");
             return JsonConvert.DeserializeObject<List<Object>>(itemsFromJson);
         }
     }
