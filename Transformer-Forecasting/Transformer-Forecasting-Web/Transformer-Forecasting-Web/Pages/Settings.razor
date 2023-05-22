@@ -110,14 +110,6 @@
 </MudStack>
 
 @code {
-    //LFP model hyperparameters 
-    //public bool HUFL { get; set; } = true;
-    //public bool MUFL { get; set; } = true;
-    //public bool LUFL { get; set; } = true;
-    //public bool HULL { get; set; } = false;
-    //public bool MULL { get; set; } = false;
-    //public bool LULL { get; set; } = false;
-
     //DTP model hyperparameters
     public bool SwitchYear { get; set; } = false;
     public bool SwitchMonth { get; set; } = true;
@@ -140,16 +132,6 @@
 
     }
 
-    //void resetLFP()
-    //{
-    //    HUFL = true;
-    //    MUFL = true;
-    //    LUFL = true;
-    //    HULL = false;
-    //    MULL = false;
-    //    LULL = false;
-    //}
-
     void resetDTP()
     {
         SwitchYear = false;
@@ -169,16 +151,8 @@
 
     void SaveSettingsToJSON()
     {
-        // Ugly but i have to do this xd
+        // Ugly but i have to do all this xd
         GlobalJsonBuilder.jsonBuilder.ResetParam();
-
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("HUFL", HUFL));
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("MUFL", MUFL));
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("LUFL", LUFL));
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("HULL", HULL));
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("MULL", MULL));
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("LULL", LULL));
-        //GlobalJsonBuilder.jsonBuilder.AddParam(("LR", lrSelect));
 
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchYear", SwitchYear));
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchMonth", SwitchMonth));
