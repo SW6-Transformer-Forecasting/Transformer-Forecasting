@@ -1,28 +1,79 @@
 ﻿@page "/loadcalculator"
 
-<MudPaper Class="pa-2" Outlined="true">
-    <MudStack>
-        <MudStack Spacing="3" Row="true">
-            <MudPaper Class="pa-3">Item 1</MudPaper>
-            <MudPaper Class="pa-3">Item 2</MudPaper>
-            <MudPaper Class="pa-3">Item 3</MudPaper>
-        </MudStack>
-         <MudStack Spacing="3" Row="true">
-            <MudPaper Class="pa-3">Item 1</MudPaper>
-            <MudPaper Class="pa-3">Item 2</MudPaper>
-            <MudPaper Class="pa-3">Item 3</MudPaper>
-        </MudStack>
-        <MudField Label="@loadPredString"
-                  Variant="Variant.Outlined">            
-        </MudField>
-    </MudStack>
+<MudPaper Class="pa-4 mx-lg-auto" Elevation="3" Style="@($"background:{Theme.Palette.BackgroundGrey};")">
+    <MudText Class="p-3" Typo="Typo.h6">Load Calculator</MudText>
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper  Class="p-1">
+                <MudGrid Class="pa-8" Justify="Justify.FlexStart">
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="6">
+                            <MudTextField @bind-Value="HUFL" Label="HUFL" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="MUFL" Label="MUFL" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="LUFL" Label="LUFL" Variant="Variant.Outlined"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="6">
+                            <MudTextField @bind-Value="HULL" Label="HULL" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="MULL" Label="MULL" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="LULL" Label="LULL" Variant="Variant.Outlined"></MudTextField>
+                        </MudItem>
+                    </MudGrid>
+                        <MudGrid>
+                            <MudItem xs="12" sm="12" md="12">
+                                <MudContainer Class="text-center pl-2 pt-2">
+                                    <MudButton Disabled="@_loading" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="@(() => Loading())">
+                                @if (_loading)
+                                {
+                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                    <MudText Class="ms-2">Loading</MudText>
+                                }
+                                else
+                                {
+                                    <MudText>Calculate</MudText>
+                                }
+                                    </MudButton>
+                                    </MudContainer>
+                            </MudItem>
+                            </MudGrid>
+                            <MudGrid>
+                            <MudItem xs="12" sm="12" md="12">
+                                <MudField Label="Oil Temperature" Variant="Variant.Outlined" Adornment="Adornment.End">@loadPrediction</MudField>
+                            </MudItem>
+                        </MudGrid>
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
 </MudPaper>
 
 
-
 @code {
-    public static double loadPrediction = 32.3;
+    public static double loadPrediction;
 
     string loadPredString = loadPrediction.ToString("#0.0");
+
+    private bool _loading = false;
+
+    async Task Loading()
+    {
+        _loading = true;
+        updateprediction();
+        await Task.Delay(500);
+        _loading = false;
+    }
+
+    private void updateprediction()
+    {
+        loadPrediction = loadPrediction+1;
+    }
+
+    public double HUFL { get; set; }
+    public double MUFL { get; set; }
+    public double LUFL { get; set; }
+    public double HULL { get; set; }
+    public double MULL { get; set; }
+    public double LULL { get; set; }
+
+    private MudTheme Theme = new MudTheme();
 
 }
