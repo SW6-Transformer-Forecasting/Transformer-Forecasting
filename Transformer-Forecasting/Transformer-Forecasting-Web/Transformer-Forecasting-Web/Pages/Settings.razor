@@ -5,7 +5,7 @@
 
 <PageTitle>Settings</PageTitle>
 <MudStack>
-    <MudPaper Elevation="3">
+@*    <MudPaper Elevation="3">
         <MudText Class="pa-2" Typo="Typo.subtitle1"> LFP Model </MudText>
         <MudGrid Class="pa-8">
             <MudItem md="3">
@@ -47,9 +47,9 @@
                 </MudPaper>
             </MudItem>
         </MudGrid>
-        </MudPaper>
+        </MudPaper>*@
         <MudPaper Elevation="3">
-        <MudText Class="pa-3" Typo="Typo.subtitle1">DTP Model</MudText>
+        <MudText Class="pa-3" Typo="Typo.subtitle1">Date Time Prediction Model</MudText>
             <MudGrid Class="pa-8" Justify="Justify.FlexStart">
                 <MudItem md="3">
                     <MudText>Hyperparameters for DTP</MudText>
@@ -82,15 +82,15 @@
                 <MudPaper Class="pb-8 pt-2" Elevation="0">
                     <MudText>Predict Forward Amount</MudText>
                     <MudContainer Class="pl-2 pt-2">
-                        <MudTextField T="int" @bind-Value="HoursToPredict" Label="Hours" HelperText="Recommended: 24" Variant="Variant.Outlined" />
+                        <MudTextField T="int" @bind-Value="HoursToPredict" Label="Hours" HelperText="Recommended: 24" Variant="Variant.Outlined" Style="width: 270.75px; height: 56px;"/>
                     </MudContainer>
                 </MudPaper>
-                <MudText Class="pb-3"> Hourly prediction mode</MudText>
+                @*<MudText Class="pb-3"> Hourly prediction mode</MudText>
                 <MudContainer Class="pl-2">
-                    <MudPaper Class="pa-2" Outlined="true" Style="width: 236.50px; height: 56px;">
+                    <MudPaper Class="pa-2" Outlined="true" Style="width: 270.75px; height: 56px;">
                             <MudSwitch Class="d-flex align-center justify-center mud-width-full pl-8" Style="width: 105px; height: 38px;" @bind-Checked="@DtpSwitch" Color="Color.Primary"> @(hourlyModeSwitch(DtpSwitch))</MudSwitch>
                     </MudPaper>
-                </MudContainer>
+                </MudContainer>*@
             </MudItem>
         </MudGrid>
         </MudPaper>
@@ -111,12 +111,12 @@
 
 @code {
     //LFP model hyperparameters 
-    public bool HUFL { get; set; } = true;
-    public bool MUFL { get; set; } = true;
-    public bool LUFL { get; set; } = true;
-    public bool HULL { get; set; } = false;
-    public bool MULL { get; set; } = false;
-    public bool LULL { get; set; } = false;
+    //public bool HUFL { get; set; } = true;
+    //public bool MUFL { get; set; } = true;
+    //public bool LUFL { get; set; } = true;
+    //public bool HULL { get; set; } = false;
+    //public bool MULL { get; set; } = false;
+    //public bool LULL { get; set; } = false;
 
     //DTP model hyperparameters
     public bool SwitchYear { get; set; } = false;
@@ -140,15 +140,15 @@
 
     }
 
-    void resetLFP()
-    {
-        HUFL = true;
-        MUFL = true;
-        LUFL = true;
-        HULL = false;
-        MULL = false;
-        LULL = false;
-    }
+    //void resetLFP()
+    //{
+    //    HUFL = true;
+    //    MUFL = true;
+    //    LUFL = true;
+    //    HULL = false;
+    //    MULL = false;
+    //    LULL = false;
+    //}
 
     void resetDTP()
     {
@@ -180,13 +180,13 @@
         // Ugly but i have to do this xd
         GlobalJsonBuilder.jsonBuilder.ResetParam();
 
-        GlobalJsonBuilder.jsonBuilder.AddParam(("HUFL", HUFL));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("MUFL", MUFL));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("LUFL", LUFL));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("HULL", HULL));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("MULL", MULL));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("LULL", LULL));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("LR", lrSelect));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("HUFL", HUFL));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("MUFL", MUFL));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("LUFL", LUFL));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("HULL", HULL));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("MULL", MULL));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("LULL", LULL));
+        //GlobalJsonBuilder.jsonBuilder.AddParam(("LR", lrSelect));
 
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchYear", SwitchYear));
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchMonth", SwitchMonth));
