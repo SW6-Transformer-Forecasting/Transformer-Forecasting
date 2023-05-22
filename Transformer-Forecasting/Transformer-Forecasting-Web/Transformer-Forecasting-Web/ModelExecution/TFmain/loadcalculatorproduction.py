@@ -54,7 +54,8 @@ prediction = pytorch.predict_future(tensor_values)
 
 inversed_prediction = pytorch_transformer.inverse_OT(prediction)
 
+list_item = [inversed_prediction[0][0].item()]
 
 QueryExecutor.ResetCalculationsTable()
 
-QueryExecutor.InsertQuery("INSERT INTO calculations VALUES(%s)", inversed_prediction[0])
+QueryExecutor.InsertQuery("INSERT INTO calculations VALUES(%s)", list_item)
