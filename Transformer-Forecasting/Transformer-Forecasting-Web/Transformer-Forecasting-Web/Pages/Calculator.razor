@@ -1,0 +1,28 @@
+﻿@page "/loadcalculator"
+
+<MudPaper Class="pa-2" Outlined="true">
+    <MudStack>
+        <MudStack Spacing="3" Row="true">
+            <MudPaper Class="pa-3">Item 1</MudPaper>
+            <MudPaper Class="pa-3">Item 2</MudPaper>
+            <MudPaper Class="pa-3">Item 3</MudPaper>
+        </MudStack>
+         <MudStack Spacing="3" Row="true">
+            <MudPaper Class="pa-3">Item 1</MudPaper>
+            <MudPaper Class="pa-3">Item 2</MudPaper>
+            <MudPaper Class="pa-3">Item 3</MudPaper>
+        </MudStack>
+        <MudField Label="@loadPredString"
+                  Variant="Variant.Outlined">            
+        </MudField>
+    </MudStack>
+</MudPaper>
+
+
+
+@code {
+    public static double loadPrediction = 32.3;
+
+    string loadPredString = loadPrediction.ToString("#0.0");
+
+}
