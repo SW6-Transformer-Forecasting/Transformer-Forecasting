@@ -25,24 +25,24 @@ class PyTorch:
     model = NeuralNetwork()
     x = 0
     y = 0
+    size = 0
         
-    def __init__(self, cwd, data, dataTransformer, load_model = False, TEST_MODE = False):
+    def __init__(self, cwd, data, pytorch_transformer, load_model = False, TEST_MODE = False):
         if (TEST_MODE == True):
             # We ignore test set here, as we dont need that on the model in TEST_MODE, as its in the Test code
-            train, test = train_test_split(data, test_size=0.004, shuffle=False)
+            train, test = train_test_split(data, test_size=0.1, shuffle=False)
             data = train
-        self.setup_data(data, dataTransformer)
+        self.setup_data(data, pytorch_transformer)
         if (load_model == True):
             self.load_model(self.model, cwd, TEST_MODE)
         self.model.eval()
-        
-
-    def setup_data(self, data, dataTransformer):
+    
+    def setup_data(self, data, pytorch_transformer):
         load_data = data[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
         OT_data = data[['OT']]
         
-        transformed_load_data = dataTransformer.FitAndTransformData(load_data)
-        transformed_OT_data = dataTransformer.FitAndTransformData(OT_data)
+        transformed_load_data = pytorch_transformer.fit_transform_loads(load_data)
+        transformed_OT_data = pytorch_transformer.fit_transform_OT(OT_data)
         
         X = transformed_load_data
         Y = transformed_OT_data
@@ -62,7 +62,7 @@ class PyTorch:
         loss_fn = nn.MSELoss()
         optimizer = torch.optim.SGD(self.model.parameters(), lr=0.0005)
 
-        n_epochs = 100
+        n_epochs = 50
         batch_size = 1
 
         for epoch in range(n_epochs):
@@ -84,7 +84,7 @@ class PyTorch:
             torch.save(self.model.state_dict(), cwd + "/ModelExecution/TFmain/Models/MSE.pth")
         print("Saved PyTorch Model State")
 
-    def predict_future(self):
-        predictions = self.model(self.x[0:24]).detach().cpu().numpy()
+    def predict_future(self, IO):
+        predictions = self.model(IO).detach().cpu().numpy()
         return predictions
         
