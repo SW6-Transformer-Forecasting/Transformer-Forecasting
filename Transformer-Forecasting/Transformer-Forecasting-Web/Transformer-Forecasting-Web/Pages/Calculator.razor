@@ -2,6 +2,9 @@
 @using Transformer_Forecasting_Web.Data;
 @using Transformer_Forecasting_Web.ModelExecution
 @inject ModelExecutor modelExecution
+@using Transformer_Forecasting_Web.SQL
+@inject IDataAccess _data
+@inject IConfiguration _config
 
 <MudPaper Class="pa-4 mx-lg-auto" Elevation="3" Style="@($"background:{Theme.Palette.BackgroundGrey};")">
     <MudText Class="p-3" Typo="Typo.h6">Load Calculator</MudText>
@@ -69,12 +72,12 @@
         if (BoxesFull())
         {
             _loading = true;
+            await Task.Delay(3000);
             RunCalculation();
-            await Task.Delay(5000);
             UpdatePrediction();
         }
         _loading = false;
-        
+
     }
 
 
@@ -102,10 +105,12 @@
         return boxesFull;
     }
 
-    private void UpdatePrediction()
+    List<Calculation> calculation = new List<Calculation>();
+
+    private async void UpdatePrediction()
     {
-        loadPrediction = loadPrediction+1;
-        //Get value from database and update prediction
+        calculation = await _data.LoadData<Calculation, dynamic>("SELECT * FROM calculations", new { }, _config.GetConnectionString("default"));
+        loadPrediction = calculation[0].prediction;
     }
 
     private MudTheme Theme = new MudTheme();
