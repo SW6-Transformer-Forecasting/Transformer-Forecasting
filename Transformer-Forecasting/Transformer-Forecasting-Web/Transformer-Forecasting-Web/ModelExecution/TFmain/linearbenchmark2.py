@@ -32,14 +32,15 @@ OTScaler.min_,OTScaler.scale_=scaler.min_[numberOfColumns],scaler.scale_[numberO
 x = numpy.delete(normalizedDataframe, numberOfColumns, axis=1)
 y = normalizedDataframe[:, numberOfColumns]
 
-
+#row != 0 and row % DAYS_TO_TRAIN_ON == 0
 startTrain = 0
 startTest = 0
 endTrain = 0
 endTest = 0
 mapeList = []
+trainingThreshold = len(x) - DAYS_TO_TRAIN_ON
 for row in range(len(x)):
-    if(row != 0 and row % DAYS_TO_TRAIN_ON == 0):
+    if(row > DAYS_TO_TRAIN_ON and row < trainingThreshold):
         endTrain = row # endtrain = 480
         x_train = x[startTrain:endTrain] #start = 266
         y_train = y[startTrain:endTrain]
@@ -63,17 +64,17 @@ for row in range(len(x)):
         y_test = OTScaler.inverse_transform(y_test.reshape(-1,1))
         predictions = OTScaler.inverse_transform(predictions.reshape(-1,1))
 
-        plt.plot(y_test)
-        plt.plot(predictions)
-        plt.show()
+        # plt.plot(y_test)
+        # plt.plot(predictions)
+        # plt.show()
 
         # mape = mean_absolute_error(y_test, predictions)
         mape = mean_absolute_percentage_error(y_test, predictions)
         mapeList += [mape]
         print('MAPE: ', mape)
-        if(mape > 0):
-            for i in range(len(predictions)):
-                print(f"{y_test[i]} and {predictions[i]}")
+        # if(mape > 0):
+        #     for i in range(len(predictions)):
+        #         print(f"{y_test[i]} and {predictions[i]}")
         
         
         
