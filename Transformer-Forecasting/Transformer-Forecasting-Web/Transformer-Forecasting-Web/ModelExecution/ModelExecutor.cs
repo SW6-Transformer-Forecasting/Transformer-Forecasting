@@ -14,9 +14,6 @@ namespace Transformer_Forecasting_Web.ModelExecution
             var Local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Programs\Python"); // Gets Appdata/Local folder path
             start.FileName = Directory.GetFiles(Local, "python.exe", SearchOption.AllDirectories)[0]; // Searches for python.exe within the Local folder, no matter version, and returns first result
 
-            // Json Builder
-            GlobalJsonBuilder.jsonBuilder.BuildJson();
-
             start.Arguments = arguments;
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
