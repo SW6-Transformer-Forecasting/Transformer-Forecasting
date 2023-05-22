@@ -1,6 +1,7 @@
 from Models.pytorch import PyTorch
 from DataHandling.datatransformerproduction import PytorchTransformer
 from DataHandling.dataFilter import DataFilter
+from SQL.queryexecutor import QueryExecutor
 import numpy
 import pandas
 import torch
@@ -53,4 +54,7 @@ prediction = pytorch.predict_future(tensor_values)
 
 inversed_prediction = pytorch_transformer.inverse_OT(prediction)
 
-# Return results to front end here
+
+QueryExecutor.ResetCalculationsTable()
+
+QueryExecutor.InsertQuery("INSERT INTO calculations VALUES(%s)", inversed_prediction[0])

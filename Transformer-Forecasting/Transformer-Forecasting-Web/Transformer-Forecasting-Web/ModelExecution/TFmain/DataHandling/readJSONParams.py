@@ -3,8 +3,8 @@ import os
 
 cwd = os.getcwd()
 
-jsonFile = open(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\params.json")
-# jsonFile = open(cwd + "\params.json")
+# jsonFile = open(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\params.json")
+jsonFile = open(cwd + "\params.json")
 
 data = json.load(jsonFile)
 
