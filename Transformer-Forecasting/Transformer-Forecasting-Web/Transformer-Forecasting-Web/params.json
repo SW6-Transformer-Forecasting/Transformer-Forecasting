@@ -28,11 +28,11 @@
     "Item2": true
   },
   {
-    "Item1": "DtpSwitch",
-    "Item2": false
-  },
-  {
     "Item1": "HoursToPredict",
     "Item2": 24
+  },
+  {
+    "Item1": "TrainingPeriodLength",
+    "Item2": 3
   }
 ]

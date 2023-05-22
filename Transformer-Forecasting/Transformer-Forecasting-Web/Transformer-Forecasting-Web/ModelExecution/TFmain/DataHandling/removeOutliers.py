@@ -1,4 +1,5 @@
 import pandas 
+from pandas.tseries.offsets import DateOffset
 import numpy 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
@@ -9,8 +10,8 @@ import os
 
 cwd = os.getcwd()
 
-# dataframe = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\ETTh1.csv")
-dataframe = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata_test.csv")
+# dataframe = pandas.read_csv(r"C:\Users\krist\source\repos\CAOS calc\Transformer-Forecasting\Transformer-Forecasting\Transformer-Forecasting-Web\Transformer-Forecasting-Web\ModelExecution\TFmain\Data\cleandata.csv")
+dataframe = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 dataframe.drop("HUFL", inplace=True, axis=1)
 dataframe.drop("HULL", inplace=True, axis=1)
 dataframe.drop("MUFL", inplace=True, axis=1)
@@ -18,15 +19,20 @@ dataframe.drop("MULL", inplace=True, axis=1)
 dataframe.drop("LUFL", inplace=True, axis=1)
 dataframe.drop("LULL", inplace=True, axis=1)
 
-dataframe['datetime'] = pandas.to_datetime(dataframe['date'])
+# selects the rows that are within the TrainingPeriodLength (default is the last 3 months of data)
+dataframe['date'] = pandas.to_datetime(dataframe['date'])
+current_date = dataframe['date'].max()
+start_date = current_date - DateOffset(months=JsonParams.TrainingPeriodLength)
+dataframe = dataframe[(dataframe['date'] > start_date) & (dataframe['date'] <= current_date)]
+
 dataframe = dataframe.apply(lambda row: pandas.Series({
-                                                            "year":row.datetime.year,
-                                                            "month":row.datetime.month,
-                                                            "day":row.datetime.day,
-                                                            "hour":row.datetime.hour,
-                                                            "weekday":row.datetime.weekday(),
-                                                            "weekofyear": row.datetime.weekofyear, 
-                                                            "quarter":row.datetime.quarter,
+                                                            "year":row.date.year,
+                                                            "month":row.date.month,
+                                                            "day":row.date.day,
+                                                            "hour":row.date.hour,
+                                                            "weekday":row.date.weekday(),
+                                                            "weekofyear": row.date.weekofyear, 
+                                                            "quarter":row.date.quarter,
                                                             'OT': row.OT}), axis=1)
 notIncludedDateValues = JsonParams.GetNotIncludedDateValues()
 dataframe = dataframe.drop(columns=notIncludedDateValues)
@@ -57,10 +63,14 @@ predictions = OTScaler.inverse_transform(predictions.reshape(-1, 1))
 
 y = numpy.asarray(y)
 deletedRows = 0
+PERCENTAGEDIFFERENCE = 60
+
+lowerPercentageBound = 100 - PERCENTAGEDIFFERENCE
+higherPercentageBound = 100 + PERCENTAGEDIFFERENCE
 for i in range(len(predictions)):
     # If differenceInPercentage is 100, then the test data and prediction have the exact same value
     differenceInPercentage = abs(y[i] / predictions[i] * 100)
-    if(differenceInPercentage < 40 or differenceInPercentage > 160):
+    if(differenceInPercentage < lowerPercentageBound or differenceInPercentage > higherPercentageBound):
         deletedRows += 1
         normalizedDataframe = numpy.delete(normalizedDataframe, i - deletedRows, 0)
         
