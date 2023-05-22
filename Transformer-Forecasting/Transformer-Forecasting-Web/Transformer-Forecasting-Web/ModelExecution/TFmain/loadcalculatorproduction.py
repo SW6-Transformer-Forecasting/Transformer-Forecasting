@@ -22,7 +22,6 @@ df = {'HUFL': [array_of_values[0]], 'HULL': [array_of_values[1]], 'MUFL': [array
              'MULL': [array_of_values[3]],'LUFL': [array_of_values[4]], 'LULL': [array_of_values[5]]}
 
 input_of_loads = pandas.DataFrame(data=df)
-print(input_of_loads)
 
 cwd = os.getcwd()
 
@@ -54,6 +53,4 @@ prediction = pytorch.predict_future(tensor_values)
 
 inversed_prediction = pytorch_transformer.inverse_OT(prediction)
 
-print(inversed_prediction)
-print("Did we win?")
 # Return results to front end here

@@ -43,9 +43,6 @@ class PytorchTransformer:
     load_scaler = MinMaxScaler()
     OT_scaler = MinMaxScaler()
     
-    def __init__(self):
-        print("Transformer ready")
-    
     def fit_transform_loads(self, loads):
         return self.load_scaler.fit_transform(loads)
     
