@@ -127,7 +127,7 @@
     void setSwitchValuesToJsonValues()
     {
         List<Object> jsonValues = GlobalJsonBuilder.jsonBuilder.ReadJson();
-        // hjælp
+
         Console.WriteLine();
 
     }
@@ -151,7 +151,6 @@
 
     void SaveSettingsToJSON()
     {
-        // Ugly but i have to do all this xd
         GlobalJsonBuilder.jsonBuilder.ResetParam();
 
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchYear", SwitchYear));

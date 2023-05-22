@@ -27,22 +27,22 @@
                         <MudGrid>
                             <MudItem xs="12" sm="12" md="12">
                                 <MudContainer Class="text-center pl-2 pt-2">
-                                <MudButton Disabled="@_loading" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="@(() => Loading())">
+                                        <MudButton Disabled="@_loading" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="@(() => Loading())">
                                         @if (_loading)
                                         {
-                                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                                        <MudText Class="ms-2">Loading</MudText>
-                                        }
-                                        else
-                                        {
-                                            if (!BoxesFull())
-                                            {
-                                                <MudText>Fill Boxes</MudText>
+                                            if(BoxesFull())
+                                            {                                            
+                                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                                <MudText Class="ms-2">Loading</MudText>
                                             }
                                             else
                                             {
-                                                <MudText>Calculate</MudText>
+                                                <MudText Class="ms-2">Calculate</MudText>
                                             }
+                                    }
+                                        else
+                                        {
+                                            <MudText>Calculate</MudText>
                                         }
                                 </MudButton>
                                 </MudContainer>
