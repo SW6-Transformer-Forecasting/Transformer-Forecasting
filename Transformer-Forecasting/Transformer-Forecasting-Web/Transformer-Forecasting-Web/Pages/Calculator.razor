@@ -14,20 +14,20 @@
                 <MudGrid Class="pa-8" Justify="Justify.FlexStart">
                     <MudGrid>
                         <MudItem xs="12" sm="6" md="6">
-                            <MudTextField @bind-Value="HUFL" Label="HUFL" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="MUFL" Label="MUFL" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="LUFL" Label="LUFL" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="HUFL" Label="HUFL" Variant="Variant.Outlined" Immediate="true" @onkeyup="@(() => BoxChanged())"></MudTextField>
+                            <MudTextField @bind-Value="MUFL" Label="MUFL" Variant="Variant.Outlined" Immediate="true" @onkeyup="@(() => BoxChanged())"></MudTextField>
+                            <MudTextField @bind-Value="LUFL" Label="LUFL" Variant="Variant.Outlined" Immediate="true" @onkeyup="@(() => BoxChanged())"></MudTextField>
                         </MudItem>
                         <MudItem xs="12" sm="6" md="6">
-                            <MudTextField @bind-Value="HULL" Label="HULL" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="MULL" Label="MULL" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="LULL" Label="LULL" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="HULL" Label="HULL" Variant="Variant.Outlined" Immediate="true" @onkeyup="@(() => BoxChanged())"></MudTextField>
+                            <MudTextField @bind-Value="MULL" Label="MULL" Variant="Variant.Outlined" Immediate="true" @onkeyup="@(() => BoxChanged())"></MudTextField>
+                            <MudTextField @bind-Value="LULL" Label="LULL" Variant="Variant.Outlined" Immediate="true" @onkeyup="@(() => BoxChanged())"></MudTextField>
                         </MudItem>
                     </MudGrid>
                         <MudGrid>
                             <MudItem xs="12" sm="12" md="12">
                                 <MudContainer Class="text-center pl-2 pt-2">
-                                        <MudButton Disabled="@_loading" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="@(() => Loading())">
+                                        <MudButton Disabled="@disabled" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" @onclick="@(() => Loading())">
                                         @if (_loading)
                                         {
                                             if(BoxesFull())
@@ -39,7 +39,7 @@
                                             {
                                                 <MudText Class="ms-2">Calculate</MudText>
                                             }
-                                    }
+                                        }
                                         else
                                         {
                                             <MudText>Calculate</MudText>
@@ -66,6 +66,7 @@
     string loadPredString = loadPrediction.ToString("#0.0");
 
     private bool _loading = false;
+    private bool disabled = true;
 
     async Task Loading()
     {
@@ -77,7 +78,18 @@
             UpdatePrediction();
         }
         _loading = false;
+    }
 
+    async Task BoxChanged()
+    {
+        if(BoxesFull())
+        {
+            disabled = false;
+        } 
+        else
+        {
+            disabled = true;
+        }
     }
 
 
