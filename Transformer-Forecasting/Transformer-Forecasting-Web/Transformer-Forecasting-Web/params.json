@@ -1,33 +1,5 @@
 [
   {
-    "Item1": "HUFL",
-    "Item2": true
-  },
-  {
-    "Item1": "MUFL",
-    "Item2": true
-  },
-  {
-    "Item1": "LUFL",
-    "Item2": true
-  },
-  {
-    "Item1": "HULL",
-    "Item2": false
-  },
-  {
-    "Item1": "MULL",
-    "Item2": false
-  },
-  {
-    "Item1": "LULL",
-    "Item2": false
-  },
-  {
-    "Item1": "LR",
-    "Item2": 0.0005
-  },
-  {
     "Item1": "SwitchYear",
     "Item2": false
   },
@@ -56,11 +28,11 @@
     "Item2": true
   },
   {
-    "Item1": "DtpSwitch",
-    "Item2": false
-  },
-  {
     "Item1": "HoursToPredict",
     "Item2": 24
+  },
+  {
+    "Item1": "TrainingPeriodLength",
+    "Item2": 3
   }
 ]

@@ -86,9 +86,9 @@
                     </MudContainer>
                 </MudPaper>
                 <MudPaper Class="pb-8 pt-2" Elevation="0">
-                    <MudText> Training Periode Length</MudText>
+                    <MudText> Training Period Length</MudText>
                        <MudContainer Class="pl-2 pt-2">
-                            <MudTextField T="int" @bind-Value="TrainingPeriodeLength" Label="Months" HelperText="Recommended: 3 " Variant="Variant.Outlined" Style="width: 270.75px; height: 56px;"/>
+                            <MudTextField T="int" @bind-Value="TrainingPeriodLength" Label="Months" HelperText="Recommended: 3 " Variant="Variant.Outlined" Style="width: 270.75px; height: 56px;"/>
                         </MudContainer>
                 </MudPaper>
             </MudItem>
@@ -163,19 +163,9 @@
 
     int HoursToPredict = 24;
 
-    int TrainingPeriodeLength = 3;
+    int TrainingPeriodLength = 3;
 
     double lrSelect = 0.0005; 
-
-    public bool DtpSwitch { get; set; } = false;
-
-    private string hourlyModeSwitch (bool hourlyModeBool)
-    {
-        if (hourlyModeBool == true)
-            return "On";
-        else
-            return "Off";
-    }
 
     void SaveSettingsToJSON()
     {
@@ -197,9 +187,8 @@
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWeekday", SwitchWeekday));
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchWOY", SwitchWOY));
         GlobalJsonBuilder.jsonBuilder.AddParam(("SwitchQuarter", SwitchQuarter));
-        GlobalJsonBuilder.jsonBuilder.AddParam(("DtpSwitch", DtpSwitch));
-
         GlobalJsonBuilder.jsonBuilder.AddParam(("HoursToPredict", HoursToPredict));
+        GlobalJsonBuilder.jsonBuilder.AddParam(("TrainingPeriodLength", TrainingPeriodLength));
 
         GlobalJsonBuilder.jsonBuilder.BuildJson();
     }

@@ -10,16 +10,9 @@ warnings.filterwarnings("ignore")
 
 cwd = os.getcwd()
 
-data = pandas.read_csv(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv')
-data.drop("HUFL", inplace=True, axis=1)
-data.drop("HULL", inplace=True, axis=1)
-data.drop("MUFL", inplace=True, axis=1)
-data.drop("MULL", inplace=True, axis=1)
-data.drop("LUFL", inplace=True, axis=1)
-data.drop("LULL", inplace=True, axis=1)
-
-
-EARLIEST_TRAIN_DATE = "2016-07-01 00:00:00"
+dataframe = pandas.read_csv(cwd + '\ModelExecution\TFmain\Data\ETTh1.csv')
+dataframe['date'] = pandas.to_datetime(dataframe['date'])
+current_date = str(dataframe['date'].max())
 
 class DataHandler:
     trainDataInformation = []
@@ -48,7 +41,8 @@ class DataHandler:
         x = numpy.delete(normalizedTrainingData, numberOfColumns, axis=1)
         y = normalizedTrainingData[:, numberOfColumns]
 
-        datePredictValues = self.GetDatePredictValues("2018-06-26 19:00:00")
+        # by default this converts the next 24 hours into an input for the model
+        datePredictValues = self.GetDatePredictValues(current_date)
 
         x_predict = pandas.DataFrame(datePredictValues)
         x_predict.columns = ['date']

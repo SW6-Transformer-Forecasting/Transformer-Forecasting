@@ -85,49 +85,5 @@ errorSum = 0
 for i in range(len(mapeList)):
     errorSum += mapeList[i]
 
+# This will throw a division by zero error if there isnt much data in ETTh1OutliersRemoved
 print(f"Average MAPE: {errorSum / len(mapeList)}")
-# model = LinearRegression()
-
-# model.fit(x_train, y_train)
-
-# predictions = model.predict(x_test)
-
-# x_test = OTScaler.inverse_transform(x_test)
-# y_test = OTScaler.inverse_transform(y_test.reshape(-1,1))
-# predictions = OTScaler.inverse_transform(predictions.reshape(-1,1))
-
-# for i in range(len(predictions)):
-#     print(f"{y_test[i]} and {predictions[i]}")
-
-# print('MSE %: ', mean_absolute_percentage_error(y_test, predictions))
-
-
-# Here I remove the outliers from the train data
-# def removeOutliers(x, y):
-#     modelWithOutliers = LinearRegression()
-#     modelWithOutliers.fit(x, y)
-    
-#     predictions = modelWithOutliers.predict(x)
-    
-#     y = OTScaler.inverse_transform(y.reshape(-1, 1))
-#     predictions = OTScaler.inverse_transform(predictions.reshape(-1, 1))
-    
-#     deletedRows = 0
-#     PERCENTAGEDIFFERENCE = 60
-        
-#     # I save the value of y in y_values so that I can remove rows from y without it affecting the loop below
-#     y_values = numpy.asarray(y)    
-        
-#     lowerPercentageBound = 100 - PERCENTAGEDIFFERENCE
-#     higherPercentageBound = 100 + PERCENTAGEDIFFERENCE
-#     for i in range(len(predictions)):
-#         # If differenceInPercentage is 100, then the test data and prediction have the exact same value
-#         differenceInPercentage = abs(y_values[i] / predictions[i] * 100)
-#         if(differenceInPercentage < lowerPercentageBound or differenceInPercentage > higherPercentageBound):
-#             deletedRows += 1
-#             x = numpy.delete(x, i - deletedRows, 0)
-#             y = numpy.delete(y, i - deletedRows, 0) 
-    
-#     modelWithoutOutliers = LinearRegression()
-#     modelWithoutOutliers.fit(x, y)
-#     return modelWithoutOutliers
