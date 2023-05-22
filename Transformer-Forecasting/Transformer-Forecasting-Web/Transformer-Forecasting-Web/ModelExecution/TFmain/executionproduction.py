@@ -13,13 +13,8 @@ import sys
 import math
 import os
 
-startPredictDate = 1
-endPredictDate = 1
-
 new_data = False
-model_choice = "DTP"
 periodDescription = sys.argv[1]
-input_of_loads = numpy.zeros(shape=(1, 1)) # Some loads from front-end goes here instead
 # hoursToPredictAhead = sys.argv[2]
 
 cwd = os.getcwd()
@@ -31,44 +26,20 @@ if (new_data == "True"):
 
 data = pandas.read_csv(cwd + "\ModelExecution\TFmain\Data\cleandata.csv")
 
-# Pytorch
-if(model_choice == "LFP"):
-        pytorch_transformer = PytorchTransformer()
-    
-        pytorch = PyTorch(cwd, data, pytorch_transformer, True)
-        
-        train_model = False
-        if(train_model == True):
-            pytorch.train_model(cwd, False) # Bool: save_model
-        
-        # Remove this, add directly into a tensor further up
-        tensor_data = input_of_loads[['HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL']]
-        
-        tensor_values = pytorch_transformer.transform_loads(tensor_data)
-        transformed_tensor = torch.tensor(tensor_values, dtype=torch.float32)
-        # transformed_tensor = transformed_tensor.unsqueeze(0) # In case of broadcast error, add this line
-        
-        prediction = pytorch.predict_future(transformed_tensor)
-
-        inversed_prediction = pytorch_transformer.inverse_OT(prediction)
-        # Now do SQL stuff for Pytorch
-
 # Linear model
-if(model_choice == "DTP"):
-        # This instance stores the MinMaxScaler for later use when the normalization has to be inversed
-        dataTransformer = TransformData()
-        
-        dataHandler = DataHandler(periodDescription, dataTransformer)
+# This instance stores the MinMaxScaler for later use when the normalization has to be inversed
+dataTransformer = TransformData()
 
-        # Uses the prepared data and creates Linear models for the prediction task
-        modelData = dataHandler.linearModelInformation
+dataHandler = DataHandler(periodDescription, dataTransformer)
 
-        linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, modelData.x_predict)
+# Uses the prepared data and creates Linear models for the prediction task
+modelData = dataHandler.linearModelInformation
 
-        predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
+linearRegression = LinearRegression(0, modelData.x_train, modelData.y_train, modelData.x_predict)
 
-        predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
+predictedOTDataframe = pandas.DataFrame(linearRegression.predictedOT, columns=["OT"])
 
+predictedOTInversed = dataTransformer.InverseOT(predictedOTDataframe)
 
 
 # SQL Starts here
