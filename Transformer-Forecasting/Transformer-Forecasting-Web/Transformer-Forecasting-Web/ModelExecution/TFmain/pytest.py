@@ -22,6 +22,8 @@ data = pandas.read_csv("Transformer-Forecasting\Transformer-Forecasting-Web\Tran
 # We ignore train set here, as we create it when in TEST_MODE in the model
 train, test = train_test_split(data, test_size=0.1, shuffle=False)
 
+# Best state: 36765
+# Worst state: 38105
 discard, test_samples = train_test_split(test, test_size=0.01, random_state=36765)
 OT_data = test_samples[['OT']]
 OT_data = OT_data.to_numpy()
